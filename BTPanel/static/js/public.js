@@ -1,11 +1,11 @@
-$(document).ready(function() {
-    $(".sub-menu a.sub-menu-a").click(function() {
+$(document).ready(function () {
+    $(".sub-menu a.sub-menu-a").click(function () {
         $(this).next(".sub").slideToggle("slow").siblings(".sub:visible").slideUp("slow");
     });
 });
 var aceEditor = {
     layer_view: '',
-    aceConfig:{},  //ace配置参数
+    aceConfig: {},  //ace配置参数
     editor: null,
     supportedModes: {
         Apache_Conf: ["^htaccess|^htgroups|^htpasswd|^conf|htaccess|htgroups|htpasswd"],
@@ -73,32 +73,32 @@ var aceEditor = {
     isAceView: true,
     ace_active: '',
     is_resizing: false,
-    menu_path:'', //当前文件目录根地址
-    refresh_config:{
-		el:{}, // 需要重新获取的元素,为DOM对象
-		path:'',// 需要获取的路径文件信息
-		group:1,// 当前列表层级，用来css固定结构
-		is_empty:true
-	}, //刷新配置参数
+    menu_path: '', //当前文件目录根地址
+    refresh_config: {
+        el: {}, // 需要重新获取的元素,为DOM对象
+        path: '',// 需要获取的路径文件信息
+        group: 1,// 当前列表层级，用来css固定结构
+        is_empty: true
+    }, //刷新配置参数
     // 事件编辑器-方法，事件绑定
-    eventEditor: function() {
-        var _this = this,_icon = '<span class="icon"><i class="glyphicon glyphicon-ok" aria-hidden="true"></i></span>';
-        $(window).resize(function() {
+    eventEditor: function () {
+        var _this = this, _icon = '<span class="icon"><i class="glyphicon glyphicon-ok" aria-hidden="true"></i></span>';
+        $(window).resize(function () {
             var _id = $('.ace_conter_menu .active').attr('data-id');
             if (_id != undefined) {
                 aceEditor.editor['ace_editor_' + _id].ace.resize();
                 //_this.setEditorView()
             }
         });
-        $('.ace_editor_main').on('click',function(){
+        $('.ace_editor_main').on('click', function () {
             $('.ace_toolbar_menu').hide();
         });
-        $(document).click(function(e) {
-                $('.ace_toolbar_menu').hide();
-                $('.ace_toolbar_menu .menu-tabs,.ace_toolbar_menu .menu-encoding,.ace_toolbar_menu .menu-files').hide();
-            })
-            // 显示工具条
-        $('.ace_header .pull-down').click(function() {
+        $(document).click(function (e) {
+            $('.ace_toolbar_menu').hide();
+            $('.ace_toolbar_menu .menu-tabs,.ace_toolbar_menu .menu-encoding,.ace_toolbar_menu .menu-files').hide();
+        })
+        // 显示工具条
+        $('.ace_header .pull-down').click(function () {
             if ($(this).find('i').hasClass('glyphicon-menu-down')) {
                 $('.ace_header').css({ 'marginTop': '-35px', 'height': '0' });
                 $(this).css({ 'top': '35px', 'height': '40px', 'line-height': '40px' });
@@ -111,7 +111,7 @@ var aceEditor = {
             _this.setEditorView();
         });
         // 切换TAB视图
-        $('.ace_conter_menu').on('click', '.item', function(e) {
+        $('.ace_conter_menu').on('click', '.item', function (e) {
             var _id = $(this).attr('data-id'),
                 _item = _this.editor['ace_editor_' + _id]
             $('.item_tab_' + _id).addClass('active').siblings().removeClass('active');
@@ -121,21 +121,21 @@ var aceEditor = {
             _this.is_file_history(_item);
         });
         // 移上TAB按钮变化，仅文件被修改后
-        $('.ace_conter_menu').on('mouseover', '.item .icon-tool', function() {
+        $('.ace_conter_menu').on('mouseover', '.item .icon-tool', function () {
             var type = $(this).attr('data-file-state');
             if (type != '0') {
                 $(this).removeClass('glyphicon-exclamation-sign').addClass('glyphicon-remove');
             }
         });
         // 移出tab按钮变化，仅文件被修改后
-        $('.ace_conter_menu').on('mouseout', '.item .icon-tool', function() {
+        $('.ace_conter_menu').on('mouseout', '.item .icon-tool', function () {
             var type = $(this).attr('data-file-state');
             if (type != '0') {
                 $(this).removeClass('glyphicon-remove').addClass('glyphicon-exclamation-sign');
             }
         });
         // 关闭编辑视图
-        $('.ace_conter_menu').on('click', '.item .icon-tool', function(e) {
+        $('.ace_conter_menu').on('click', '.item .icon-tool', function (e) {
             var file_type = $(this).attr('data-file-state');
             var file_title = $(this).attr('data-title');
             var _path = $(this).parent().parent().attr('title');
@@ -145,7 +145,7 @@ var aceEditor = {
                 case '0':
                     _this.removeEditor(_id);
                     break;
-                    // 未保存
+                // 未保存
                 case '1':
                     var loadT = layer.open({
                         type: 1,
@@ -161,8 +161,8 @@ var aceEditor = {
 								<button type="button" class="btn btn-sm btn-success" data-type="0">Save</button>\
 							</div>\
 						</div>',
-                        success: function(layers, index) {
-                            $('.ace-clear-btn .btn').click(function() {
+                        success: function (layers, index) {
+                            $('.ace-clear-btn .btn').click(function () {
                                 var _type = $(this).attr('data-type'),
                                     editor_item = _this.editor['ace_editor_' + _id];
                                 switch (_type) {
@@ -171,7 +171,7 @@ var aceEditor = {
                                             path: _path,
                                             data: editor_item.ace.getValue(),
                                             encoding: editor_item.encoding
-                                        }, function(res) {
+                                        }, function (res) {
                                             layer.close(index);
                                             _this.removeEditor(editor_item.id);
                                             layer.msg(res.msg, { icon: 1 });
@@ -195,11 +195,11 @@ var aceEditor = {
             e.stopPropagation();
         });
         // 新建编辑器视图
-        $('.ace_editor_add').click(function() {
+        $('.ace_editor_add').click(function () {
             _this.addEditorView();
         });
         // 底部状态栏功能按钮
-        $('.ace_conter_toolbar .pull-right span').click(function(e) {
+        $('.ace_conter_toolbar .pull-right span').click(function (e) {
             var _type = $(this).attr('data-type'),
                 _item = _this.editor['ace_editor_' + _this.ace_active];
             $('.ace_toolbar_menu').show();
@@ -227,7 +227,7 @@ var aceEditor = {
 								</table>\
 							</div>\
 						</div>',
-                        success: function(layeo, index) {
+                        success: function (layeo, index) {
                             var _html = '';
                             for (var i = 0; i < _item.historys.length; i++) {
                                 _html += '<tr><td><span class="size_ellipsis" style="max-width:200px">' + _item.fileName + '</span></td><td>' + bt.format_data(_item.historys[i]) + '</td><td align="right"><a href="javascript:;" class="btlink open_history_file" data-time="' + _item.historys[i] + '">' + lan.public.open_file + '</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="javascript:;" class="btlink recovery_file_historys" data-history="' + _item.historys[i] + '" data-path="' + _item.path + '">' + lan.public.restore + '</a></td></tr>'
@@ -235,15 +235,15 @@ var aceEditor = {
                             if (_html === '') _html += '<tr><td colspan="3">' + lan.public.no_file_history + '</td></tr>'
                             $('.historys tbody').html(_html);
                             $('.historys_layer').css('top', ($(window).height() / 2) - ($('.historys_layer').height() / 2) + 'px')
-                            $('.open_history_file').click(function() {
+                            $('.open_history_file').click(function () {
                                 var _history = $(this).attr('data-time');
-                                _this.openHistoryEditorView({ filename: _item.path, history: _history }, function() {
+                                _this.openHistoryEditorView({ filename: _item.path, history: _history }, function () {
                                     layer.close(index);
                                     $('.ace_conter_tips').show();
                                     $('.ace_conter_tips .tips').html(lan.public.read_only_file + _item.path + '，' + lan.public.history_v + ' [ ' + bt.format_data(new Number(_history)) + ' ]<a href="javascript:;" class="ml35 btlink" data-path="' + _item.path + '" data-history="' + _history + '">' + lan.public.restore_history + '</a>');
                                 });
                             });
-                            $('.recovery_file_historys').click(function() {
+                            $('.recovery_file_historys').click(function () {
                                 _this.event_ecovery_file(this);
                             });
                         }
@@ -267,7 +267,7 @@ var aceEditor = {
             e.preventDefault();
         });
         // 隐藏目录
-        $('.tips_fold_icon .glyphicon').click(function() {
+        $('.tips_fold_icon .glyphicon').click(function () {
             if ($(this).hasClass('glyphicon-menu-left')) {
                 $('.ace_conter_tips').css('right', '0');
                 $('.tips_fold_icon').css('left', '0');
@@ -279,7 +279,7 @@ var aceEditor = {
             }
         });
         // 设置换行符
-        $('.menu-tabs').on('click', 'li', function(e) {
+        $('.menu-tabs').on('click', 'li', function (e) {
             var _val = $(this).attr('data-value'),
                 _item = _this.editor['ace_editor_' + _this.ace_active];
             if ($(this).parent().hasClass('tabsType')) {
@@ -291,9 +291,9 @@ var aceEditor = {
                 _this.aceConfig.aceEditor.tabSize = _val;
                 _item.tabSize = _val;
             }
-            _this.saveAceConfig(_this.aceConfig,function(res){
-                if(res.status){
-                    layer.msg('Successful setup', {icon: 1});
+            _this.saveAceConfig(_this.aceConfig, function (res) {
+                if (res.status) {
+                    layer.msg('Successful setup', { icon: 1 });
                 }
             });
             $(this).siblings().removeClass('active').find('.icon').remove();
@@ -303,7 +303,7 @@ var aceEditor = {
             e.preventDefault();
         });
         // 设置编码内容
-        $('.menu-encoding').on('click', 'li', function(e) {
+        $('.menu-encoding').on('click', 'li', function (e) {
             var _item = _this.editor['ace_editor_' + _this.ace_active],
                 _icon = '<span class="icon"><i class="glyphicon glyphicon-ok" aria-hidden="true"></i></span>';
             layer.msg(lan.public.set_file_encoding + ':' + $(this).attr('data-value'));
@@ -313,7 +313,7 @@ var aceEditor = {
             _this.saveFileMethod(_item);
         });
         // 搜索内容键盘事件
-        $('.menu-files .menu-input').keyup(function() {
+        $('.menu-files .menu-input').keyup(function () {
             _this.searchRelevance($(this).val());
             if ($(this).val != '') {
                 $(this).next().show();
@@ -322,12 +322,12 @@ var aceEditor = {
             }
         });
         // 清除搜索内容事件
-        $('.menu-files .menu-conter .fa').click(function() {
+        $('.menu-files .menu-conter .fa').click(function () {
             $('.menu-files .menu-input').val('').next().hide();
             _this.searchRelevance()
         });
         // 顶部状态栏
-        $('.ace_header span').click(function(e) {
+        $('.ace_header span').click(function (e) {
             var type = $(this).attr('class'),
                 editor_item = _this.editor['ace_editor_' + _this.ace_active];
             var _icon = '<span class="icon"><i class="glyphicon glyphicon-ok" aria-hidden="true"></i></span>';
@@ -349,11 +349,11 @@ var aceEditor = {
 								<button type="button" class="btn btn-sm btn-success save-all-btn">Save</button>\
 							</div>\
 						</div>',
-                        success: function(layers, index) {
-                            $('.clear-btn').click(function() {
+                        success: function (layers, index) {
+                            $('.clear-btn').click(function () {
                                 layer.close(index);
                             });
-                            $('.save-all-btn').click(function() {
+                            $('.save-all-btn').click(function () {
                                 var _arry = [],
                                     editor = aceEditor['editor'];
                                 for (var item in editor) {
@@ -363,8 +363,8 @@ var aceEditor = {
                                         encoding: editor[item]['encoding'],
                                     })
                                 }
-                                _this.saveAllFileBody(_arry, function() {
-                                    $('.ace_conter_menu>.item').each(function(el, index) {
+                                _this.saveAllFileBody(_arry, function () {
+                                    $('.ace_conter_menu>.item').each(function (el, index) {
                                         var _id = $(this).attr('data-id');
                                         $(this).find('i').attr('data-file-state', '0').removeClass('glyphicon-exclamation-sign').addClass('glyphicon-remove')
                                         aceEditor.editor['ace_editor_' + _id].fileType = 0;
@@ -377,7 +377,7 @@ var aceEditor = {
                     break;
                 case 'refreshs': //刷新文件
                     if (editor_item.fileType === 0) {
-                        aceEditor.getFileBody({ path: editor_item.path }, function(res) {
+                        aceEditor.getFileBody({ path: editor_item.path }, function (res) {
                             editor_item.ace.setValue(res.data);
                             editor_item.fileType = 0;
                             $('.item_tab_' + editor_item.id + ' .icon-tool').attr('data-file-state', '0').removeClass('glyphicon-exclamation-sign').addClass('glyphicon-remove');
@@ -398,12 +398,12 @@ var aceEditor = {
 								<button type="button" class="btn btn-sm btn-success save-all-btn">Save</button>\
 							</div>\
 						</div>',
-                        success: function(layers, index) {
-                            $('.clear-btn').click(function() {
+                        success: function (layers, index) {
+                            $('.clear-btn').click(function () {
                                 layer.close(index);
                             });
-                            $('.save-all-btn').click(function() {
-                                aceEditor.getFileBody({ path: editor_item.path }, function(res) {
+                            $('.save-all-btn').click(function () {
+                                aceEditor.getFileBody({ path: editor_item.path }, function (res) {
                                     layer.close(index);
                                     editor_item.ace.setValue(res.data);
                                     editor_item.fileType == 0;
@@ -414,36 +414,36 @@ var aceEditor = {
                         }
                     });
                     break;
-                    // 搜索
+                // 搜索
                 case 'searchs':
                     editor_item.ace.execCommand('find');
                     break;
-                    // 替换
+                // 替换
                 case 'replaces':
                     editor_item.ace.execCommand('replace');
                     break;
-                    // 跳转行
-				case 'jumpLine':
-					$('.ace_toolbar_menu').show().find('.menu-jumpLine').show().siblings().hide();
-					$('.set_jump_line input').val('').focus();
-					$('.set_jump_line .btn-save').unbind('click').click(function(){
-						var _jump_line = $('.set_jump_line input').val();
+                // 跳转行
+                case 'jumpLine':
+                    $('.ace_toolbar_menu').show().find('.menu-jumpLine').show().siblings().hide();
+                    $('.set_jump_line input').val('').focus();
+                    $('.set_jump_line .btn-save').unbind('click').click(function () {
+                        var _jump_line = $('.set_jump_line input').val();
                         editor_item.ace.gotoLine(_jump_line);
                         $('.ace_toolbar_menu').hide();
-					});
-					$('.set_jump_line input').unbind('keypress keydown keyup').on('keypress keydown keyup',function(e){
-						if(e.keyCode == 13 || (e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105)){
-							var _jump_line = $('.set_jump_line input').val();
-							if(_jump_line == '' && typeof parseInt(_jump_line) != 'number') return false;
-							editor_item.ace.gotoLine(_jump_line);
-						}
-					});
-				    break;
-                    // 字体
+                    });
+                    $('.set_jump_line input').unbind('keypress keydown keyup').on('keypress keydown keyup', function (e) {
+                        if (e.keyCode == 13 || (e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105)) {
+                            var _jump_line = $('.set_jump_line input').val();
+                            if (_jump_line == '' && typeof parseInt(_jump_line) != 'number') return false;
+                            editor_item.ace.gotoLine(_jump_line);
+                        }
+                    });
+                    break;
+                // 字体
                 case 'fontSize':
                     $('.ace_toolbar_menu').show().find('.menu-fontSize').show().siblings().hide();
                     $('.menu-fontSize .set_font_size input').val(_this.aceConfig.aceEditor.fontSize).focus();
-					$('.menu-fontSize set_font_size input').unbind('keypress onkeydown').on('keypress onkeydown',function (e){
+                    $('.menu-fontSize set_font_size input').unbind('keypress onkeydown').on('keypress onkeydown', function (e) {
                         var _val = $(this).val();
                         if (_val == '') {
                             $(this).css('border', '1px solid red');
@@ -462,29 +462,29 @@ var aceEditor = {
                             $(this).next('.tips').text('Font setting range 12-45');
                         }
                         e.stopPropagation();
-						e.preventDefault();
+                        e.preventDefault();
                     });
-                    $('.menu-fontSize .menu-conter .set_font_size input').unbind('change').change(function() {
+                    $('.menu-fontSize .menu-conter .set_font_size input').unbind('change').change(function () {
                         var _val = $(this).val();
                         $('.ace_conter_editor .ace_editors').css('fontSize', _val + 'px')
                     });
-                    $('.set_font_size .btn-save').unbind('click').click(function(){
-						var _fontSize = $('.set_font_size input').val();
-						_this.aceConfig.aceEditor.fontSize = parseInt(_fontSize);
-						_this.saveAceConfig(_this.aceConfig,function(res){
-							if(res.status){
-								$('.ace_editors').css('fontSize',_fontSize +'px');
-                                layer.msg('Successful setup', {icon: 1});
+                    $('.set_font_size .btn-save').unbind('click').click(function () {
+                        var _fontSize = $('.set_font_size input').val();
+                        _this.aceConfig.aceEditor.fontSize = parseInt(_fontSize);
+                        _this.saveAceConfig(_this.aceConfig, function (res) {
+                            if (res.status) {
+                                $('.ace_editors').css('fontSize', _fontSize + 'px');
+                                layer.msg('Successful setup', { icon: 1 });
                                 $('.ace_toolbar_menu').hide();
-							}
-						});
-					});
-                    
+                            }
+                        });
+                    });
+
                     break;
-                    //主题
+                //主题
                 case 'themes':
                     $('.ace_toolbar_menu').show().find('.menu-themes').show().siblings().hide();
-                    var _html = '',_arry = ['White', 'Black'];
+                    var _html = '', _arry = ['White', 'Black'];
                     for (var i = 0; i < _this.themeList.length; i++) {
                         if (_this.themeList[i] != _this.aceConfig.aceEditor.editorTheme) {
                             _html += '<li data-value="' + _this.themeList[i] + '">' + _this.themeList[i] + '【' + _arry[i] + '】</li>';
@@ -493,38 +493,38 @@ var aceEditor = {
                         }
                     }
                     $('.menu-themes ul').html(_html);
-                    $('.menu-themes ul li').click(function(){
-						var _theme = $(this).attr('data-value');
+                    $('.menu-themes ul li').click(function () {
+                        var _theme = $(this).attr('data-value');
                         $(this).addClass('active').append(_icon).siblings().removeClass('active').find('.icon').remove();
                         _this.aceConfig.aceEditor.editorTheme = _theme;
-						_this.saveAceConfig(_this.aceConfig,function(res){
-							for(var item in _this.editor){
-								_this.editor[item].ace.setTheme("ace/theme/"+_theme);
-							}
-							layer.msg('Successful setup', {icon: 1});
-						});
-					});
+                        _this.saveAceConfig(_this.aceConfig, function (res) {
+                            for (var item in _this.editor) {
+                                _this.editor[item].ace.setTheme("ace/theme/" + _theme);
+                            }
+                            layer.msg('Successful setup', { icon: 1 });
+                        });
+                    });
                     break;
                 case 'setUp':
                     $('.ace_toolbar_menu').show().find('.menu-setUp').show().siblings().hide();
-                    $('.menu-setUp .editor_menu li').each(function(index,el){
+                    $('.menu-setUp .editor_menu li').each(function (index, el) {
                         var _type = _this.aceConfig.aceEditor[$(el).attr('data-type')];
-                        if(_type) $(el).addClass('active').append(_icon);
+                        if (_type) $(el).addClass('active').append(_icon);
                     })
-                    $('.menu-setUp .editor_menu li').unbind('click').click(function(){
+                    $('.menu-setUp .editor_menu li').unbind('click').click(function () {
                         var _type = $(this).attr('data-type');
                         _this.aceConfig.aceEditor[_type] = !$(this).hasClass('active');
-                        if($(this).hasClass('active')){
+                        if ($(this).hasClass('active')) {
                             $(this).removeClass('active').find('.icon').remove();
-                        }else{
+                        } else {
                             $(this).addClass('active').append(_icon);
                         }
-                        _this.saveAceConfig(_this.aceConfig,function(res){
-							for(var item in _this.editor){
-								_this.editor[item].ace.setOption(_type,_this.aceConfig.aceEditor[_type]);
-							}
-							layer.msg('Successful setup', {icon: 1});
-						});
+                        _this.saveAceConfig(_this.aceConfig, function (res) {
+                            for (var item in _this.editor) {
+                                _this.editor[item].ace.setOption(_type, _this.aceConfig.aceEditor[_type]);
+                            }
+                            layer.msg('Successful setup', { icon: 1 });
+                        });
                     });
                     break;
                 case 'helps':
@@ -593,12 +593,12 @@ var aceEditor = {
             e.preventDefault();
         });
         // 菜单状态
-        $('.ace_toolbar_menu').click(function(e) {
+        $('.ace_toolbar_menu').click(function (e) {
             e.stopPropagation();
             e.preventDefault();
         });
         // 文件目录选择
-        $('.ace_catalogue_list').on('click', '.has-children .file_fold', function(e) {
+        $('.ace_catalogue_list').on('click', '.has-children .file_fold', function (e) {
             var _layers = $(this).attr('data-layer'),
                 _type = $(this).find('data-type'),
                 _path = $(this).parent().attr('data-menu-path'),
@@ -623,10 +623,10 @@ var aceEditor = {
             }
             //$('.ace_catalogue_menu').hide();
             $('.ace_toolbar_menu').hide();
-			$('.ace_toolbar_menu .menu-tabs,.ace_toolbar_menu .menu-encoding,.ace_toolbar_menu .menu-files').hide();
-			if($(this).hasClass('edit_file_group')) return false;
-			$('.ace_catalogue_list .has-children .file_fold').removeClass('bg');
-			$(this).addClass('bg');
+            $('.ace_toolbar_menu .menu-tabs,.ace_toolbar_menu .menu-encoding,.ace_toolbar_menu .menu-files').hide();
+            if ($(this).hasClass('edit_file_group')) return false;
+            $('.ace_catalogue_list .has-children .file_fold').removeClass('bg');
+            $(this).addClass('bg');
             if ($(this).attr('data-file') == 'Dir') {
                 if (_menu.hasClass('glyphicon-menu-right')) {
                     _menu.removeClass('glyphicon-menu-right').addClass('glyphicon-menu-down');
@@ -637,7 +637,7 @@ var aceEditor = {
                     $(this).next().hide();
                 }
             } else {
-                _this.openEditorView(_path, function(res) {
+                _this.openEditorView(_path, function (res) {
                     if (res.status) _tath.addClass('active');
                 });
             }
@@ -645,55 +645,55 @@ var aceEditor = {
             e.preventDefault();
         });
         // 禁用目录选择
-        $('.ace_catalogue').bind("selectstart", function(e) {
+        $('.ace_catalogue').bind("selectstart", function (e) {
             var omitformtags = ["input", "textarea"];
-			omitformtags = "|" + omitformtags.join("|") + "|";
-			if (omitformtags.indexOf("|" + e.target.tagName.toLowerCase() + "|") == -1) {
-				return false;
-			}else{
-				return true;
-			}
+            omitformtags = "|" + omitformtags.join("|") + "|";
+            if (omitformtags.indexOf("|" + e.target.tagName.toLowerCase() + "|") == -1) {
+                return false;
+            } else {
+                return true;
+            }
         });
         // 返回目录（文件目录主菜单）
-		$('.ace_dir_tools').on('click','.upper_level',function(){
-			var _paths = $(this).attr('data-menu-path');
-			_this.reader_file_dir_menu({path:_paths,is_empty:true});
-			$('.ace_catalogue_title').html('Directory: '+ _paths).attr('title',_paths);
-		});
-		// 新建文件（文件目录主菜单）
-		$('.ace_dir_tools').on('click','.new_folder',function(e){
-			var _paths = $(this).parent().find('.upper_level').attr('data-menu-path');
-			$(this).find('.folder_down_up').show();
-			$(document).click(function(){
-				$('.folder_down_up').hide();
-				$(this).unbind('click');
-				return false;
-			});
+        $('.ace_dir_tools').on('click', '.upper_level', function () {
+            var _paths = $(this).attr('data-menu-path');
+            _this.reader_file_dir_menu({ path: _paths, is_empty: true });
+            $('.ace_catalogue_title').html('Directory: ' + _paths).attr('title', _paths);
+        });
+        // 新建文件（文件目录主菜单）
+        $('.ace_dir_tools').on('click', '.new_folder', function (e) {
+            var _paths = $(this).parent().find('.upper_level').attr('data-menu-path');
+            $(this).find('.folder_down_up').show();
+            $(document).click(function () {
+                $('.folder_down_up').hide();
+                $(this).unbind('click');
+                return false;
+            });
             $('.ace_toolbar_menu').hide();
             $('.ace_catalogue_menu').hide();
-			$('.ace_toolbar_menu .menu-tabs,.ace_toolbar_menu .menu-encoding,.ace_toolbar_menu .menu-files').hide();
-			e.stopPropagation();
-			e.preventDefault();
-		});
-		// 刷新列表 (文件目录主菜单)
-		$('.ace_dir_tools').on('click','.refresh_dir',function(e){
-			_this.refresh_config = {
-				el:$('.cd-accordion-menu')[0],
-				path:$('.ace_catalogue_title').attr('title'),
-				group:1,
-				is_empty:true
-			}
-			_this.reader_file_dir_menu(_this.refresh_config,function(){
-				layer.msg('Refresh success!',{icon:1});
-			});
-		});
-		// 搜索内容 (文件目录主菜单)
-		$('.ace_dir_tools').on('click','.search_file',function(e){
-			if($(this).parent().find('.search_input_view').length == 0){
-				$(this).siblings('div').hide();
-				$(this).css('color','#ec4545').attr({'title':'Close'}).find('.glyphicon').removeClass('glyphicon-search').addClass('glyphicon-remove').next().text("Close");
-				$(this).before('<div class="search_input_title">Search Catalog File</div>');
-				$(this).after('<div class="search_input_view">\
+            $('.ace_toolbar_menu .menu-tabs,.ace_toolbar_menu .menu-encoding,.ace_toolbar_menu .menu-files').hide();
+            e.stopPropagation();
+            e.preventDefault();
+        });
+        // 刷新列表 (文件目录主菜单)
+        $('.ace_dir_tools').on('click', '.refresh_dir', function (e) {
+            _this.refresh_config = {
+                el: $('.cd-accordion-menu')[0],
+                path: $('.ace_catalogue_title').attr('title'),
+                group: 1,
+                is_empty: true
+            }
+            _this.reader_file_dir_menu(_this.refresh_config, function () {
+                layer.msg('Refresh success!', { icon: 1 });
+            });
+        });
+        // 搜索内容 (文件目录主菜单)
+        $('.ace_dir_tools').on('click', '.search_file', function (e) {
+            if ($(this).parent().find('.search_input_view').length == 0) {
+                $(this).siblings('div').hide();
+                $(this).css('color', '#ec4545').attr({ 'title': 'Close' }).find('.glyphicon').removeClass('glyphicon-search').addClass('glyphicon-remove').next().text("Close");
+                $(this).before('<div class="search_input_title">Search Catalog File</div>');
+                $(this).after('<div class="search_input_view">\
 					<form>\
                         <input type="text" id="search_input_val" class="ser-text pull-left" placeholder="">\
                         <button type="button" class="ser-sub pull-left"></button>\
@@ -703,73 +703,73 @@ var aceEditor = {
                         <label for="search_alls"><span>Include Subdirectory Files</span></label>\
                     </div>\
                 </div>');
-				$('.ace_catalogue_list').css('top','150px');
-				$('.ace_dir_tools').css('height','110px');
-				$('.cd-accordion-menu').empty();
-			}else{
-				$(this).siblings('div').show();
-				$(this).parent().find('.search_input_view,.search_input_title').remove();
-				$(this).removeAttr('style').attr({'title':'Search Content'}).find('.glyphicon').removeClass('glyphicon-remove').addClass('glyphicon-search').next().text("Search");
-				$('.ace_catalogue_list').removeAttr('style')
-				$('.ace_dir_tools').removeAttr('style');
-				_this.refresh_config = {
-					el:$('.cd-accordion-menu')[0],
-					path:$('.ace_catalogue_title').attr('title'),
-					group:1,
-					is_empty:true
-				}
-				_this.reader_file_dir_menu(_this.refresh_config);
-			}
-		});
-		
-		// 搜索文件内容
-		$('.ace_dir_tools').on('click','.search_input_view button',function(e){
-			var path = _this.menu_path,
-                search = $('#search_input_val').val();
-				_this.reader_file_dir_menu({
-					el:$('.cd-accordion-menu')[0],
-					path:path,
-					group:1,
-					search:search,
-					all:$('#search_alls').is(':checked')?'True':'False',
-					is_empty:true
-				})
-		});
-		// 当前根目录操作，新建文件或目录
-		$('.ace_dir_tools').on('click','.folder_down_up li',function(e){
-			var _type = parseInt($(this).attr('data-type'));
-			switch(_type){
-				case 2:
-					_this.newly_file_type_dom($('.cd-accordion-menu'),0,0);
-				break;
-				case 3:
-					_this.newly_file_type_dom($('.cd-accordion-menu'),0,1);
-				break;
-			}
-			_this.refresh_config = {
-				el:$('.cd-accordion-menu')[0],
-				path:$('.ace_catalogue_title').attr('title'),
-				group:1,
-				is_empty:true
-			}
-			$(this).parent().hide();
-			$('.ace_toolbar_menu').hide();
-			$('.ace_toolbar_menu .menu-tabs,.ace_toolbar_menu .menu-encoding,.ace_toolbar_menu .menu-files').hide();
-			e.preventDefault();
-			e.stopPropagation();
+                $('.ace_catalogue_list').css('top', '150px');
+                $('.ace_dir_tools').css('height', '110px');
+                $('.cd-accordion-menu').empty();
+            } else {
+                $(this).siblings('div').show();
+                $(this).parent().find('.search_input_view,.search_input_title').remove();
+                $(this).removeAttr('style').attr({ 'title': 'Search Content' }).find('.glyphicon').removeClass('glyphicon-remove').addClass('glyphicon-search').next().text("Search");
+                $('.ace_catalogue_list').removeAttr('style')
+                $('.ace_dir_tools').removeAttr('style');
+                _this.refresh_config = {
+                    el: $('.cd-accordion-menu')[0],
+                    path: $('.ace_catalogue_title').attr('title'),
+                    group: 1,
+                    is_empty: true
+                }
+                _this.reader_file_dir_menu(_this.refresh_config);
+            }
         });
-        
+
+        // 搜索文件内容
+        $('.ace_dir_tools').on('click', '.search_input_view button', function (e) {
+            var path = _this.menu_path,
+                search = $('#search_input_val').val();
+            _this.reader_file_dir_menu({
+                el: $('.cd-accordion-menu')[0],
+                path: path,
+                group: 1,
+                search: search,
+                all: $('#search_alls').is(':checked') ? 'True' : 'False',
+                is_empty: true
+            })
+        });
+        // 当前根目录操作，新建文件或目录
+        $('.ace_dir_tools').on('click', '.folder_down_up li', function (e) {
+            var _type = parseInt($(this).attr('data-type'));
+            switch (_type) {
+                case 2:
+                    _this.newly_file_type_dom($('.cd-accordion-menu'), 0, 0);
+                    break;
+                case 3:
+                    _this.newly_file_type_dom($('.cd-accordion-menu'), 0, 1);
+                    break;
+            }
+            _this.refresh_config = {
+                el: $('.cd-accordion-menu')[0],
+                path: $('.ace_catalogue_title').attr('title'),
+                group: 1,
+                is_empty: true
+            }
+            $(this).parent().hide();
+            $('.ace_toolbar_menu').hide();
+            $('.ace_toolbar_menu .menu-tabs,.ace_toolbar_menu .menu-encoding,.ace_toolbar_menu .menu-files').hide();
+            e.preventDefault();
+            e.stopPropagation();
+        });
+
         // 返回目录
-        $('.ace_catalogue_list').on('click', '.has-children.upper_level', function(e) {
+        $('.ace_catalogue_list').on('click', '.has-children.upper_level', function (e) {
             var _paths = $(this).attr('data-menu-path');
             _this.reader_file_dir_menu({ path: _paths, is_empty: true });
             $('.ace_catalogue_title').html(lan.public.dir + ': ' + _paths).attr('title', _paths);
         });
         // 移动编辑器文件目录
-        $('.ace_catalogue_drag_icon .drag_icon_conter').on('mousedown', function(e) {
+        $('.ace_catalogue_drag_icon .drag_icon_conter').on('mousedown', function (e) {
             var _left = $('.aceEditors')[0].offsetLeft;
             $('.ace_gutter-layer').css('cursor', 'col-resize');
-            $('#ace_conter').unbind().on('mousemove', function(ev) {
+            $('#ace_conter').unbind().on('mousemove', function (ev) {
                 var _width = (ev.clientX + 1) - _left;
                 if (_width >= 250 && _width <= 400) {
                     $('.ace_catalogue').css('width', _width);
@@ -777,13 +777,13 @@ var aceEditor = {
                     $('.ace_catalogue_drag_icon ').css('left', _width);
                     $('.file_fold .newly_file_input').width($('.file_fold .newly_file_input').parent().parent().parent().width() - ($('.file_fold .newly_file_input').parent().parent().attr('data-group') * 15 - 5) - 20 - 30 - 53);
                 }
-            }).on('mouseup', function(ev) {
+            }).on('mouseup', function (ev) {
                 $('.ace_gutter-layer').css('cursor', 'inherit');
                 $(this).unbind('mouseup mousemove');
             });
         });
         // 收藏目录显示和隐藏
-        $('.ace_catalogue_drag_icon .fold_icon_conter').on('click', function(e) {
+        $('.ace_catalogue_drag_icon .fold_icon_conter').on('click', function (e) {
             if ($('.ace_overall').hasClass('active')) {
                 $('.ace_overall').removeClass('active');
                 $('.ace_catalogue').css('left', '0');
@@ -797,11 +797,11 @@ var aceEditor = {
             }
         });
         // 恢复历史文件
-        $('.ace_conter_tips').on('click', 'a', function() {
+        $('.ace_conter_tips').on('click', 'a', function () {
             _this.event_ecovery_file(this);
         });
         // 右键菜单
-        $('.ace_catalogue_list').on('mousedown', '.has-children .file_fold', function(e) {
+        $('.ace_catalogue_list').on('mousedown', '.has-children .file_fold', function (e) {
             var x = e.clientX,
                 y = e.clientY,
                 _left = $('.aceEditors')[0].offsetLeft,
@@ -824,30 +824,30 @@ var aceEditor = {
                 } else {
                     $('.ace_catalogue_menu li:nth-child(-n+4)').hide();
                 }
-                $(document).click(function() {
+                $(document).click(function () {
                     $('.ace_catalogue_menu').hide();
                     $(this).unbind('click');
                     return false;
                 });
                 _this.refresh_config = {
-					el:$(this).parent().parent()[0],
-					path:_this.get_file_dir($(this).parent().attr('data-menu-path'),1),
-					group:parseInt($(this).attr('data-group')),
-					is_empty:true
-				}
+                    el: $(this).parent().parent()[0],
+                    path: _this.get_file_dir($(this).parent().attr('data-menu-path'), 1),
+                    group: parseInt($(this).attr('data-group')),
+                    is_empty: true
+                }
             }
         });
         // 文件目录右键功能
-        $('.ace_catalogue_menu li').click(function(e) {
+        $('.ace_catalogue_menu li').click(function (e) {
             _this.newly_file_type(this);
         });
         // 新建、重命名鼠标事件
-        $('.ace_catalogue_list').on('click', '.has-children .edit_file_group .glyphicon-ok', function() {
+        $('.ace_catalogue_list').on('click', '.has-children .edit_file_group .glyphicon-ok', function () {
             var _file_or_dir = $(this).parent().find('input').val(),
                 _file_type = $(this).parent().parent().attr('data-file'),
                 _path = $('.has-children .file_fold.bg').parent().attr('data-menu-path'),
                 _type = parseInt($(this).parent().parent().attr('data-edit'));
-            if($(this).parent().parent().parent().attr('data-menu-path') === undefined && parseInt($(this).parent().parent().attr('data-group')) === 1){
+            if ($(this).parent().parent().parent().attr('data-menu-path') === undefined && parseInt($(this).parent().parent().attr('data-group')) === 1) {
                 _path = $('.ace_catalogue_title').attr('title');
             }
             if (_file_or_dir === '') {
@@ -865,39 +865,39 @@ var aceEditor = {
                     _this.event_create_file({ path: _path + '/' + _file_or_dir });
                     break;
                 case 2: //重命名
-                    _this.event_rename_currency({ sfile: _path, dfile: _this.get_file_dir(_path, 1) + '/' + _file_or_dir});
+                    _this.event_rename_currency({ sfile: _path, dfile: _this.get_file_dir(_path, 1) + '/' + _file_or_dir });
                     break;
             }
         });
         // 新建、重命名键盘事件
-        $('.ace_catalogue_list').on('keyup', '.has-children .edit_file_group input', function(e) {
+        $('.ace_catalogue_list').on('keyup', '.has-children .edit_file_group input', function (e) {
             var _type = $(this).parent().parent().attr('data-edit'),
                 _arry = $('.has-children .file_fold.bg+ul>li');
-            if(_arry.length == 0 && $(this).parent().parent().attr('data-group') == 1) _arry = $('.cd-accordion-menu>li')
-            if(_type != 2){
-				for(var i=0;i<_arry.length;i++){
-					if($(_arry[i]).find('.file_title span').html() === $(this).val()){
-						$(this).css('border','1px solid #f34a4a');
-						$(this).attr('data-type',0);
-						layer.tips(_type == 0 ? lan.public.same_name_dir : lan.public.same_name_file, $(this)[0], { tips: [1, '#f34a4a'], time: 0 });
-						return false
-					}
-				}
-			}
+            if (_arry.length == 0 && $(this).parent().parent().attr('data-group') == 1) _arry = $('.cd-accordion-menu>li')
+            if (_type != 2) {
+                for (var i = 0; i < _arry.length; i++) {
+                    if ($(_arry[i]).find('.file_title span').html() === $(this).val()) {
+                        $(this).css('border', '1px solid #f34a4a');
+                        $(this).attr('data-type', 0);
+                        layer.tips(_type == 0 ? lan.public.same_name_dir : lan.public.same_name_file, $(this)[0], { tips: [1, '#f34a4a'], time: 0 });
+                        return false
+                    }
+                }
+            }
             if (_type == 1 && $(this).val().indexOf('.')) $(this).prev().removeAttr('class').addClass(_this.get_file_suffix($(this).val()) + '-icon');
-            $(this).attr('data-type',1);
+            $(this).attr('data-type', 1);
             $(this).css('border', '1px solid #528bff');
             layer.closeAll('tips');
             if (e.keyCode === 13) $(this).next().click()
             $('.ace_toolbar_menu').hide();
-			$('.ace_toolbar_menu .menu-tabs,.ace_toolbar_menu .menu-encoding,.ace_toolbar_menu .menu-files').hide();
+            $('.ace_toolbar_menu .menu-tabs,.ace_toolbar_menu .menu-encoding,.ace_toolbar_menu .menu-files').hide();
             e.stopPropagation();
             e.preventDefault();
         });
         // 新建、重命名鼠标点击取消事件
-        $('.ace_catalogue_list').on('click', '.has-children .edit_file_group .glyphicon-remove', function() {
+        $('.ace_catalogue_list').on('click', '.has-children .edit_file_group .glyphicon-remove', function () {
             layer.closeAll('tips');
-            if($(this).parent().parent().parent().attr('data-menu-path')){
+            if ($(this).parent().parent().parent().attr('data-menu-path')) {
                 $(this).parent().parent().removeClass('edit_file_group').removeAttr('data-edit');
                 $(this).parent().siblings().show();
                 $(this).parent().remove();
@@ -906,125 +906,125 @@ var aceEditor = {
             $(this).parent().parent().parent().remove();
         });
         //屏蔽浏览器右键菜单
-        $('.ace_catalogue_list')[0].oncontextmenu = function() {
+        $('.ace_catalogue_list')[0].oncontextmenu = function () {
             return false;
         }
         this.setEditorView();
         this.reader_file_dir_menu();
     },
     // 	设置本地存储，设置类型type：session或local
-	setStorage:function(type,key,val){
-	    if(type != "local" && type != "session")  val = key,key = type,type = 'session';
-	    window[type+'Storage'].setItem(key,val);
-	},
-	//获取指定本地存储，设置类型type：session或local
-	getStorage:function(type,key){
-	    if(type != "local" && type != "session")  key = type,type = 'session';
-	    return window[type+'Storage'].getItem(key);
-	},
-	//删除指定本地存储，设置类型type：session或local
-	removeStorage:function(type,key){
-	    if(type != "local" && type != "session")  key = type,type = 'session';
-	    window[type+'Storage'].removeItem(key);
-	},
+    setStorage: function (type, key, val) {
+        if (type != "local" && type != "session") val = key, key = type, type = 'session';
+        window[type + 'Storage'].setItem(key, val);
+    },
+    //获取指定本地存储，设置类型type：session或local
+    getStorage: function (type, key) {
+        if (type != "local" && type != "session") key = type, type = 'session';
+        return window[type + 'Storage'].getItem(key);
+    },
+    //删除指定本地存储，设置类型type：session或local
+    removeStorage: function (type, key) {
+        if (type != "local" && type != "session") key = type, type = 'session';
+        window[type + 'Storage'].removeItem(key);
+    },
     // 	删除指定类型的所有存储信息
-	clearStorage:function(type){
-	    if(type != "local" && type != "session")  key = type,type = 'session';
-	    window[type+'Storage'].clear();
-	},
+    clearStorage: function (type) {
+        if (type != "local" && type != "session") key = type, type = 'session';
+        window[type + 'Storage'].clear();
+    },
     // 新建文件类型
-    newly_file_type: function(that) {
+    newly_file_type: function (that) {
         var _type = parseInt($(that).attr('data-type')),
             _active = $('.ace_catalogue .ace_catalogue_list .has-children .file_fold.bg'),
             _group = parseInt(_active.attr('data-group')),
             _path = _active.parent().attr('data-menu-path'),
             _this = this;
-        switch(_type){
+        switch (_type) {
             case 0: //刷新目录
                 _active.next().empty();
                 _this.reader_file_dir_menu({
-                    el:_active.next(),
-                    path:_path,
-                    group:parseInt(_active.attr('data-group')) + 1,
-                    is_empty:true
-                },function(){
-                    layer.msg('Refresh successfully',{icon:1});
+                    el: _active.next(),
+                    path: _path,
+                    group: parseInt(_active.attr('data-group')) + 1,
+                    is_empty: true
+                }, function () {
+                    layer.msg('Refresh successfully', { icon: 1 });
                 });
-            break;
+                break;
             case 1: //打开文件
                 _this.menu_path = _path;
                 _this.reader_file_dir_menu({
-                    el:'.cd-accordion-menu',
-                    path:_this.menu_path,
-                    group:1,
-                    is_empty:true
+                    el: '.cd-accordion-menu',
+                    path: _this.menu_path,
+                    group: 1,
+                    is_empty: true
                 });
-            break;
+                break;
             case 2: //新建文件
             case 3:
-                if(this.get_file_dir(_path,1) != this.menu_path){ //判断当前文件上级是否为显示根目录
-                    this.reader_file_dir_menu({el:_active,path:_path,group:_group+1},function(res){
-                        _this.newly_file_type_dom(_active,_group, _type == 2?0:1);
+                if (this.get_file_dir(_path, 1) != this.menu_path) { //判断当前文件上级是否为显示根目录
+                    this.reader_file_dir_menu({ el: _active, path: _path, group: _group + 1 }, function (res) {
+                        _this.newly_file_type_dom(_active, _group, _type == 2 ? 0 : 1);
                     });
-                }else{
-                    _this.newly_file_type_dom(_active,_group, _type == 2?0:1);
+                } else {
+                    _this.newly_file_type_dom(_active, _group, _type == 2 ? 0 : 1);
                 }
-            break;
+                break;
             case 4: //文件重命名
                 var _types = _active.attr('data-file');
-                if(_active.hasClass('active')){
-                    layer.msg('The file is open and the name cannot be modified',{icon:0});
+                if (_active.hasClass('active')) {
+                    layer.msg('The file is open and the name cannot be modified', { icon: 0 });
                     return false;
                 }
-                _active.attr('data-edit',2);
+                _active.attr('data-edit', 2);
                 _active.addClass('edit_file_group');
                 _active.find('.file_title').hide();
                 _active.find('.glyphicon').hide();
-                _active.prepend('<span class="file_input"><i class="'+ (_types === 'Dir'?'folder':(_this.get_file_suffix(_active.find('.file_title span').html()))) +'-icon"></i><input type="text" class="newly_file_input" value="'+ (_active.find('.file_title span').html()) +'"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>')
-                $('.file_fold .newly_file_input').width($('.file_fold .newly_file_input').parent().parent().parent().width() - ($('.file_fold .newly_file_input').parent().parent().attr('data-group') * 15 -5)-20-30-53);
+                _active.prepend('<span class="file_input"><i class="' + (_types === 'Dir' ? 'folder' : (_this.get_file_suffix(_active.find('.file_title span').html()))) + '-icon"></i><input type="text" class="newly_file_input" value="' + (_active.find('.file_title span').html()) + '"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>')
+                $('.file_fold .newly_file_input').width($('.file_fold .newly_file_input').parent().parent().parent().width() - ($('.file_fold .newly_file_input').parent().parent().attr('data-group') * 15 - 5) - 20 - 30 - 53);
                 $('.file_fold .newly_file_input').focus();
-            break;
+                break;
             case 5:
                 GetFileBytes(_path);
-            break;
+                break;
             case 6:
-                var is_files =  _active.attr('data-file') === 'Files'
-                layer.confirm(lan.get(is_files?'recycle_bin_confirm':'recycle_bin_confirm_dir', [_active.find('.file_title span').html()]), { title: is_files?lan.files.del_file:lan.files.del_dir, closeBtn: 2, icon: 3 }, function (index) {
-                    _this[is_files?'del_file_req':'del_dir_req']({path:_path},function(res){
-                        layer.msg(res.msg,{icon:res.status?1:2});
-                        if(res.status){
-                            if(_active.attr('data-group') != 1) _active.parent().parent().prev().addClass('bg')
-                            _this.reader_file_dir_menu(_this.refresh_config,function(){
-                                layer.msg(res.msg,{icon:1});
+                var is_files = _active.attr('data-file') === 'Files'
+                layer.confirm(lan.get(is_files ? 'recycle_bin_confirm' : 'recycle_bin_confirm_dir', [_active.find('.file_title span').html()]), { title: is_files ? lan.files.del_file : lan.files.del_dir, closeBtn: 2, icon: 3 }, function (index) {
+                    _this[is_files ? 'del_file_req' : 'del_dir_req']({ path: _path }, function (res) {
+                        layer.msg(res.msg, { icon: res.status ? 1 : 2 });
+                        if (res.status) {
+                            if (_active.attr('data-group') != 1) _active.parent().parent().prev().addClass('bg')
+                            _this.reader_file_dir_menu(_this.refresh_config, function () {
+                                layer.msg(res.msg, { icon: 1 });
                             });
                         }
                     });
                 });
-            break;
+                break;
         }
     },
     // 新建文件和文件夹
-	newly_file_type_dom:function(_active,_group,_type,_val){
-		var _html = '',_this = this,_nextLength = _active.next(':not(.ace_catalogue_menu)').length;
-		if(_nextLength > 0){
-			_active.next().show();
-			_active.find('.glyphicon').removeClass('glyphicon-menu-right').addClass('glyphicon-menu-down');
-		}
-		_html += '<li class="has-children children_'+ (_group+1) +'"><div class="file_fold edit_file_group group_'+ (_group+1) +'" data-group="'+ (_group+1) +'" data-edit="'+ _type +'"><span class="file_input">';
-		_html += '<i class="'+ (_type == 0?'folder':(_type == 1?'text':(_this.get_file_suffix(_val || '')))) +'-icon"></i>'
-		_html += '<input type="text" class="newly_file_input" value="'+ (_val != undefined?_val:'') +'">'
-		_html += '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></span></div></li>'
-		if(_nextLength > 0){
-			_active.next().prepend(_html);
-		}else{
-			_active.prepend(_html);
+    newly_file_type_dom: function (_active, _group, _type, _val) {
+        var _html = '', _this = this, _nextLength = _active.next(':not(.ace_catalogue_menu)').length;
+        if (_nextLength > 0) {
+            _active.next().show();
+            _active.find('.glyphicon').removeClass('glyphicon-menu-right').addClass('glyphicon-menu-down');
         }
-        setTimeout(function(){
-		    $('.newly_file_input').focus()
-		},100)
-		$('.file_fold .newly_file_input').width($('.file_fold .newly_file_input').parent().parent().parent().width() - ($('.file_fold .newly_file_input').parent().parent().attr('data-group') * 15 -5)-20-30-53);
-		return false;
-	},
+        _html += '<li class="has-children children_' + (_group + 1) + '"><div class="file_fold edit_file_group group_' + (_group + 1) + '" data-group="' + (_group + 1) + '" data-edit="' + _type + '"><span class="file_input">';
+        _html += '<i class="' + (_type == 0 ? 'folder' : (_type == 1 ? 'text' : (_this.get_file_suffix(_val || '')))) + '-icon"></i>'
+        _html += '<input type="text" class="newly_file_input" value="' + (_val != undefined ? _val : '') + '">'
+        _html += '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></span></div></li>'
+        if (_nextLength > 0) {
+            _active.next().prepend(_html);
+        } else {
+            _active.prepend(_html);
+        }
+        setTimeout(function () {
+            $('.newly_file_input').focus()
+        }, 100)
+        $('.file_fold .newly_file_input').width($('.file_fold .newly_file_input').parent().parent().parent().width() - ($('.file_fold .newly_file_input').parent().parent().attr('data-group') * 15 - 5) - 20 - 30 - 53);
+        return false;
+    },
     // newly_file_type_dom: function(_file_fold, _group, _type, _val) {
     //     var _html = '',
     //         _this = this;
@@ -1039,13 +1039,13 @@ var aceEditor = {
     //     $('.newly_file_input').focus();
     // },
     // 通用重命名事件
-    event_rename_currency: function(obj, that) {
+    event_rename_currency: function (obj, that) {
         var _active = $('.ace_catalogue_list .has-children .file_fold.edit_file_group'),
             _this = this;
-        this.rename_currency_req({ sfile: obj.sfile, dfile: obj.dfile }, function(res) {
+        this.rename_currency_req({ sfile: obj.sfile, dfile: obj.dfile }, function (res) {
             layer.msg(res.msg, { icon: res.status ? 1 : 2 });
             if (res.status) {
-                _this.reader_file_dir_menu(_this.refresh_config,function(){
+                _this.reader_file_dir_menu(_this.refresh_config, function () {
                     layer.msg(res.msg, { icon: 1 });
                 });
             } else {
@@ -1056,24 +1056,24 @@ var aceEditor = {
         })
     },
     // 创建文件目录事件
-    event_create_dir: function(obj, that) {
+    event_create_dir: function (obj, that) {
         var _this = this;
-        this.create_dir_req({ path: obj.path }, function(res) {
+        this.create_dir_req({ path: obj.path }, function (res) {
             layer.msg(res.msg, { icon: res.status ? 1 : 2 });
             if (res.status) {
-                _this.reader_file_dir_menu(_this.refresh_config,function(){
+                _this.reader_file_dir_menu(_this.refresh_config, function () {
                     layer.msg(res.msg, { icon: 1 });
                 });
             }
         })
     },
     // 创建文件事件
-    event_create_file: function(obj, that) {
+    event_create_file: function (obj, that) {
         var _this = this;
-        this.create_file_req({ path: obj.path }, function(res) {
+        this.create_file_req({ path: obj.path }, function (res) {
             layer.msg(res.msg, { icon: res.status ? 1 : 2 });
             if (res.status) {
-                _this.reader_file_dir_menu(_this.refresh_config,function(){
+                _this.reader_file_dir_menu(_this.refresh_config, function () {
                     layer.msg(res.msg, { icon: 1 });
                     _this.openEditorView(obj.path);
                 });
@@ -1081,80 +1081,80 @@ var aceEditor = {
         })
     },
     // 重命名请求
-    rename_currency_req: function(obj, callback) {
+    rename_currency_req: function (obj, callback) {
         var loadT = layer.msg(lan.public.renaming_file, { time: 0, icon: 16, shade: [0.3, '#000'] });
         $.post("/files?action=MvFile", {
             sfile: obj.sfile,
             dfile: obj.dfile,
             rename: 'true'
-        }, function(res) {
+        }, function (res) {
             layer.close(loadT);
             if (callback) callback(res);
         });
     },
     // 创建文件事件
-    create_file_req: function(obj, callback) {
+    create_file_req: function (obj, callback) {
         var loadT = layer.msg(lan.public.creating_file, { time: 0, icon: 16, shade: [0.3, '#000'] });
         $.post("/files?action=CreateFile", {
             path: obj.path
-        }, function(res) {
+        }, function (res) {
             layer.close(loadT);
             if (callback) callback(res);
         });
     },
     // 创建目录请求
-    create_dir_req: function(obj, callback) {
+    create_dir_req: function (obj, callback) {
         var loadT = layer.msg(lan.public.creating_dir, { time: 0, icon: 16, shade: [0.3, '#000'] });
         $.post("/files?action=CreateDir", {
             path: obj.path
-        }, function(res) {
+        }, function (res) {
             layer.close(loadT);
             if (callback) callback(res);
         });
     },
     // 删除文件请求
-    del_file_req: function(obj, callback) {
+    del_file_req: function (obj, callback) {
         var loadT = layer.msg(lan.public.deleting_file, { time: 0, icon: 16, shade: [0.3, '#000'] });
         $.post("/files?action=DeleteFile", {
             path: obj.path
-        }, function(res) {
+        }, function (res) {
             layer.close(loadT);
             if (callback) callback(res);
         });
     },
     // 删除目录请求
-    del_dir_req: function(obj, callback) {
+    del_dir_req: function (obj, callback) {
         var loadT = layer.msg(lan.public.deleting_dir, { time: 0, icon: 16, shade: [0.3, '#000'] });
         $.post("/files?action=DeleteFile", {
             path: obj.path
-        }, function(res) {
+        }, function (res) {
             layer.close(loadT);
             if (callback) callback(res);
         });
     },
     // 临时文件保存
-    auto_save_temp: function(obj, callback) {
+    auto_save_temp: function (obj, callback) {
         // var loadT = layer.msg('正在新建目录，请稍后...',{time: 0,icon: 16,shade: [0.3, '#000']});
         $.post("/files?action=auto_save_temp", {
             filename: obj.filename,
             body: obj.body
-        }, function(res) {
+        }, function (res) {
             layer.close(loadT);
             if (callback) callback(res);
         });
     },
     // 获取临时文件内容
-    get_auto_save_body: function(obj, callback) {
+    get_auto_save_body: function (obj, callback) {
         var loadT = layer.msg(lan.public.get_autosave_file, { time: 0, icon: 16, shade: [0.3, '#000'] });
         $.post("/files?action=get_auto_save_body", {
             filename: obj.filename
-        }, function(res) {
+        }, function (res) {
             layer.close(loadT);
             if (callback) callback(res);
         });
     },
     // 刷新菜单列表
-    refresh_meun_list: function(el, callback) {
+    refresh_meun_list: function (el, callback) {
         var _active = $(el),
             _paths = _active.parent().attr('data-menu-path'),
             _group = parseInt(_active.attr('data-group')) + 1,
@@ -1170,12 +1170,12 @@ var aceEditor = {
             el: _el,
             path: _paths,
             group: _group,
-        }, function(res) {
+        }, function (res) {
             if (callback) callback(res);
         });
     },
     // 恢复历史文件事件
-    event_ecovery_file: function(that) {
+    event_ecovery_file: function (that) {
         var _path = $(that).attr('data-path'),
             _history = new Number($(that).attr('data-history')),
             _this = this;
@@ -1192,15 +1192,15 @@ var aceEditor = {
 					<button type="button" class="btn btn-sm btn-success" data-type="0">' + lan.public.restore_history_files + '</button>\
 				</div>\
 			</div>',
-            success: function(layero, index) {
-                $('.ace-clear-btn .btn').click(function() {
+            success: function (layero, index) {
+                $('.ace-clear-btn .btn').click(function () {
                     var _type = $(this).attr('data-type');
                     switch (_type) {
                         case '0':
                             _this.recovery_file_history({
                                 filename: _path,
                                 history: _history
-                            }, function(res) {
+                            }, function (res) {
                                 layer.close(index);
                                 layer.msg(res.status ? lan.public.restore_history_files + " " + lan.public.success : lan.public.restore_history_files + " " + lan.public.fail, { icon: res.status ? 1 : 2 });
                                 if (res.status) {
@@ -1223,7 +1223,7 @@ var aceEditor = {
         });
     },
     // 判断是否为历史文件
-    is_file_history: function(_item) {
+    is_file_history: function (_item) {
         if (_item.historys_file) {
             $('.ace_conter_tips').show();
             $('#ace_editor_' + _item.id).css('bottom', '50px');
@@ -1233,7 +1233,7 @@ var aceEditor = {
         }
     },
     // 判断文件是否打开
-    is_file_open: function(path, callabck) {
+    is_file_open: function (path, callabck) {
         var is_state = false
         for (var i = 0; i < this.pathAarry.length; i++) {
             if (path === this.pathAarry[i]) is_state = true
@@ -1245,56 +1245,56 @@ var aceEditor = {
         }
     },
     // 恢复文件历史
-    recovery_file_history: function(obj, callback) {
+    recovery_file_history: function (obj, callback) {
         var loadT = layer.msg(lan.public.recover_file, { time: 0, icon: 16, shade: [0.3, '#000'] });
         $.post("/files?action=re_history", {
             filename: obj.filename,
             history: obj.history
-        }, function(res) {
+        }, function (res) {
             layer.close(loadT);
             if (callback) callback(res);
         });
     },
     // 获取文件列表
-    get_file_dir_list: function(obj, callback) {
+    get_file_dir_list: function (obj, callback) {
         var loadT = layer.msg(lan.public.get_file_contents, { time: 0, icon: 16, shade: [0.3, '#000'] }),
             _this = this;
-        if(obj['p'] === undefined) obj['p'] = 1;
-        if(obj['showRow'] === undefined) obj['showRow'] = 200;
-        if(obj['sort'] === undefined) obj['sort'] = 'name';
-        if(obj['reverse'] === undefined) obj['reverse'] = 'False';
-        if(obj['search'] === undefined) obj['search'] = '';
-        if(obj['all'] === undefined) obj['all'] = 'False';
-        $.post("/files?action=GetDir&tojs=GetFiles",{p:obj.p,showRow:obj.showRow,sort:obj.sort,reverse:obj.reverse,path:obj.path,search:obj.search}, function(res) {
+        if (obj['p'] === undefined) obj['p'] = 1;
+        if (obj['showRow'] === undefined) obj['showRow'] = 200;
+        if (obj['sort'] === undefined) obj['sort'] = 'name';
+        if (obj['reverse'] === undefined) obj['reverse'] = 'False';
+        if (obj['search'] === undefined) obj['search'] = '';
+        if (obj['all'] === undefined) obj['all'] = 'False';
+        $.post("/files?action=GetDir&tojs=GetFiles", { p: obj.p, showRow: obj.showRow, sort: obj.sort, reverse: obj.reverse, path: obj.path, search: obj.search }, function (res) {
             layer.close(loadT);
             if (callback) callback(res);
         });
     },
     // 获取文件列表
-	get_file_dir_list:function(obj,callback){
-		var loadT = layer.msg('正在获取文件内容，请稍后...',{time: 0,icon: 16,shade: [0.3, '#000']}),_this = this;
-		if(obj['p'] === undefined) obj['p'] = 1;
-		if(obj['showRow'] === undefined) obj['showRow'] = 200;
-		if(obj['sort'] === undefined) obj['sort'] = 'name';
-		if(obj['reverse'] === undefined) obj['reverse'] = 'False';
-		if(obj['search'] === undefined) obj['search'] = '';
-		if(obj['all'] === undefined) obj['all'] = 'False';
-		$.post("/files?action=GetDir&tojs=GetFiles",{p:obj.p,showRow:obj.showRow,sort:obj.sort,reverse:obj.reverse,path:obj.path,search:obj.search}, function(res) {
-			layer.close(loadT);
-			if(callback) callback(res);
-		});
-	},
+    get_file_dir_list: function (obj, callback) {
+        var loadT = layer.msg('正在获取文件内容，请稍后...', { time: 0, icon: 16, shade: [0.3, '#000'] }), _this = this;
+        if (obj['p'] === undefined) obj['p'] = 1;
+        if (obj['showRow'] === undefined) obj['showRow'] = 200;
+        if (obj['sort'] === undefined) obj['sort'] = 'name';
+        if (obj['reverse'] === undefined) obj['reverse'] = 'False';
+        if (obj['search'] === undefined) obj['search'] = '';
+        if (obj['all'] === undefined) obj['all'] = 'False';
+        $.post("/files?action=GetDir&tojs=GetFiles", { p: obj.p, showRow: obj.showRow, sort: obj.sort, reverse: obj.reverse, path: obj.path, search: obj.search }, function (res) {
+            layer.close(loadT);
+            if (callback) callback(res);
+        });
+    },
     // 获取历史文件
-    get_file_history: function(obj, callback) {
+    get_file_history: function (obj, callback) {
         var loadT = layer.msg(lan.public.get_file_history, { time: 0, icon: 16, shade: [0.3, '#000'] }),
             _this = this;
-        $.post("/files?action=read_history", { filename: obj.filename, history: obj.history }, function(res) {
+        $.post("/files?action=read_history", { filename: obj.filename, history: obj.history }, function (res) {
             layer.close(loadT);
             if (callback) callback(res);
         });
     },
     // 渲染文件列表
-    reader_file_dir_menu: function(obj, callback) {
+    reader_file_dir_menu: function (obj, callback) {
         var _path = getCookie('Path'),
             _this = this;
         if (obj === undefined) obj = {}
@@ -1303,9 +1303,9 @@ var aceEditor = {
         if (obj['p'] === undefined) obj['p'] = 1;
         if (obj['path'] === undefined) obj['path'] = _path;
         if (obj['is_empty'] === undefined) obj['is_empty'] = false;
-        if(obj['search'] === undefined) obj['search'] = '';
-        if(obj['all'] === undefined) obj['all'] = 'False';
-        this.get_file_dir_list({p:obj.p,path:obj.path,search:obj.search,all:obj.all},function (res){
+        if (obj['search'] === undefined) obj['search'] = '';
+        if (obj['all'] === undefined) obj['all'] = 'False';
+        this.get_file_dir_list({ p: obj.p, path: obj.path, search: obj.search, all: obj.all }, function (res) {
             var _dir = res.DIR,
                 _files = res.FILES,
                 _dir_dom = '',
@@ -1338,27 +1338,27 @@ var aceEditor = {
             //     $('.upper_level').attr('data-menu-path', _this.get_file_dir(res.PATH, 1));
             //     $('.ace_catalogue_title').html(lan.public.dir + ': ' + res.PATH).attr('title', res.PATH);
             // }
-            if(res.PATH !== '/' && obj['group'] === 1){
-				$('.upper_level').attr('data-menu-path',_this.get_file_dir(res.PATH,1));
-				$('.ace_catalogue_title').html(lan.public.dir + ': ' + res.PATH).attr('title',res.PATH);
-				$('.upper_level').html('<i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i>Back')
-			}else if(res.PATH === '/'){
-				$('.upper_level').html('<i class="glyphicon glyphicon-hdd" aria-hidden="true"></i>Root')
-			}
+            if (res.PATH !== '/' && obj['group'] === 1) {
+                $('.upper_level').attr('data-menu-path', _this.get_file_dir(res.PATH, 1));
+                $('.ace_catalogue_title').html(lan.public.dir + ': ' + res.PATH).attr('title', res.PATH);
+                $('.upper_level').html('<i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i>Back')
+            } else if (res.PATH === '/') {
+                $('.upper_level').html('<i class="glyphicon glyphicon-hdd" aria-hidden="true"></i>Root')
+            }
             if (obj.is_empty) $(obj.el).empty();
             $(obj.el).append(_html + _dir_dom + _files_dom);
             if (callback) callback(res);
         });
     },
     // 获取文件目录位置
-    get_file_dir: function(path, num) {
+    get_file_dir: function (path, num) {
         var _arry = path.split('/');
         if (path === '/') return '/';
         _arry.splice(-1, num);
         return _arry == '' ? '/' : _arry.join('/');
     },
     // 获取文件全称
-    get_file_suffix: function(fileName) {
+    get_file_suffix: function (fileName) {
         var filenames = fileName.match(/\.([0-9A-z]*)$/);
         filenames = (filenames == null ? 'text' : filenames[1]);
         for (var name in this.supportedModes) {
@@ -1396,26 +1396,26 @@ var aceEditor = {
     //     $('.aceEditors').height();
     // },
     // 设置编辑器视图
-    setEditorView:function () {
-    	var aceEditorHeight = $('.aceEditors').height(),_this = this;
-    	var autoAceHeight = setInterval(function(){
-    		var page_height = $('.aceEditors').height();
-	        var ace_conter_menu = $('.ace_conter_menu').height();
-	        var ace_conter_toolbar = $('.ace_conter_toolbar').height();
-	        var _height = page_height - ($('.pull-down .glyphicon').hasClass('glyphicon-menu-down')?35:0) - ace_conter_menu - ace_conter_toolbar - 42;
-	        $('.ace_conter_editor').height(_height);
-	        if(aceEditorHeight == $('.aceEditors').height()){
+    setEditorView: function () {
+        var aceEditorHeight = $('.aceEditors').height(), _this = this;
+        var autoAceHeight = setInterval(function () {
+            var page_height = $('.aceEditors').height();
+            var ace_conter_menu = $('.ace_conter_menu').height();
+            var ace_conter_toolbar = $('.ace_conter_toolbar').height();
+            var _height = page_height - ($('.pull-down .glyphicon').hasClass('glyphicon-menu-down') ? 35 : 0) - ace_conter_menu - ace_conter_toolbar - 42;
+            $('.ace_conter_editor').height(_height);
+            if (aceEditorHeight == $('.aceEditors').height()) {
                 clearInterval(autoAceHeight);
-                if(_this.ace_active != '') _this.editor['ace_editor_'+_this.ace_active].ace.resize();
+                if (_this.ace_active != '') _this.editor['ace_editor_' + _this.ace_active].ace.resize();
 
-	        	
-	        }else {
-	        	aceEditorHeight = $('.aceEditors').height();
-	        }
-    	},200);
+
+            } else {
+                aceEditorHeight = $('.aceEditors').height();
+            }
+        }, 200);
     },
     // 获取文件编码列表
-    getEncodingList: function(type) {
+    getEncodingList: function (type) {
         var _option = '';
         for (var i = 0; i < this.encodingList.length; i++) {
             var item = this.encodingList[i] == type.toUpperCase();
@@ -1424,7 +1424,7 @@ var aceEditor = {
         $('.menu-encoding ul').html(_option);
     },
     // 获取文件关联列表
-    getRelevanceList: function(fileName) {
+    getRelevanceList: function (fileName) {
         var _option = '',
             _top = 0,
             fileType = this.getFileType(fileName),
@@ -1440,9 +1440,9 @@ var aceEditor = {
         $('.menu-files ul').scrollTop(_set_tops);
     },
     // 搜索文件关联
-    searchRelevance: function(search) {
+    searchRelevance: function (search) {
         if (search == undefined) search = '';
-        $('.menu-files ul li').each(function(index, el) {
+        $('.menu-files ul li').each(function (index, el) {
             var val = $(this).attr('data-value').toLowerCase(),
                 rule = $(this).attr('data-rule'),
                 suffixs = rule.split('|'),
@@ -1464,15 +1464,15 @@ var aceEditor = {
         });
     },
     // 设置编码类型
-    setEncodingType: function(encode) {
+    setEncodingType: function (encode) {
         this.getEncodingList('UTF-8');
-        $('.menu-encoding ul li').click(function(e) {
+        $('.menu-encoding ul li').click(function (e) {
             layer.msg(lan.public.set_file_encoding + ': ' + $(this).attr('data-value'));
             $(this).addClass('active').append('<span class="icon"><i class="glyphicon glyphicon-ok" aria-hidden="true"></i></span>').siblings().removeClass('active').find('span').remove();
         });
     },
     // 更新状态栏
-    currentStatusBar: function(id) {
+    currentStatusBar: function (id) {
         var _editor = this.editor['ace_editor_' + id];
         $('.ace_conter_toolbar [data-type="history"]').html(lan.public.history_v + ': <i>' + (_editor.historys.length === 0 ? lan.public.empty : _editor.historys.length) + '</i>');
         $('.ace_conter_toolbar [data-type="path"]').html(lan.public.dir + ': <i title="' + _editor.path + '">' + _editor.path + '</i>');
@@ -1491,10 +1491,10 @@ var aceEditor = {
     },
     // currentStatusBar: function(id) {
     //     var _item = this.editor['ace_editor_' + id];
-	// 	if(_item == undefined){
-	// 		this.removerStatusBar();
-	// 		return false;
-	// 	}
+    // 	if(_item == undefined){
+    // 		this.removerStatusBar();
+    // 		return false;
+    // 	}
     //     $('.ace_conter_toolbar [data-type="cursor"]').html(lan.public.row + '<i class="cursor-row">1</i>,'+ lan.public.column +'<i class="cursor-line">0</i>');
     //     $('.ace_conter_toolbar [data-type="history"]').html(lan.public.history_v + ': <i>' + (_item.historys.length === 0 ? lan.public.empty : _item.historys.length) + '</i>');
     //     $('.ace_conter_toolbar [data-type="path"]').html(lan.public.dir + ': <i title="' + _item.path + '">' + _item.path + '</i>');
@@ -1512,7 +1512,7 @@ var aceEditor = {
     //     _item.ace.resize();
     // },
     // 清除状态栏
-    removerStatusBar: function() {
+    removerStatusBar: function () {
         $('.ace_conter_toolbar [data-type="history"]').html('');
         $('.ace_conter_toolbar [data-type="path"]').html('');
         $('.ace_conter_toolbar [data-type="tab"]').html('');
@@ -1521,7 +1521,7 @@ var aceEditor = {
         $('.ace_conter_toolbar [data-type="lang"]').html('');
     },
     // 创建ACE编辑器-对象
-    creationEditor: function(obj, callabck) {
+    creationEditor: function (obj, callabck) {
         var _this = this;
         $('#ace_editor_' + obj.id).text(obj.data || '');
         $('.ace_conter_editor .ace_editors').css('fontSize', _this.aceConfig.aceEditor.fontSize);
@@ -1544,8 +1544,8 @@ var aceEditor = {
             id: obj.id,
             wrap: _this.aceConfig.aceEditor.wrap, //是否换行
             path: obj.path,
-            tabSize:_this.aceConfig.aceEditor.tabSize,
-			softTabs:_this.aceConfig.aceEditor.useSoftTabs,
+            tabSize: _this.aceConfig.aceEditor.tabSize,
+            softTabs: _this.aceConfig.aceEditor.useSoftTabs,
             fileName: obj.fileName,
             enableSnippets: true, //是否代码提示
             encoding: (obj.encoding != undefined ? obj.encoding : 'utf-8'), //编码类型
@@ -1565,21 +1565,21 @@ var aceEditor = {
                 win: 'Ctrl-S',
                 mac: 'Command-S'
             },
-            exec: function(editor) {
+            exec: function (editor) {
                 _this.saveFileMethod(ACE);
             },
             readOnly: false // 如果不需要使用只读模式，这里设置false
         });
 
         // 获取光标位置
-        ACE.ace.getSession().selection.on('changeCursor', function(e) {
+        ACE.ace.getSession().selection.on('changeCursor', function (e) {
             var _cursor = ACE.ace.selection.getCursor();
             $('[data-type="cursor"]').html(lan.public.row + '<i class="cursor-row">' + (_cursor.row + 1) + '</i>,' + lan.public.column + '<i class="cursor-line">' + _cursor.column + '</i>');
             //$('.ace_toolbar_menu').hide();
         });
 
         // 触发修改内容
-        ACE.ace.getSession().on('change', function(editor) {
+        ACE.ace.getSession().on('change', function (editor) {
             $('.item_tab_' + ACE.id + ' .icon-tool').addClass('glyphicon-exclamation-sign').removeClass('glyphicon-remove').attr('data-file-state', '1');
             ACE.fileType = 1;
             $('.ace_toolbar_menu').hide();
@@ -1588,19 +1588,19 @@ var aceEditor = {
         this.is_file_history(ACE);
     },
     // 保存文件方法
-    saveFileMethod: function(ACE) {
+    saveFileMethod: function (ACE) {
         this.saveFileBody({
             path: ACE.path,
             data: ACE.ace.getValue(),
             encoding: ACE.encoding
-        }, function(res) {
+        }, function (res) {
             layer.msg(res.msg, { icon: res.status ? 1 : 2 });
             ACE.fileType = 0;
             $('.item_tab_' + ACE.id + ' .icon-tool').attr('data-file-state', '0').removeClass('glyphicon-exclamation-sign').addClass('glyphicon-remove');
         });
     },
     // 获取文件模型
-    getFileType: function(fileName) {
+    getFileType: function (fileName) {
         var filenames = fileName.match(/\.([0-9A-z]*)$/);
         filenames = (filenames == null ? 'text' : filenames[1]);
         for (var name in this.supportedModes) {
@@ -1622,90 +1622,90 @@ var aceEditor = {
     //     $('.ace_conter_menu .item').removeClass('active');
     //     $('.ace_conter_editor .ace_editors').removeClass('active');
     //     $('.ace_conter_menu .ace_editor_add').before('<div class="item active item_tab_' + _id + '" data-type="text" data-id="' + _id + '" data-index="' + _index + '">\
-	// 		<span class="icon_file"><i class="fa fa-code" aria-hidden="true"></i></span>\
-	// 		<span>Untitled-' + _index + '</span>\
-	// 		<i class="fa fa-circle icon-tool" aria-hidden="true" data-file-state="1" data-title="Untitled-' + _index + '"></i>\
-	// 	</div>');
+    // 		<span class="icon_file"><i class="fa fa-code" aria-hidden="true"></i></span>\
+    // 		<span>Untitled-' + _index + '</span>\
+    // 		<i class="fa fa-circle icon-tool" aria-hidden="true" data-file-state="1" data-title="Untitled-' + _index + '"></i>\
+    // 	</div>');
     //     $('.ace_conter_editor').append('<div id="ace_editor_' + _id + '" class="ace_editors active"></div>');
     //     $('#ace_editor_' + _id).siblings().removeClass('active');
     //     this.creationEditor({ id: _id });
     //     this.editorLength = this.editorLength + 1;
     // },
-    addEditorView: function (type,conifg) {
-		if(type == undefined) type = 0
-		var _index = this.editorLength,_id = bt.get_random(8);
-		$('.ace_conter_menu .item').removeClass('active');
-		$('.ace_conter_editor .ace_editors').removeClass('active');
-		$('.ace_conter_menu').append('<li class="item active item_tab_'+_id+'" data-type="shortcutKeys" data-id="'+ _id +'" >\
+    addEditorView: function (type, conifg) {
+        if (type == undefined) type = 0
+        var _index = this.editorLength, _id = bt.get_random(8);
+        $('.ace_conter_menu .item').removeClass('active');
+        $('.ace_conter_editor .ace_editors').removeClass('active');
+        $('.ace_conter_menu').append('<li class="item active item_tab_' + _id + '" data-type="shortcutKeys" data-id="' + _id + '" >\
 			<div class="ace_item_box">\
 				<span class="icon_file"><i class="text-icon"></i></span>\
-				<span>'+ (type?conifg.title:('Untitled-'+ _index)) +'</span>\
-				<i class="glyphicon icon-tool glyphicon-remove" aria-hidden="true" data-file-state="0" data-title="'+ (type?conifg.title:('Untitled-'+ _index)) +'"></i>\
+				<span>'+ (type ? conifg.title : ('Untitled-' + _index)) + '</span>\
+				<i class="glyphicon icon-tool glyphicon-remove" aria-hidden="true" data-file-state="0" data-title="'+ (type ? conifg.title : ('Untitled-' + _index)) + '"></i>\
 			</div>\
 		</li>');
-		$('#ace_editor_' + _id).siblings().removeClass('active');
-		$('.ace_conter_editor').append('<div id="ace_editor_'+_id+'" class="ace_editors active">'+ (type?aceShortcutKeys.innerHTML:'') +'</div>');
-		switch(type){
-			case 0:
-				this.creationEditor({ id: _id });
-				this.editorLength = this.editorLength + 1;
-			break;
-			case 1:
-				this.removerStatusBar();
-				this.editorLength = this.editorLength + 1;
-			break;
-		}
-	},
+        $('#ace_editor_' + _id).siblings().removeClass('active');
+        $('.ace_conter_editor').append('<div id="ace_editor_' + _id + '" class="ace_editors active">' + (type ? aceShortcutKeys.innerHTML : '') + '</div>');
+        switch (type) {
+            case 0:
+                this.creationEditor({ id: _id });
+                this.editorLength = this.editorLength + 1;
+                break;
+            case 1:
+                this.removerStatusBar();
+                this.editorLength = this.editorLength + 1;
+                break;
+        }
+    },
     // 删除编辑器视图-方法
     removeEditor: function (id) {
-        if(id == undefined) id = this.ace_active;
-		if ($('.item_tab_' + id).next('.item').length != 0 && this.editorLength != 1) {
-			$('.item_tab_' + id).next('.item').click();
-		} else if($('.item_tab_' + id).prev('.item').length !=  0 && this.editorLength != 1){
-			$('.item_tab_' + id).prev('.item').click();
+        if (id == undefined) id = this.ace_active;
+        if ($('.item_tab_' + id).next('.item').length != 0 && this.editorLength != 1) {
+            $('.item_tab_' + id).next('.item').click();
+        } else if ($('.item_tab_' + id).prev('.item').length != 0 && this.editorLength != 1) {
+            $('.item_tab_' + id).prev('.item').click();
         }
-		$('.item_tab_' + id).remove();
-		$('#ace_editor_' + id).remove();
-		this.editorLength --;
-		if(this.editor['ace_editor_'+id] == undefined) return false;
-		for(var i=0;i<this.pathAarry.length;i++){
-		    if(this.pathAarry[i] == this.editor['ace_editor_'+id].path){
-		        this.pathAarry.splice(i,1);
-		    }
-		}
-		if(!this.editor['ace_editor_'+id].historys_file) $('[data-menu-path="'+ (this.editor['ace_editor_'+id].path) +'"]').find('.file_fold').removeClass('active bg');
-        delete this.editor['ace_editor_'+id];
-		if(this.editorLength === 0){
-			this.ace_active = '';
-			this.pathAarry = [];
-			this.removerStatusBar();
-		}else{
-			this.currentStatusBar(this.ace_active);
+        $('.item_tab_' + id).remove();
+        $('#ace_editor_' + id).remove();
+        this.editorLength--;
+        if (this.editor['ace_editor_' + id] == undefined) return false;
+        for (var i = 0; i < this.pathAarry.length; i++) {
+            if (this.pathAarry[i] == this.editor['ace_editor_' + id].path) {
+                this.pathAarry.splice(i, 1);
+            }
         }
-		if(this.ace_active != '') this.is_file_history(this.editor['ace_editor_'+this.ace_active]);
-	},
+        if (!this.editor['ace_editor_' + id].historys_file) $('[data-menu-path="' + (this.editor['ace_editor_' + id].path) + '"]').find('.file_fold').removeClass('active bg');
+        delete this.editor['ace_editor_' + id];
+        if (this.editorLength === 0) {
+            this.ace_active = '';
+            this.pathAarry = [];
+            this.removerStatusBar();
+        } else {
+            this.currentStatusBar(this.ace_active);
+        }
+        if (this.ace_active != '') this.is_file_history(this.editor['ace_editor_' + this.ace_active]);
+    },
     // 打开历史文件文件-方法
-	openHistoryEditorView: function (obj,callback) {
-		// 文件类型（type，列如：JavaScript） 、文件模型（mode，列如：text）、文件标识（id,列如：x8AmsnYn）、文件编号（index,列如：0）、文件路径 (path，列如：/www/root/)
-		var _this = this,path = obj.filename,paths = path.split('/'),_fileName = paths[paths.length - 1],_fileType = this.getFileType(_fileName),_type = _fileType.name,_mode = _fileType.mode,_id = bt.get_random(8),_index = this.editorLength;
-		this.get_file_history({filename:obj.filename,history:obj.history}, function (res) {
-			_this.pathAarry.push(path);
-			$('.ace_conter_menu .item').removeClass('active');
-			$('.ace_conter_editor .ace_editors').removeClass('active');
-			$('.ace_conter_menu').append('<li class="item active item_tab_' + _id +'" title="'+ path +'" data-type="'+ _type +'" data-mode="'+ _mode +'" data-id="'+ _id +'" data-fileName="'+ _fileName +'">'+
-				'<div class="ace_item_box">'+
-					'<span class="icon_file"><img src="/static/img/ico-history.png"></span><span title="'+ path + lan.public.history_v + ' [ '+ bt.format_data(obj.history) +' ]' +'">' + _fileName +'</span>'+
-					'<i class="glyphicon glyphicon-remove icon-tool" aria-hidden="true" data-file-state="0" data-title="' + _fileName + '"></i>'+
-				'</div>'+
-			'</li>');
-			$('.ace_conter_editor').append('<div id="ace_editor_'+_id +'" class="ace_editors active"></div>');
-			$('[data-paths="'+ path +'"]').find('.file_fold').addClass('active bg');
-			_this.ace_active = _id;
-			_this.editorLength = _this.editorLength + 1;
-			_this.creationEditor({id: _id,fileName: _fileName,path: path,mode:_mode,encoding: res.encoding,data: res.data,type:_type,historys:res.historys,readOnly:true,historys_file:true,historys_active:obj.history});
-			if(callback) callback(res);
-		});
-	},
+    openHistoryEditorView: function (obj, callback) {
+        // 文件类型（type，列如：JavaScript） 、文件模型（mode，列如：text）、文件标识（id,列如：x8AmsnYn）、文件编号（index,列如：0）、文件路径 (path，列如：/www/root/)
+        var _this = this, path = obj.filename, paths = path.split('/'), _fileName = paths[paths.length - 1], _fileType = this.getFileType(_fileName), _type = _fileType.name, _mode = _fileType.mode, _id = bt.get_random(8), _index = this.editorLength;
+        this.get_file_history({ filename: obj.filename, history: obj.history }, function (res) {
+            _this.pathAarry.push(path);
+            $('.ace_conter_menu .item').removeClass('active');
+            $('.ace_conter_editor .ace_editors').removeClass('active');
+            $('.ace_conter_menu').append('<li class="item active item_tab_' + _id + '" title="' + path + '" data-type="' + _type + '" data-mode="' + _mode + '" data-id="' + _id + '" data-fileName="' + _fileName + '">' +
+                '<div class="ace_item_box">' +
+                '<span class="icon_file"><img src="/static/img/ico-history.png"></span><span title="' + path + lan.public.history_v + ' [ ' + bt.format_data(obj.history) + ' ]' + '">' + _fileName + '</span>' +
+                '<i class="glyphicon glyphicon-remove icon-tool" aria-hidden="true" data-file-state="0" data-title="' + _fileName + '"></i>' +
+                '</div>' +
+                '</li>');
+            $('.ace_conter_editor').append('<div id="ace_editor_' + _id + '" class="ace_editors active"></div>');
+            $('[data-paths="' + path + '"]').find('.file_fold').addClass('active bg');
+            _this.ace_active = _id;
+            _this.editorLength = _this.editorLength + 1;
+            _this.creationEditor({ id: _id, fileName: _fileName, path: path, mode: _mode, encoding: res.encoding, data: res.data, type: _type, historys: res.historys, readOnly: true, historys_file: true, historys_active: obj.history });
+            if (callback) callback(res);
+        });
+    },
     // 打开编辑器文件-方法
     // openEditorView: function(path, callback) {
     //     if (path == undefined) return false;
@@ -1727,9 +1727,9 @@ var aceEditor = {
     //                 $('.ace_conter_menu .item').removeClass('active');
     //                 $('.ace_conter_editor .ace_editors').removeClass('active');
     //                 $('.ace_conter_menu .ace_editor_add').before('<div class="item active item_tab_' + _id + '" title="' + path + '" data-type="' + _type + '" data-mode="' + _mode + '" data-id="' + _id + '" data-index="' + _index + '" data-fileName="' + _fileName + '">\
-	// 	    			<span class="icon_file"><i class="' + _mode + '-icon"></i></span><span title="' + path + '">' + _fileName + '</span>\
-	// 	    			<i class="glyphicon glyphicon-remove icon-tool" aria-hidden="true" data-file-state="0" data-title="' + _fileName + '"></i>\
-	// 	    		</div>');
+    // 	    			<span class="icon_file"><i class="' + _mode + '-icon"></i></span><span title="' + path + '">' + _fileName + '</span>\
+    // 	    			<i class="glyphicon glyphicon-remove icon-tool" aria-hidden="true" data-file-state="0" data-title="' + _fileName + '"></i>\
+    // 	    		</div>');
     //                 $('.ace_conter_editor').append('<div id="ace_editor_' + _id + '" class="ace_editors active"></div>');
     //                 $('[data-menu-path="' + path + '"]').find('.file_fold').addClass('active bg');
     //                 _this.ace_active = _id;
@@ -1741,44 +1741,44 @@ var aceEditor = {
     //     });
     //     $('.ace_toolbar_menu').hide();
     // },
-    openEditorView: function (path,callback) {
-		if(path == undefined) return false;
-		// 文件类型（type，列如：JavaScript） 、文件模型（mode，列如：text）、文件标识（id,列如：x8AmsnYn）、文件编号（index,列如：0）、文件路径 (path，列如：/www/root/)
-	    var _this = this,paths = path.split('/'),_fileName = paths[paths.length - 1],_fileType = this.getFileType(_fileName),_type = _fileType.name,_mode = _fileType.mode,_id = bt.get_random(8),_index = this.editorLength;
-		_this.is_file_open(path,function(is_state){
-			if(is_state){
-				$('.ace_conter_menu').find('[title="'+ path +'"]').click();
-			}else{
-				_this.getFileBody({path: path}, function (res) {
-				    _this.pathAarry.push(path);
-				    $('.ace_conter_menu .item').removeClass('active');
-		    		$('.ace_conter_editor .ace_editors').removeClass('active');
-		    		$('.ace_conter_menu').append('<li class="item active item_tab_' + _id +'" title="'+ path +'" data-type="'+ _type +'" data-mode="'+ _mode +'" data-id="'+ _id +'" data-fileName="'+ _fileName +'">'+
-		    			'<div class="ace_item_box">'+
-			    			'<span class="icon_file"><i class="'+ _mode +'-icon"></i></span><span title="'+ path +'">' + _fileName + '</span>'+
-			    			'<i class="glyphicon glyphicon-remove icon-tool" aria-hidden="true" data-file-state="0" data-title="' + _fileName + '"></i>'+
-			    		'</div>'+
-		    		'</li>');
-		    		$('.ace_conter_editor').append('<div id="ace_editor_'+_id +'" class="ace_editors active" style="font-size:'+ aceEditor.aceConfig.aceEditor.fontSize +'px"></div>');
-					$('[data-menu-path="'+ path +'"]').find('.file_fold').addClass('active bg');
-					_this.ace_active = _id;
-				    _this.editorLength = _this.editorLength + 1;
-					_this.creationEditor({id: _id,fileName: _fileName,path: path,mode:_mode,encoding: res.encoding,data: res.data,type:_type,historys:res.historys});
-					if(callback) callback(res);
-				});
-			}
-		});
-		$('.ace_toolbar_menu').hide();
-	},
+    openEditorView: function (path, callback) {
+        if (path == undefined) return false;
+        // 文件类型（type，列如：JavaScript） 、文件模型（mode，列如：text）、文件标识（id,列如：x8AmsnYn）、文件编号（index,列如：0）、文件路径 (path，列如：/www/root/)
+        var _this = this, paths = path.split('/'), _fileName = paths[paths.length - 1], _fileType = this.getFileType(_fileName), _type = _fileType.name, _mode = _fileType.mode, _id = bt.get_random(8), _index = this.editorLength;
+        _this.is_file_open(path, function (is_state) {
+            if (is_state) {
+                $('.ace_conter_menu').find('[title="' + path + '"]').click();
+            } else {
+                _this.getFileBody({ path: path }, function (res) {
+                    _this.pathAarry.push(path);
+                    $('.ace_conter_menu .item').removeClass('active');
+                    $('.ace_conter_editor .ace_editors').removeClass('active');
+                    $('.ace_conter_menu').append('<li class="item active item_tab_' + _id + '" title="' + path + '" data-type="' + _type + '" data-mode="' + _mode + '" data-id="' + _id + '" data-fileName="' + _fileName + '">' +
+                        '<div class="ace_item_box">' +
+                        '<span class="icon_file"><i class="' + _mode + '-icon"></i></span><span title="' + path + '">' + _fileName + '</span>' +
+                        '<i class="glyphicon glyphicon-remove icon-tool" aria-hidden="true" data-file-state="0" data-title="' + _fileName + '"></i>' +
+                        '</div>' +
+                        '</li>');
+                    $('.ace_conter_editor').append('<div id="ace_editor_' + _id + '" class="ace_editors active" style="font-size:' + aceEditor.aceConfig.aceEditor.fontSize + 'px"></div>');
+                    $('[data-menu-path="' + path + '"]').find('.file_fold').addClass('active bg');
+                    _this.ace_active = _id;
+                    _this.editorLength = _this.editorLength + 1;
+                    _this.creationEditor({ id: _id, fileName: _fileName, path: path, mode: _mode, encoding: res.encoding, data: res.data, type: _type, historys: res.historys });
+                    if (callback) callback(res);
+                });
+            }
+        });
+        $('.ace_toolbar_menu').hide();
+    },
     // 获取收藏夹列表-方法
-    getFavoriteList: function() {},
+    getFavoriteList: function () { },
     // 获取文件列表-请求
-    getFileList: function() {},
+    getFileList: function () { },
     // 获取文件内容-请求
-    getFileBody: function(obj, callback) {
+    getFileBody: function (obj, callback) {
         var loadT = layer.msg(lan.public.get_file_contents, { time: 0, icon: 16, shade: [0.3, '#000'] }),
             _this = this;
-        $.post("/files?action=GetFileBody", "path=" + encodeURIComponent(obj.path), function(res) {
+        $.post("/files?action=GetFileBody", "path=" + encodeURIComponent(obj.path), function (res) {
             layer.close(loadT);
             if (!res.status) {
                 if (_this.editorLength == 0) layer.closeAll();
@@ -1806,61 +1806,61 @@ var aceEditor = {
     //         if (callback) callback(res)
     //     });
     // },
-    saveFileBody: function (obj,success,error) {
-		$.ajax({
-			type:'post',
-			url:'/files?action=SaveFileBody',
-			timeout: 7000, //设置保存超时时间
-			data:{
-				data:obj.data,
-				encoding:obj.encoding.toLowerCase(),
-				path:obj.path
-			},
-			success:function(rdata){
-				if(rdata.status){
-					if(success) success(rdata)
-				}else{
-					if(error) error(rdata)
-				}
-				if(!obj.tips) layer.msg(rdata.msg,{icon:rdata.status?1:2});
-			},
-			error:function(err){
-			    if(error) error(err)
-			}
-		});
-	},
-    saveAceConfig: function(data,callback){
-        var loadT = layer.msg(lan.public.save_ace_config,{time: 0,icon: 16,shade: [0.3, '#000']}),_this = this;
-		this.saveFileBody({
-			path:'/www/server/panel/BTPanel/static/ace/ace.editor.config.json',
-			data:JSON.stringify(data),
-			encoding:'utf-8',
-			tips:true,
-		},function(rdata){
-			layer.close(loadT);
-			_this.setStorage('aceConfig',JSON.stringify(data));
-			if(callback) callback(rdata);
-		});
-	},
-    // 获取配置文件
-    getEditorConfig: function(callback) {
-        var loadT = layer.msg(lan.public.get_ace_config,{time: 0,icon: 16,shade: [0.3, '#000']}),_this = this;
-        this.getFileBody({path:'/www/server/panel/BTPanel/static/ace/ace.editor.config.json'},function(rdata){
-			layer.close(loadT);
-			_this.setStorage('aceConfig',JSON.stringify(rdata.data));
-			if(callback) callback(JSON.parse(rdata.data));
-		});
+    saveFileBody: function (obj, success, error) {
+        $.ajax({
+            type: 'post',
+            url: '/files?action=SaveFileBody',
+            timeout: 7000, //设置保存超时时间
+            data: {
+                data: obj.data,
+                encoding: obj.encoding.toLowerCase(),
+                path: obj.path
+            },
+            success: function (rdata) {
+                if (rdata.status) {
+                    if (success) success(rdata)
+                } else {
+                    if (error) error(rdata)
+                }
+                if (!obj.tips) layer.msg(rdata.msg, { icon: rdata.status ? 1 : 2 });
+            },
+            error: function (err) {
+                if (error) error(err)
+            }
+        });
     },
-    getAceConfig:function(callback){
-		var loadT = layer.msg(lan.public.get_ace_config,{time: 0,icon: 16,shade: [0.3, '#000']}),_this = this;
-		this.getFileBody({path:'/www/server/panel/BTPanel/static/ace/ace.editor.config.json'},function(rdata){
-			layer.close(loadT);
-			_this.setStorage('aceConfig',JSON.stringify(rdata.data));
-			if(callback) callback(JSON.parse(rdata.data));
-		});
-	},
+    saveAceConfig: function (data, callback) {
+        var loadT = layer.msg(lan.public.save_ace_config, { time: 0, icon: 16, shade: [0.3, '#000'] }), _this = this;
+        this.saveFileBody({
+            path: '/www/server/panel/BTPanel/static/ace/ace.editor.config.json',
+            data: JSON.stringify(data),
+            encoding: 'utf-8',
+            tips: true,
+        }, function (rdata) {
+            layer.close(loadT);
+            _this.setStorage('aceConfig', JSON.stringify(data));
+            if (callback) callback(rdata);
+        });
+    },
+    // 获取配置文件
+    getEditorConfig: function (callback) {
+        var loadT = layer.msg(lan.public.get_ace_config, { time: 0, icon: 16, shade: [0.3, '#000'] }), _this = this;
+        this.getFileBody({ path: '/www/server/panel/BTPanel/static/ace/ace.editor.config.json' }, function (rdata) {
+            layer.close(loadT);
+            _this.setStorage('aceConfig', JSON.stringify(rdata.data));
+            if (callback) callback(JSON.parse(rdata.data));
+        });
+    },
+    getAceConfig: function (callback) {
+        var loadT = layer.msg(lan.public.get_ace_config, { time: 0, icon: 16, shade: [0.3, '#000'] }), _this = this;
+        this.getFileBody({ path: '/www/server/panel/BTPanel/static/ace/ace.editor.config.json' }, function (rdata) {
+            layer.close(loadT);
+            _this.setStorage('aceConfig', JSON.stringify(rdata.data));
+            if (callback) callback(JSON.parse(rdata.data));
+        });
+    },
     // 递归保存文件
-    saveAllFileBody: function(arry, num, callabck) {
+    saveAllFileBody: function (arry, num, callabck) {
         var _this = this;
         if (typeof num == "function") {
             callabck = num;
@@ -1877,7 +1877,7 @@ var aceEditor = {
             path: arry[num].path,
             data: arry[num].data,
             encoding: arry[num].encoding
-        }, function() {
+        }, function () {
             num = num + 1;
             aceEditor.saveAllFileBody(arry, num, callabck);
         });
@@ -1888,7 +1888,7 @@ function openEditorView(type, path) {
     var paths = path.split('/'),
         _fileName = paths[paths.length - 1],
         _aceTmplate = document.getElementById("aceTmplate").innerHTML;
-        _aceTmplate = _aceTmplate.replace(/\<\\\/script\>/g, '</script>');
+    _aceTmplate = _aceTmplate.replace(/\<\\\/script\>/g, '</script>');
     if (aceEditor.editor !== null) {
         if (aceEditor.isAceView == false) {
             aceEditor.isAceView = true;
@@ -1906,7 +1906,7 @@ function openEditorView(type, path) {
         skin: 'aceEditors',
         zIndex: 19999,
         content: _aceTmplate,
-        success: function(layero, index) {
+        success: function (layero, index) {
             function set_edit_file() {
                 // aceEditor.layer_view = index;
                 aceEditor.ace_active = '';
@@ -1931,28 +1931,28 @@ function openEditorView(type, path) {
                 //         aceEditor.editor['ace_editor_' + _id].ace.resize();
                 //     }, 105);
                 // });
-                $('.aceEditors .layui-layer-min').click(function (e){
-					
-					aceEditor.setEditorView();
-				});
-				$('.aceEditors .layui-layer-max').click(function (e){
-					aceEditor.setEditorView();
-				});
+                $('.aceEditors .layui-layer-min').click(function (e) {
+
+                    aceEditor.setEditorView();
+                });
+                $('.aceEditors .layui-layer-max').click(function (e) {
+                    aceEditor.setEditorView();
+                });
             }
             var aceConfig = aceEditor.getStorage('aceConfig');
-			if(aceConfig == null){
-				// 获取编辑器配置
-				aceEditor.getAceConfig(function(res){
-					aceEditor.aceConfig = res; // 赋值配置参数
-					set_edit_file();
-				});
-            }else{
-            	aceEditor.aceConfig = JSON.parse(aceConfig);
-            	typeof aceEditor.aceConfig == 'string'?aceEditor.aceConfig = JSON.parse(aceEditor.aceConfig):''
+            if (aceConfig == null) {
+                // 获取编辑器配置
+                aceEditor.getAceConfig(function (res) {
+                    aceEditor.aceConfig = res; // 赋值配置参数
+                    set_edit_file();
+                });
+            } else {
+                aceEditor.aceConfig = JSON.parse(aceConfig);
+                typeof aceEditor.aceConfig == 'string' ? aceEditor.aceConfig = JSON.parse(aceEditor.aceConfig) : ''
                 set_edit_file();
-			}
+            }
         },
-        cancel: function() {
+        cancel: function () {
             for (var item in aceEditor.editor) {
                 if (aceEditor.editor[item].fileType == 1) {
                     layer.open({
@@ -1969,8 +1969,8 @@ function openEditorView(type, path) {
 								<button type="button" class="btn btn-sm btn-success" data-type="0">' + lan.public.save + '</button>\
 							</div>\
 						</div>',
-                        success: function(layers, indexs) {
-                            $('.ace-clear-btn button').click(function() {
+                        success: function (layers, indexs) {
+                            $('.ace-clear-btn button').click(function () {
                                 var _type = $(this).attr('data-type');
                                 switch (_type) {
                                     case '2':
@@ -1990,8 +1990,8 @@ function openEditorView(type, path) {
                                                 encoding: editor[item]['encoding'],
                                             })
                                         }
-                                        aceEditor.saveAllFileBody(_arry, function() {
-                                            $('.ace_conter_menu>.item').each(function(el, indexx) {
+                                        aceEditor.saveAllFileBody(_arry, function () {
+                                            $('.ace_conter_menu>.item').each(function (el, indexx) {
                                                 var _id = $(this).attr('data-id');
                                                 $(this).find('i').removeClass('glyphicon-exclamation-sign').addClass('glyphicon-remove').attr('data-file-state', '0')
                                                 aceEditor.editor['ace_editor_' + _id].fileType = 0;
@@ -2009,7 +2009,7 @@ function openEditorView(type, path) {
                 }
             }
         },
-        end:function(){
+        end: function () {
             aceEditor.ace_active = '';
             aceEditor.editor = null;
             aceEditor.pathAarry = [];
@@ -2025,11 +2025,11 @@ function openEditorView(type, path) {
  * @param {array} ctx 可选，默认为 { mode: CryptoJS.mode.ECB,padding: CryptoJS.pad.ZeroPadding }
  * @return {string} 
  */
-function aes_encrypt(s_text,s_key,ctx){
-	if(ctx == undefined) ctx = { mode: CryptoJS.mode.ECB,padding: CryptoJS.pad.ZeroPadding }
-	var key = CryptoJS.enc.Utf8.parse(s_key);
-	var encrypt_data = CryptoJS.AES.encrypt(s_text,key,ctx);
-	return encrypt_data.toString();
+function aes_encrypt(s_text, s_key, ctx) {
+    if (ctx == undefined) ctx = { mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.ZeroPadding }
+    var key = CryptoJS.enc.Utf8.parse(s_key);
+    var encrypt_data = CryptoJS.AES.encrypt(s_text, key, ctx);
+    return encrypt_data.toString();
 }
 
 /**
@@ -2039,11 +2039,11 @@ function aes_encrypt(s_text,s_key,ctx){
  * @param {array} ctx 可选，默认为 { mode: CryptoJS.mode.ECB,padding: CryptoJS.pad.ZeroPadding }
  * @return {string}
  */
-function aes_decrypt(s_text,s_key,ctx){
-	if(ctx == undefined) ctx = { mode: CryptoJS.mode.ECB,padding: CryptoJS.pad.ZeroPadding }
-	var key = CryptoJS.enc.Utf8.parse(s_key);
-	var decrypt_data = CryptoJS.AES.decrypt(s_text,key,ctx);
-	return decrypt_data.toString(CryptoJS.enc.Utf8);
+function aes_decrypt(s_text, s_key, ctx) {
+    if (ctx == undefined) ctx = { mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.ZeroPadding }
+    var key = CryptoJS.enc.Utf8.parse(s_key);
+    var decrypt_data = CryptoJS.AES.decrypt(s_text, key, ctx);
+    return decrypt_data.toString(CryptoJS.enc.Utf8);
 }
 
 /**
@@ -2052,53 +2052,53 @@ function aes_decrypt(s_text,s_key,ctx){
  * @param {string} stype ajax中定义的数据类型
  * @return {string} 解密后的响应数据
  */
-function ajax_decrypt(data,stype){
-	if(!data) return data;
-	if(data.substring(0,6) == "BT-CRT"){
-		var token = $("#request_token_head").attr("token")
-		var pwd = token.substring(0,8) + token.substring(40,48)
-		data = aes_decrypt(data.substring(6),pwd);
-		if(stype == undefined){
-			stype = '';
-		}
-		if(stype.toLowerCase() != 'json'){
-			data =  JSON.parse(data);
-		}
-	}
-	return data
+function ajax_decrypt(data, stype) {
+    if (!data) return data;
+    if (data.substring(0, 6) == "BT-CRT") {
+        var token = $("#request_token_head").attr("token")
+        var pwd = token.substring(0, 8) + token.substring(40, 48)
+        data = aes_decrypt(data.substring(6), pwd);
+        if (stype == undefined) {
+            stype = '';
+        }
+        if (stype.toLowerCase() != 'json') {
+            data = JSON.parse(data);
+        }
+    }
+    return data
 }
 /**
  * 格式化form_data数据，并加密
  * @param {string} form_data 加密前的form_data数据
  * @return {string} 加密后的form_data数据
  */
-function format_form_data(form_data){
-	var data_tmp = form_data.split('&');
-	var form_info = {}
-	var token = $("#request_token_head").attr("token")
-	if(!token) return form_data;
-	var pwd = token.substring(0,8) + token.substring(40,48)
-	for(var i=0;i<data_tmp.length;i++){
-		var tmp = data_tmp[i].split('=');
-		if(tmp.length < 2) continue
-		// if(!tmp[1]) continue;
-		var val = decodeURIComponent(tmp[1].replace(/\+/g,'%20'));
-		if(val.length > 3){
-			form_info[tmp[0]] = 'BT-CRT' + aes_encrypt(val,pwd);
-		}else{
-			form_info[tmp[0]] = val;
-		}
-		
-	}
-	return $.param(form_info);
+function format_form_data(form_data) {
+    var data_tmp = form_data.split('&');
+    var form_info = {}
+    var token = $("#request_token_head").attr("token")
+    if (!token) return form_data;
+    var pwd = token.substring(0, 8) + token.substring(40, 48)
+    for (var i = 0; i < data_tmp.length; i++) {
+        var tmp = data_tmp[i].split('=');
+        if (tmp.length < 2) continue
+        // if(!tmp[1]) continue;
+        var val = decodeURIComponent(tmp[1].replace(/\+/g, '%20'));
+        if (val.length > 3) {
+            form_info[tmp[0]] = 'BT-CRT' + aes_encrypt(val, pwd);
+        } else {
+            form_info[tmp[0]] = val;
+        }
+
+    }
+    return $.param(form_info);
 }
 
-function ajax_encrypt(request){
-	if(!this.type || !this.data || !this.contentType) return;
-	if($("#panel_debug").attr("data") == 'True') return;
-	if(this.type == 'POST' && this.data.length > 1){
-		this.data = format_form_data(this.data);
-	}
+function ajax_encrypt(request) {
+    if (!this.type || !this.data || !this.contentType) return;
+    if ($("#panel_debug").attr("data") == 'True') return;
+    if (this.type == 'POST' && this.data.length > 1) {
+        this.data = format_form_data(this.data);
+    }
 }
 
 function ajaxSetup() {
@@ -2116,11 +2116,11 @@ function ajaxSetup() {
     }
 
     if (my_headers) {
-        $.ajaxSetup({ 
-			headers: my_headers,
-			dataFilter: ajax_decrypt,
-			beforeSend: ajax_encrypt
-		});
+        $.ajaxSetup({
+            headers: my_headers,
+            dataFilter: ajax_decrypt,
+            beforeSend: ajax_encrypt
+        });
     }
 }
 ajaxSetup();
@@ -2162,7 +2162,7 @@ function setWebPs(b, e, a) {
         shadeClose: false
     });
     var c = "ps=" + a;
-    $.post("/data?action=setPs", "table=" + b + "&id=" + e + "&" + c, function(f) {
+    $.post("/data?action=setPs", "table=" + b + "&id=" + e + "&" + c, function (f) {
         if (f == true) {
             if (b == "sites") {
                 getWeb(1)
@@ -2186,7 +2186,7 @@ function setWebPs(b, e, a) {
     });
 }
 
-$(".menu-icon").click(function() {
+$(".menu-icon").click(function () {
     $(".sidebar-scroll").toggleClass("sidebar-close");
     $(".main-content").toggleClass("main-content-open");
     if ($(".sidebar-close")) {
@@ -2195,7 +2195,7 @@ $(".menu-icon").click(function() {
 });
 var Upload, percentage;
 
-Date.prototype.format = function(b) {
+Date.prototype.format = function (b) {
     var c = {
         "M+": this.getMonth() + 1,
         "d+": this.getDate(),
@@ -2246,7 +2246,7 @@ function ChangePath(d) {
         closeBtn: 2,
         shift: 5,
         shadeClose: false,
-        content: "<div class='changepath'><div class='path-top'><button type='button' class='btn btn-default btn-sm' onclick='BackFile()'><span class='glyphicon glyphicon-share-alt'></span> " + lan.public.return+"</button><div class='place' id='PathPlace'>" + lan.bt.path + "：<span></span></div></div><div class='path-con'><div class='path-con-left'><dl><dt id='changecomlist' onclick='BackMyComputer()'>" + lan.bt.comp + "</dt></dl></div><div class='path-con-right'><ul class='default' id='computerDefautl'></ul><div class='file-list divtable'><table class='table table-hover' style='border:0 none'><thead><tr class='file-list-head'><th width='40%'>" + lan.bt.filename + "</th><th width='20%'>" + lan.bt.etime + "</th><th width='10%'>" + lan.bt.access + "</th><th width='10%'>" + lan.bt.own + "</th><th width='10%'></th></tr></thead><tbody id='tbody' class='list-list'></tbody></table></div></div></div></div><div class='getfile-btn' style='margin-top:0'><button type='button' class='btn btn-default btn-sm pull-left' onclick='CreateFolder()'>" + lan.bt.adddir + "</button><button type='button' class='btn btn-danger btn-sm mr5' onclick=\"layer.close(getCookie('ChangePath'))\">" + lan.public.close + "</button> <button type='button' class='btn btn-success btn-sm' onclick='GetfilePath()'>" + lan.bt.path_ok + "</button></div>"
+        content: "<div class='changepath'><div class='path-top'><button type='button' class='btn btn-default btn-sm' onclick='BackFile()'><span class='glyphicon glyphicon-share-alt'></span> " + lan.public.return + "</button><div class='place' id='PathPlace'>" + lan.bt.path + "：<span></span></div></div><div class='path-con'><div class='path-con-left'><dl><dt id='changecomlist' onclick='BackMyComputer()'>" + lan.bt.comp + "</dt></dl></div><div class='path-con-right'><ul class='default' id='computerDefautl'></ul><div class='file-list divtable'><table class='table table-hover' style='border:0 none'><thead><tr class='file-list-head'><th width='40%'>" + lan.bt.filename + "</th><th width='20%'>" + lan.bt.etime + "</th><th width='10%'>" + lan.bt.access + "</th><th width='10%'>" + lan.bt.own + "</th><th width='10%'></th></tr></thead><tbody id='tbody' class='list-list'></tbody></table></div></div></div></div><div class='getfile-btn' style='margin-top:0'><button type='button' class='btn btn-default btn-sm pull-left' onclick='CreateFolder()'>" + lan.bt.adddir + "</button><button type='button' class='btn btn-danger btn-sm mr5' onclick=\"layer.close(getCookie('ChangePath'))\">" + lan.public.close + "</button> <button type='button' class='btn btn-success btn-sm' onclick='GetfilePath()'>" + lan.bt.path_ok + "</button></div>"
     });
     setCookie("ChangePath", c);
     var b = $("#" + d).val();
@@ -2268,7 +2268,7 @@ function GetDiskList(b) {
     var d = "";
     var a = "";
     var c = "path=" + b + "&disk=True";
-    $.post("/files?action=GetDir", c, function(h) {
+    $.post("/files?action=GetDir", c, function (h) {
         if (h.DISK != undefined) {
             for (var f = 0; f < h.DISK.length; f++) {
                 a += "<dd onclick=\"GetDiskList('" + h.DISK[f].path + "')\"><span class='glyphicon glyphicon-hdd'></span>&nbsp;" + h.DISK[f].path + "</dd>"
@@ -2323,12 +2323,12 @@ function CreateFolder() {
         $("#tbody tr:first-child").before(a)
     }
     $(".newFolderName").focus();
-    $("#nameOk").click(function() {
+    $("#nameOk").click(function () {
         var c = $("#newFolderName").val();
         var b = $("#PathPlace").find("span").text();
         newTxt = b.replace(new RegExp(/(\/\/)/g), "/") + c;
         var d = "path=" + newTxt;
-        $.post("/files?action=CreateDir", d, function(e) {
+        $.post("/files?action=CreateDir", d, function (e) {
             if (e.status == true) {
                 layer.msg(e.msg, {
                     icon: 1
@@ -2341,7 +2341,7 @@ function CreateFolder() {
             GetDiskList(b)
         })
     });
-    $("#nameNOk").click(function() {
+    $("#nameNOk").click(function () {
         $(this).parents("tr").remove()
     })
 }
@@ -2350,7 +2350,7 @@ function NewDelFile(c) {
     var a = $("#PathPlace").find("span").text();
     newTxt = c.replace(new RegExp(/(\/\/)/g), "/");
     var b = "path=" + newTxt + "&empty=True";
-    $.post("/files?action=DeleteDir", b, function(d) {
+    $.post("/files?action=DeleteDir", b, function (d) {
         if (d.status == true) {
             layer.msg(d.msg, {
                 icon: 1
@@ -2413,7 +2413,7 @@ function BackFile() {
     } else {
         a = d[0]
     }
-    if (d.length == 1) {}
+    if (d.length == 1) { }
 }
 
 function GetfilePath() {
@@ -2444,17 +2444,17 @@ function aotuHeight() {
     var a = $("body").height() - 50;
     $(".main-content").css("min-height", a)
 }
-$(function() {
+$(function () {
     aotuHeight()
 });
-$(window).resize(function() {
+$(window).resize(function () {
     aotuHeight()
 });
 
 function showHidePwd() {
     var a = "glyphicon-eye-open",
         b = "glyphicon-eye-close";
-    $(".pw-ico").click(function() {
+    $(".pw-ico").click(function () {
         var g = $(this).attr("class"),
             e = $(this).prev();
         if (g.indexOf(a) > 0) {
@@ -2489,7 +2489,7 @@ function OnlineEditFile(k, f) {
             icon: 16,
             time: 0
         });
-        $.post("/files?action=SaveFileBody", "data=" + h + "&path=" + encodeURIComponent(f) + "&encoding=" + a, function(m) {
+        $.post("/files?action=SaveFileBody", "data=" + h + "&path=" + encodeURIComponent(f) + "&encoding=" + a, function (m) {
             if (k == 1) {
                 layer.close(loadT);
             }
@@ -2570,7 +2570,7 @@ function OnlineEditFile(k, f) {
             };
             d = j
     }
-    $.post("/files?action=GetFileBody", "path=" + encodeURIComponent(f), function(s) {
+    $.post("/files?action=GetFileBody", "path=" + encodeURIComponent(f), function (s) {
         if (s.status === false) {
             layer.msg(s.msg, { icon: 5 });
             return;
@@ -2599,7 +2599,7 @@ function OnlineEditFile(k, f) {
             extraKeys: {
                 "Ctrl-F": "findPersistent",
                 "Ctrl-H": "replaceAll",
-                "Ctrl-S": function() {
+                "Ctrl-S": function () {
                     $("#textBody").text(t.getValue());
                     OnlineEditFile(2, f)
                 }
@@ -2612,11 +2612,11 @@ function OnlineEditFile(k, f) {
         });
         t.focus();
         t.setSize("auto", q - 150);
-        $("#OnlineEditFileBtn").click(function() {
+        $("#OnlineEditFileBtn").click(function () {
             $("#textBody").text(t.getValue());
             OnlineEditFile(1, f);
         });
-        $(".btn-editor-close").click(function() {
+        $(".btn-editor-close").click(function () {
             layer.close(r);
         });
     });
@@ -2647,12 +2647,12 @@ function ServiceAdmin(a, b) {
     layer.confirm(lan.get('service_confirm', [d, a]), {
         icon: 3,
         closeBtn: 2
-    }, function() {
+    }, function () {
         var e = layer.msg(lan.get('service_the', [d, a]), {
             icon: 16,
             time: 0
         });
-        $.post("/system?action=ServiceAdmin", c, function(g) {
+        $.post("/system?action=ServiceAdmin", c, function (g) {
             layer.close(e);
 
             var f = g.status ? lan.get('service_ok', [a, d]) : lan.get('service_err', [a, d]);
@@ -2660,7 +2660,7 @@ function ServiceAdmin(a, b) {
                 icon: g.status ? 1 : 2
             });
             if (b != "reload" && g.status == true) {
-                setTimeout(function() {
+                setTimeout(function () {
                     window.location.reload()
                 }, 1000)
             }
@@ -2672,7 +2672,7 @@ function ServiceAdmin(a, b) {
                     shadeClose: true
                 })
             }
-        }).error(function() {
+        }).error(function () {
             layer.close(e);
             layer.msg(lan.public.success, {
                 icon: 1
@@ -2713,7 +2713,7 @@ function GetPHPStatus(a) {
         });
         return
     }
-    $.post("/ajax?action=GetPHPStatus", "version=" + a, function(b) {
+    $.post("/ajax?action=GetPHPStatus", "version=" + a, function (b) {
         layer.open({
             type: 1,
             area: "400",
@@ -2727,7 +2727,7 @@ function GetPHPStatus(a) {
 }
 
 function GetNginxStatus() {
-    $.post("/ajax?action=GetNginxStatus", "", function(a) {
+    $.post("/ajax?action=GetNginxStatus", "", function (a) {
         layer.open({
             type: 1,
             area: "400",
@@ -2773,10 +2773,10 @@ function loadScript(arry, param, callback) {
         var script = document.createElement("script"),
             _arry_split = arry[i].split('/');
         script.type = "text/javascript";
-        if (typeof(callback) != "undefined") {
+        if (typeof (callback) != "undefined") {
             if (script.readyState) {
-                (function(i) {
-                    script.onreadystatechange = function() {
+                (function (i) {
+                    script.onreadystatechange = function () {
                         console.log(arry[i]);
                         if (script.readyState == "loaded" || script.readyState == "complete") {
                             script.onreadystatechange = null;
@@ -2786,8 +2786,8 @@ function loadScript(arry, param, callback) {
                     };
                 })(i);
             } else {
-                (function(i) {
-                    script.onload = function() {
+                (function (i) {
+                    script.onload = function () {
                         bt['loadScript'].push(arry[i]);
                         ready++;
                     };
@@ -2797,7 +2797,7 @@ function loadScript(arry, param, callback) {
         script.src = arry[i];
         document.body.appendChild(script);
     }
-    var time = setInterval(function() {
+    var time = setInterval(function () {
         if (ready === arry.length) {
             clearTimeout(time);
             callback();
@@ -2805,12 +2805,12 @@ function loadScript(arry, param, callback) {
     }, 10);
 }
 // 判断文件是否插入
-function is_file_existence(name,type){
-	var arry = type?bt.loadScript:bt.loadLink
-	for(var i=0;i<arry.length;i++){
-		if(arry[i] === name) return false
-	}
-	return true
+function is_file_existence(name, type) {
+    var arry = type ? bt.loadScript : bt.loadLink
+    for (var i = 0; i < arry.length; i++) {
+        if (arry[i] === name) return false
+    }
+    return true
 }
 // var clipboard = new ClipboardJS('#bt_copys');
 // clipboard.on('success', function(e) {
@@ -2844,15 +2844,15 @@ function SafeMessage(j, h, g, f) {
         shadeClose: true,
         content: "<div class='bt-form webDelete pd20 pb70'><p>" + h + "</p>" + f + "<div class='vcode'>" + lan.bt.cal_msg + "<span class='text'>" + sumtext + "</span>=<input type='number' id='vcodeResult' value=''></div><div class='bt-form-submit-btn'><button type='button' class='btn btn-danger btn-sm bt-cancel'>" + lan.public.cancel + "</button> <button type='button' id='toSubmit' class='btn btn-success btn-sm' >" + lan.public.ok + "</button></div></div>"
     });
-    $("#vcodeResult").focus().keyup(function(a) {
+    $("#vcodeResult").focus().keyup(function (a) {
         if (a.keyCode == 13) {
             $("#toSubmit").click()
         }
     });
-    $(".bt-cancel").click(function() {
+    $(".bt-cancel").click(function () {
         layer.close(mess);
     });
-    $("#toSubmit").click(function() {
+    $("#toSubmit").click(function () {
         var a = $("#vcodeResult").val().replace(/ /g, "");
         if (a == undefined || a == "") {
             layer.msg(lan.public.input_calc_result);
@@ -2867,38 +2867,38 @@ function SafeMessage(j, h, g, f) {
     })
 }
 
-$(function() {
-    $(".fb-ico").hover(function() {
+$(function () {
+    $(".fb-ico").hover(function () {
         $(".fb-text").css({
             left: "36px",
             top: 0,
             width: "80px"
         })
-    }, function() {
+    }, function () {
         $(".fb-text").css({
             left: 0,
             width: "36px"
         })
-    }).click(function() {
+    }).click(function () {
         $(".fb-text").css({
             left: 0,
             width: "36px"
         });
         $(".zun-feedback-suggestion").show()
     });
-    $(".fb-close").click(function() {
+    $(".fb-close").click(function () {
         $(".zun-feedback-suggestion").hide()
     });
-    $(".fb-attitudes li").click(function() {
+    $(".fb-attitudes li").click(function () {
         $(this).addClass("fb-selected").siblings().removeClass("fb-selected")
     })
 });
-$("#dologin").click(function() {
+$("#dologin").click(function () {
     layer.confirm(lan.bt.loginout, {
         icon: 3,
         closeBtn: 2,
         title: "Logout"
-    }, function() {
+    }, function () {
         window.location.href = "/login?dologin=True"
     });
     return false
@@ -2943,7 +2943,7 @@ function setPassword(a) {
             });
             return
         }
-        $.post("/config?action=setPassword", "password1=" + encodeURIComponent(p1) + "&password2=" + encodeURIComponent(p2), function(b) {
+        $.post("/config?action=setPassword", "password1=" + encodeURIComponent(p1) + "&password2=" + encodeURIComponent(p2), function (b) {
             if (b.status) {
                 layer.closeAll();
                 layer.msg(b.msg, {
@@ -3001,7 +3001,7 @@ function setUserName(a) {
             return;
         }
 
-        $.post("/config?action=setUsername", "username1=" + encodeURIComponent(p1) + "&username2=" + encodeURIComponent(p2), function(b) {
+        $.post("/config?action=setUsername", "username1=" + encodeURIComponent(p1) + "&username2=" + encodeURIComponent(p2), function (b) {
             if (b.status) {
                 layer.closeAll();
                 layer.msg(b.msg, {
@@ -3040,7 +3040,7 @@ function ActionTask() {
         time: 0,
         shade: [0.3, "#000"]
     });
-    $.post("/files?action=ActionTask", "", function(b) {
+    $.post("/files?action=ActionTask", "", function (b) {
         layer.close(a);
         layer.msg(b.msg, {
             icon: b.status ? 1 : 5
@@ -3054,19 +3054,19 @@ function RemoveTask(b) {
         time: 0,
         shade: [0.3, "#000"]
     });
-    $.post("/files?action=RemoveTask", "id=" + b, function(c) {
+    $.post("/files?action=RemoveTask", "id=" + b, function (c) {
         layer.close(a);
         layer.msg(c.msg, {
             icon: c.status ? 1 : 5
         });
-    }).error(function() {
+    }).error(function () {
         layer.msg(lan.bt.task_close, { icon: 1 });
     });
 }
 
 function GetTaskList(a) {
     a = a == undefined ? 1 : a;
-    $.post("/data?action=getData", "tojs=GetTaskList&table=tasks&limit=10&p=" + a, function(g) {
+    $.post("/data?action=getData", "tojs=GetTaskList&table=tasks&limit=10&p=" + a, function (g) {
         var e = "";
         var b = "";
         var c = "";
@@ -3095,7 +3095,7 @@ function GetTaskList(a) {
 }
 
 function GetTaskCount() {
-    $.post("/ajax?action=GetTaskCount", "", function(a) {
+    $.post("/ajax?action=GetTaskCount", "", function (a) {
         if (a.status === false) {
             window.location.href = '/login?dologin=True';
             return;
@@ -3116,8 +3116,8 @@ function setSelectChecked(c, d) {
 GetTaskCount();
 
 function RecInstall() {
-	$.getScript('jquery.fly.min.js.js');
-    $.post("/ajax?action=GetSoftList", "", function(l) {
+    $.getScript('jquery.fly.min.js.js');
+    $.post("/ajax?action=GetSoftList", "", function (l) {
         var c = "";
         var g = "";
         var e = "";
@@ -3157,20 +3157,20 @@ function RecInstall() {
             shadeClose: false,
             content: "<div class='rec-install'><div class='important-title'><p><span class='glyphicon glyphicon-alert' style='color: #f39c12; margin-right: 10px;'></span>" + lan.bt.install_ps + " <a href='javascript:jump()' style='color:#20a53a'>" + lan.bt.install_s + "</a> " + lan.bt.install_s1 + "</p></div><div class='rec-box'><h3>" + lan.bt.install_lnmp + "</h3><div class='rec-box-con'><ul class='rec-list'>" + c + "</ul><p class='fangshi'>" + lan.bt.install_type + "：<label data-title='" + lan.bt.install_rpm_title + "' style='margin-right:0'>" + lan.bt.install_rpm + "<input type='checkbox' checked></label><label data-title='" + lan.bt.install_src_title + "'>" + lan.bt.install_src + "<input type='checkbox'></label></p><div class='onekey'>" + lan.bt.install_key + "</div></div></div><div class='rec-box' style='margin-left:16px'><h3>LAMP</h3><div class='rec-box-con'><ul class='rec-list'>" + g + "</ul><p class='fangshi'>" + lan.bt.install_type + "：<label data-title='" + lan.bt.install_rpm_title + "' style='margin-right:0'>" + lan.bt.install_rpm + "<input type='checkbox' checked></label><label data-title='" + lan.bt.install_src_title + "'>" + lan.bt.install_src + "<input type='checkbox'></label></p><div class='onekey'>" + lan.public.onclick_install + "</div></div></div></div>"
         });
-        $(".fangshi input").click(function() {
+        $(".fangshi input").click(function () {
             $(this).attr("checked", "checked").parent().siblings().find("input").removeAttr("checked")
         });
-        $(".sl-s-info").change(function() {
+        $(".sl-s-info").change(function () {
             var p = $(this).find("option:selected").text();
             var n = $(this).attr("id");
             p = p.toLowerCase();
             $(this).parents("li").find("input").attr("data-info", p)
         });
-        $("#apache_select_PHP").change(function() {
+        $("#apache_select_PHP").change(function () {
             var n = $(this).val();
             j(n, "apache_select_", "apache_")
         });
-        $("#select_PHP").change(function() {
+        $("#select_PHP").change(function () {
             var n = $(this).val();
             j(n, "select_", "data_")
         });
@@ -3196,12 +3196,12 @@ function RecInstall() {
             $("#" + r + "phpMyAdmin option[value='" + n + "']").attr("selected", "selected").siblings().removeAttr("selected");
             $("#" + r + "_phpMyAdmin").attr("data-info", "phpmyadmin " + n)
         }
-        $("#select_MySQL,#apache_select_MySQL").change(function() {
+        $("#select_MySQL,#apache_select_MySQL").change(function () {
             var n = $(this).val();
             a(n)
         });
 
-        $("#apache_select_Apache").change(function() {
+        $("#apache_select_Apache").change(function () {
             var apacheVersion = $(this).val();
             if (apacheVersion == '2.2') {
                 layer.msg(lan.bt.install_apache22);
@@ -3210,7 +3210,7 @@ function RecInstall() {
             }
         });
 
-        $("#apache_select_PHP").change(function() {
+        $("#apache_select_PHP").change(function () {
             var apacheVersion = $("#apache_select_Apache").val();
             var phpVersion = $(this).val();
             if (apacheVersion == '2.2') {
@@ -3267,7 +3267,7 @@ function RecInstall() {
             }
         }
         var de = null;
-        $(".onekey").click(function() {
+        $(".onekey").click(function () {
             if (de) return;
             var v = $(this).prev().find("input").eq(0).prop("checked") ? "1" : "0";
             var r = $(this).parents(".rec-box-con").find(".rec-list li").length;
@@ -3299,18 +3299,18 @@ function RecInstall() {
                     data: s,
                     type: "POST",
                     async: false,
-                    success: function(y) {}
+                    success: function (y) { }
                 });
             }
             layer.close(loadT);
             layer.close(k);
-            setTimeout(function() {
+            setTimeout(function () {
                 GetTaskCount()
             }, 2000);
             layer.msg(lan.bt.install_ok, {
                 icon: 1
             });
-            setTimeout(function() {
+            setTimeout(function () {
                 task()
             }, 1000)
         });
@@ -3324,20 +3324,20 @@ function jump() {
 }
 
 function InstallTips() {
-    $(".fangshi label").mouseover(function() {
+    $(".fangshi label").mouseover(function () {
         var a = $(this).attr("data-title");
         layer.tips(a, this, {
             tips: [1, "#787878"],
             time: 0
         })
-    }).mouseout(function() {
+    }).mouseout(function () {
         $(".layui-layer-tips").remove()
     })
 }
 
 function fly(a) {
     var b = $("#task").offset();
-    $("." + a).click(function(d) {
+    $("." + a).click(function (d) {
         var e = $(this);
         var c = $('<span class="yuandian"></span>');
         c.fly({
@@ -3351,7 +3351,7 @@ function fly(a) {
                 width: 0,
                 height: 0
             },
-            onEnd: function() {
+            onEnd: function () {
                 layer.closeAll();
                 layer.msg(lan.bt.task_add, {
                     icon: 1
@@ -3365,7 +3365,7 @@ function fly(a) {
 
 //检查选中项
 function checkSelect() {
-    setTimeout(function() {
+    setTimeout(function () {
         var checkList = $("input[name=id]");
         var count = 0;
         for (var i = 0; i < checkList.length; i++) {
@@ -3414,16 +3414,16 @@ function listOrder(skey, type, obj) {
 //去关联列表
 function GetBtpanelList() {
     var con = '';
-    $.post("/config?action=GetPanelList", function(rdata) {
+    $.post("/config?action=GetPanelList", function (rdata) {
         for (var i = 0; i < rdata.length; i++) {
             con += '<h3 class="mypcip mypcipnew" style="opacity:.6" data-url="' + rdata[i].url + '" data-user="' + rdata[i].username + '" data-pw="' + rdata[i].password + '"><span class="f14 cw">' + rdata[i].title + '</span><em class="btedit" onclick="bindBTPanel(0,\'c\',\'' + rdata[i].title + '\',\'' + rdata[i].id + '\',\'' + rdata[i].url + '\',\'' + rdata[i].username + '\',\'' + rdata[i].password + '\')"></em></h3>'
         }
         $("#newbtpc").html(con);
-        $(".mypcipnew").hover(function() {
+        $(".mypcipnew").hover(function () {
             $(this).css("opacity", "1");
-        }, function() {
+        }, function () {
             $(this).css("opacity", ".6");
-        }).click(function() {
+        }).click(function () {
             $("#btpanelform").remove();
             var murl = $(this).attr("data-url");
             var user = $(this).attr("data-user");
@@ -3446,14 +3446,14 @@ function GetBtpanelList() {
 			</form><iframe name="btpfrom" src=""></iframe></div>';
             $("body").append(loginForm);
             layer.msg(lan.bt.panel_open, { icon: 16, shade: [0.3, '#000'], time: 1000 });
-            setTimeout(function() {
+            setTimeout(function () {
                 $("#toBtpanel").submit();
             }, 500);
-            setTimeout(function() {
+            setTimeout(function () {
                 window.open(murl);
             }, 1000);
         });
-        $(".btedit").click(function(e) {
+        $(".btedit").click(function (e) {
             e.stopPropagation();
         });
     })
@@ -3492,7 +3492,7 @@ function bindBTPanel(a, type, ip, btid, url, user, pw) {
             gurl = "/config?action=SetPanelInfo";
             data = data + "&id=" + btid;
         }
-        $.post(gurl, data, function(b) {
+        $.post(gurl, data, function (b) {
             if (b.status) {
                 layer.closeAll();
                 layer.msg(b.msg, { icon: 1 });
@@ -3526,12 +3526,12 @@ function bindBTPanel(a, type, ip, btid, url, user, pw) {
 		<div class='line'><ul class='help-info-text c7'><li>" + lan.bt.panel_ps_1 + "</li><li>" + lan.bt.panel_ps_2 + "</li><li>" + lan.bt.panel_ps_3 + "</li></ul></div>\
 		<div class='bt-form-submit-btn'><button type='button' class='btn btn-danger btn-sm' onclick=\"layer.closeAll()\">" + lan.public.close + "</button> " + btn + "</div></div>"
     });
-    $("#btaddress").on("input", function() {
+    $("#btaddress").on("input", function () {
         var str = $(this).val();
         var isip = /([\w-]+\.){2,6}\w+/;
         var iptext = str.match(isip);
         if (iptext) $("#bttitle").val(iptext[0]);
-    }).blur(function() {
+    }).blur(function () {
         var str = $(this).val();
         var isip = /([\w-]+\.){2,6}\w+/;
         var iptext = str.match(isip);
@@ -3540,7 +3540,7 @@ function bindBTPanel(a, type, ip, btid, url, user, pw) {
 }
 //删除快捷登录
 function bindBTPaneldel(id) {
-    $.post("/config?action=DelPanelInfo", "id=" + id, function(rdata) {
+    $.post("/config?action=DelPanelInfo", "id=" + id, function (rdata) {
         layer.closeAll();
         layer.msg(rdata.msg, { icon: rdata.status ? 1 : 2 });
         GetBtpanelList();
@@ -3549,7 +3549,7 @@ function bindBTPaneldel(id) {
 
 function getSpeed(sele) {
     if (!$(sele)) return;
-    $.get('/ajax?action=GetSpeed', function(speed) {
+    $.get('/ajax?action=GetSpeed', function (speed) {
         if (speed.title === null) return;
         mspeed = '';
         if (speed.speed > 0) {
@@ -3563,7 +3563,7 @@ function getSpeed(sele) {
         $(sele).parents(".layui-layer").css({ "margin-left": "-100px" });
 
         $(sele).html(body);
-        setTimeout(function() {
+        setTimeout(function () {
             getSpeed(sele);
         }, 1000);
     });
@@ -3589,7 +3589,7 @@ function messagebox() {
 					</div>\
 				</div>'
     });
-    $(".bt-w-menu p").click(function() {
+    $(".bt-w-menu p").click(function () {
         $(this).addClass("bgw").siblings().removeClass("bgw");
     });
     tasklist();
@@ -3597,7 +3597,7 @@ function messagebox() {
 
 //取执行日志
 function execLog() {
-    $.post('/files?action=GetExecLog', {}, function(logs) {
+    $.post('/files?action=GetExecLog', {}, function (logs) {
         var lbody = '<textarea readonly="" style="margin: 0px;width: 551px;height: 520px;background-color: #333;color:#fff; padding:0 5px" id="exec_log">' + logs + '</textarea>';
         $(".taskcon").html(lbody);
         var ob = document.getElementById('exec_log');
@@ -3607,14 +3607,14 @@ function execLog() {
 
 function get_msg_data(a, fun) {
     a = a == undefined ? 1 : a;
-    $.post("/data?action=getData", "tojs=remind&table=tasks&result=2,4,6,8&limit=10&search=1&p=" + a, function(g) {
+    $.post("/data?action=getData", "tojs=remind&table=tasks&result=2,4,6,8&limit=10&search=1&p=" + a, function (g) {
         fun(g)
     })
 }
 
 
 function remind(a) {
-    get_msg_data(a, function(g) {
+    get_msg_data(a, function (g) {
         var e = "";
         var f = false;
         var task_count = 0;
@@ -3623,7 +3623,7 @@ function remind(a) {
                 task_count++;
                 continue;
             }
-            e += '<tr><td><input type="checkbox"></td><td><div class="titlename c3" title="' + g.data[d].name + g.data[d].addtime + lan.bt.task_ok + lan.bt.time + (g.data[d].end - g.data[d].start) + lan.bt.s +'">' + g.data[d].name + g.data[d].addtime +'</span><span class="rs-status">【' + lan.bt.task_ok + '】<span><span class="rs-time">' + lan.bt.time + (g.data[d].end - g.data[d].start) + lan.bt.s + '</span></div></td><td class="text-right c3">' + g.data[d].addtime + '</td></tr>'
+            e += '<tr><td><input type="checkbox"></td><td><div class="titlename c3" title="' + g.data[d].name + g.data[d].addtime + lan.bt.task_ok + lan.bt.time + (g.data[d].end - g.data[d].start) + lan.bt.s + '">' + g.data[d].name + g.data[d].addtime + '</span><span class="rs-status">【' + lan.bt.task_ok + '】<span><span class="rs-time">' + lan.bt.time + (g.data[d].end - g.data[d].start) + lan.bt.s + '</span></div></td><td class="text-right c3">' + g.data[d].addtime + '</td></tr>'
         }
         var con = '<div class="divtable"><table class="table table-hover">\
 					<thead><tr><th width="20"><input id="Rs-checkAll" type="checkbox" onclick="RscheckSelect()"></th><th>' + lan.bt.task_name + '</th><th class="text-right">' + lan.bt.task_time + '</th></tr></thead>\
@@ -3639,7 +3639,7 @@ function remind(a) {
         $(".msg_count").text(parseInt(msg_count) - task_count);
         $(".taskcon").html(con);
         $("#taskPage").html(g.page);
-        $("#Rs-checkAll").click(function() {
+        $("#Rs-checkAll").click(function () {
             if ($(this).prop("checked")) {
                 $("#remind").find("input").prop("checked", true)
             } else {
@@ -3660,7 +3660,7 @@ function GetReloads() {
         return
     }
     if (speed) return;
-    speed = setInterval(function() {
+    speed = setInterval(function () {
         var mm = $("#taskList").html()
         if (mm == undefined || mm.indexOf(lan.bt.task_list) == -1) {
             clearInterval(speed);
@@ -3669,7 +3669,7 @@ function GetReloads() {
             return
         }
         a++;
-        $.post("/files?action=GetTaskSpeed", "", function(h) {
+        $.post("/files?action=GetTaskSpeed", "", function (h) {
             if (h.task == undefined) {
                 $(".cmdlist").html(lan.bt.task_not_list);
                 return
@@ -3713,13 +3713,13 @@ function GetReloads() {
             } catch (e) {
                 return;
             }
-        }).error(function() {});
+        }).error(function () { });
     }, 1000);
 }
 
 //检查选中项
 function RscheckSelect() {
-    setTimeout(function() {
+    setTimeout(function () {
         var checkList = $("#remind").find("input");
         var count = 0;
         for (var i = 0; i < checkList.length; i++) {
@@ -3738,7 +3738,7 @@ function tasklist(a) {
     var con = '<ul class="cmdlist"></ul><span style="position:  fixed;bottom: 13px;">' + lan.public.task_long_time_not_exec + '</span>';
     $(".taskcon").html(con);
     a = a == undefined ? 1 : a;
-    $.post("/data?action=getData", "tojs=GetTaskList&table=tasks&limit=10&p=" + a, function(g) {
+    $.post("/data?action=getData", "tojs=GetTaskList&table=tasks&limit=10&p=" + a, function (g) {
         var e = "";
         var b = "";
         var c = "";
@@ -3765,7 +3765,7 @@ function tasklist(a) {
 
         $(".task_count").text(task_count);
 
-        get_msg_data(1, function(d) {
+        get_msg_data(1, function (d) {
             var msg_count = d.page.match(/\'Pcount\'>.+<\/span>/)[0].replace(/[^0-9]/ig, "");
             $(".msg_count").text(parseInt(msg_count));
         })
@@ -3778,7 +3778,7 @@ function tasklist(a) {
 
 //检查登陆状态
 function check_login() {
-    $.post('/ajax?action=CheckLogin', {}, function(rdata) {
+    $.post('/ajax?action=CheckLogin', {}, function (rdata) {
         if (rdata === true) return;
     });
 }
@@ -3786,7 +3786,7 @@ function check_login() {
 
 //登陆跳转
 function to_login() {
-    layer.confirm(lan.public.login_expire, { title: lan.public.session_expire, icon: 2, closeBtn: 1, shift: 5 }, function() {
+    layer.confirm(lan.public.login_expire, { title: lan.public.session_expire, icon: 2, closeBtn: 1, shift: 5 }, function () {
         location.reload();
     });
 }
@@ -3813,38 +3813,38 @@ var Term = {
     term: null,
     term_box: null,
     ssh_info: null,
-    last_body:false,
-	last_cd:null,
-	config:{
-	   cols:0,
-	   rows:0,
-	   fontSize:12
-	},
-	
-	// 	缩放尺寸
-    detectZoom:(function(){
+    last_body: false,
+    last_cd: null,
+    config: {
+        cols: 0,
+        rows: 0,
+        fontSize: 12
+    },
+
+    // 	缩放尺寸
+    detectZoom: (function () {
         var ratio = 0,
-          screen = window.screen,
-          ua = navigator.userAgent.toLowerCase();
+            screen = window.screen,
+            ua = navigator.userAgent.toLowerCase();
         if (window.devicePixelRatio !== undefined) {
-          ratio = window.devicePixelRatio;
+            ratio = window.devicePixelRatio;
         }
         else if (~ua.indexOf('msie')) {
-          if (screen.deviceXDPI && screen.logicalXDPI) {
-            ratio = screen.deviceXDPI / screen.logicalXDPI;
-          }
+            if (screen.deviceXDPI && screen.logicalXDPI) {
+                ratio = screen.deviceXDPI / screen.logicalXDPI;
+            }
         }
         else if (window.outerWidth !== undefined && window.innerWidth !== undefined) {
-          ratio = window.outerWidth / window.innerWidth;
+            ratio = window.outerWidth / window.innerWidth;
         }
-    
-        if (ratio){
-          ratio = Math.round(ratio * 100);
+
+        if (ratio) {
+            ratio = Math.round(ratio * 100);
         }
         return ratio;
     })(),
     //连接websocket
-    connect: function() {
+    connect: function () {
         if (!Term.bws || Term.bws.readyState == 3 || Term.bws.readyState == 2) {
             //连接
             ws_url = (window.location.protocol === 'http:' ? 'ws://' : 'wss://') + window.location.host + Term.route;
@@ -3856,22 +3856,22 @@ var Term = {
             Term.bws.addEventListener('message', Term.on_message);
             Term.bws.addEventListener('close', Term.on_close);
             Term.bws.addEventListener('error', Term.on_error);
-            Term.bws.addEventListener('open',Term.on_open);
+            Term.bws.addEventListener('open', Term.on_open);
 
             //if (Term.ssh_info) Term.send(JSON.stringify(Term.ssh_info))
         }
     },
     //连接服务器成功
-	on_open:function(ws_event){
-		Term.send(JSON.stringify(Term.ssh_info || {}))
-		Term.term.FitAddon.fit();
-		Term.resize();
-		var f_path = $("#fileInputPath").val();
-		if(f_path){
-			Term.last_cd = "cd " + f_path;
-			Term.send(Term.last_cd  + "\n");
-		}
-	},
+    on_open: function (ws_event) {
+        Term.send(JSON.stringify(Term.ssh_info || {}))
+        Term.term.FitAddon.fit();
+        Term.resize();
+        var f_path = $("#fileInputPath").val();
+        if (f_path) {
+            Term.last_cd = "cd " + f_path;
+            Term.send(Term.last_cd + "\n");
+        }
+    },
 
     //服务器消息事件
     // on_message: function(ws_event) {
@@ -3892,71 +3892,71 @@ var Term = {
     //     }
     // },
     on_message: function (ws_event) {
-		result = ws_event.data;
-		if(Term.last_cd){
-			if(result.indexOf(Term.last_cd) != -1 && result.length - Term.last_cd.length < 3) {
-				Term.last_cd = null;
-				return;
-			}
-		}
+        result = ws_event.data;
+        if (Term.last_cd) {
+            if (result.indexOf(Term.last_cd) != -1 && result.length - Term.last_cd.length < 3) {
+                Term.last_cd = null;
+                return;
+            }
+        }
         if (result === "\rServer connection failed!\r" || result == "\rWrong user name or password!\r") {
             Term.close();
             return;
-		}
-		if(result.length > 1 && Term.last_body === false){
-			Term.last_body = true;
-		}
+        }
+        if (result.length > 1 && Term.last_body === false) {
+            Term.last_body = true;
+        }
         Term.term.write(result);
         if (result == '\r\n登出\r\n' || result == '\r\n注销\r\n' || result == '注销\r\n' || result == '登出\r\n' || result == '\r\nlogout\r\n' || result == 'logout\r\n') {
             setTimeout(function () {
-				layer.close(Term.term_box);
-				Term.term.dispose();
+                layer.close(Term.term_box);
+                Term.term.dispose();
             }, 500);
             Term.close();
             Term.bws = null;
         }
-	},
+    },
     //websocket关闭事件
-    on_close: function(ws_event) {
+    on_close: function (ws_event) {
         Term.bws = null;
     },
 
     //websocket错误事件
     // on_error: function(ws_event) {
     //     if(ws_event.target.readyState === 3){
-	// 		var msg = 'Error: unable to create websocket connection, please close 【Developer mode】 on the settings page';
-	// 		layer.msg(msg,{time:5000})
-	// 		if(Term.state === 3) return
-	// 		Term.term.write(msg)
-	// 		Term.state = 3;
-	// 	}else{
-	// 		console.log(ws_event)
-	// 	}
+    // 		var msg = 'Error: unable to create websocket connection, please close 【Developer mode】 on the settings page';
+    // 		layer.msg(msg,{time:5000})
+    // 		if(Term.state === 3) return
+    // 		Term.term.write(msg)
+    // 		Term.state = 3;
+    // 	}else{
+    // 		console.log(ws_event)
+    // 	}
     // },
     on_error: function (ws_event) {
-		if(ws_event.target.readyState === 3){
-			if(Term.state === 3) return
-			Term.term.write(msg)
-			Term.state = 3;
-		}else{
-			console.log(ws_event)
-		}
+        if (ws_event.target.readyState === 3) {
+            if (Term.state === 3) return
+            Term.term.write(msg)
+            Term.state = 3;
+        } else {
+            console.log(ws_event)
+        }
     },
 
     //关闭连接
     close: function () {
-		if(Term.bws){
-			Term.bws.close();
-		}
-	},
+        if (Term.bws) {
+            Term.bws.close();
+        }
+    },
 
     resize: function () {
-		setTimeout(function(){
-			$("#term").height($(".term_box_all .layui-layer-content").height()-18)
-			Term.term.FitAddon.fit()
-			Term.send(JSON.stringify({resize:1,rows:Term.term.rows,cols:Term.term.cols}));
-	    	Term.term.focus();
-		},200)
+        setTimeout(function () {
+            $("#term").height($(".term_box_all .layui-layer-content").height() - 18)
+            Term.term.FitAddon.fit()
+            Term.send(JSON.stringify({ resize: 1, rows: Term.term.rows, cols: Term.term.cols }));
+            Term.term.focus();
+        }, 200)
     },
     // resize: function() {
     //     var m_width = 100;
@@ -3971,7 +3971,7 @@ var Term = {
     //@param event 唯一事件名称
     //@param data 发送的数据
     //@param collback 服务器返回结果时回调的函数,运行完后将被回收
-    send: function(data, num) {
+    send: function (data, num) {
         //如果没有连接，则尝试连接服务器
         if (!Term.bws || Term.bws.readyState == 3 || Term.bws.readyState == 2) {
             Term.connect();
@@ -3981,11 +3981,11 @@ var Term = {
         if (Term.bws.readyState === 1) {
             Term.bws.send(data);
         } else {
-        	if(Term.state === 3) return;
+            if (Term.state === 3) return;
             if (!num) num = 0;
             if (num < 5) {
                 num++;
-                setTimeout(function() { Term.send(data, num++); }, 100)
+                setTimeout(function () { Term.send(data, num++); }, 100)
             }
         }
     },
@@ -4011,9 +4011,9 @@ var Term = {
     //             closeBtn: 2,
     //             shadeClose: false,
     //             content: '<link rel="stylesheet" href="/static/build/xterm.min.css" />\
-	// 					<link rel="stylesheet" href="/static/build/addons/fullscreen/fullscreen.min.css" />\
-	//             <a class="btlink" onclick="show_ssh_login(1)" style="position: fixed;margin-left: 83px;margin-top: -30px;">[' + lan.public.set + ']</a>\
-	//             <div class="term-box" style="background-color:#000"><div id="term"></div></div>',
+    // 					<link rel="stylesheet" href="/static/build/addons/fullscreen/fullscreen.min.css" />\
+    //             <a class="btlink" onclick="show_ssh_login(1)" style="position: fixed;margin-left: 83px;margin-top: -30px;">[' + lan.public.set + ']</a>\
+    //             <div class="term-box" style="background-color:#000"><div id="term"></div></div>',
     //             cancel: function () {
     //                 Term.term.destroy();
     //             },
@@ -4036,66 +4036,66 @@ var Term = {
 
     // },
     run: function (ssh_info) {
-		if($("#panel_debug").attr("data") == 'True') {
-			layer.msg('Error: unable to create websocket connection, please close 【Developer mode】 on the settings page!',{icon:2,time:5000});
-			return;
-		}
+        if ($("#panel_debug").attr("data") == 'True') {
+            layer.msg('Error: unable to create websocket connection, please close 【Developer mode】 on the settings page!', { icon: 2, time: 5000 });
+            return;
+        }
         var loadT = layer.msg('It is loading the files required by the terminal. Please wait...', { icon: 16, time: 0, shade: 0.3 });
         loadScript([
-        	"/static/js/xterm.js"
-        ],function(){
-        	layer.close(loadT);
-        	Term.term = new Terminal({
-				rendererType: "canvas",
-				cols: 100, 
-				rows: 34,
-				fontSize:15, 
-				screenKeys: true, 
-				useStyle: true ,
-				});
-			Term.term.setOption('cursorBlink', true);
-			Term.last_body = false;
-	        Term.term_box = layer.open({
-	            type: 1,
-	            title: lan.public.terminal,
-	            area: ['920px', '630px'],
-	            closeBtn: 2,
-	            shadeClose: false,
-	            skin:'term_box_all',
-	            content: '<link rel="stylesheet" href="/static/css/xterm.css" />\
+            "/static/js/xterm.js"
+        ], function () {
+            layer.close(loadT);
+            Term.term = new Terminal({
+                rendererType: "canvas",
+                cols: 100,
+                rows: 34,
+                fontSize: 15,
+                screenKeys: true,
+                useStyle: true,
+            });
+            Term.term.setOption('cursorBlink', true);
+            Term.last_body = false;
+            Term.term_box = layer.open({
+                type: 1,
+                title: lan.public.terminal,
+                area: ['920px', '630px'],
+                closeBtn: 2,
+                shadeClose: false,
+                skin: 'term_box_all',
+                content: '<link rel="stylesheet" href="/static/css/xterm.css" />\
 	            <div class="term-box" style="background-color:#000" id="term"></div>',
-	            cancel: function (index,lay) {
-					bt.confirm({msg:'Closing the SSH session, the command in progress in the current command line session may be aborted. Continute?',title: "Cofirm to close the SSH session?"},function(ix){
-						Term.term.dispose();
-						layer.close(index);
-						layer.close(ix);
-						Term.close();
-					});
-					return false;
-	            },
-	            success: function () {
-	                $('.term_box_all').css('background-color','#000');
-					Term.term.open(document.getElementById('term'));
-					Term.term.FitAddon = new FitAddon.FitAddon();
-					Term.term.loadAddon(Term.term.FitAddon);
-					Term.term.WebLinksAddon = new WebLinksAddon.WebLinksAddon()
-					Term.term.loadAddon(Term.term.WebLinksAddon)
-	            }
-	        });
-	        Term.term.onData(function (data) {
-	            try {
-	                Term.bws.send(data)
-	            } catch (e) {
-	                Term.term.write('\r\nThe connection is lost and you are trying to reconnect!\r\n')
-	                Term.connect()
-	            }
-	        });
-	        if (ssh_info) Term.ssh_info = ssh_info
-	        Term.connect();
+                cancel: function (index, lay) {
+                    bt.confirm({ msg: 'Closing the SSH session, the command in progress in the current command line session may be aborted. Continute?', title: "Cofirm to close the SSH session?" }, function (ix) {
+                        Term.term.dispose();
+                        layer.close(index);
+                        layer.close(ix);
+                        Term.close();
+                    });
+                    return false;
+                },
+                success: function () {
+                    $('.term_box_all').css('background-color', '#000');
+                    Term.term.open(document.getElementById('term'));
+                    Term.term.FitAddon = new FitAddon.FitAddon();
+                    Term.term.loadAddon(Term.term.FitAddon);
+                    Term.term.WebLinksAddon = new WebLinksAddon.WebLinksAddon()
+                    Term.term.loadAddon(Term.term.WebLinksAddon)
+                }
+            });
+            Term.term.onData(function (data) {
+                try {
+                    Term.bws.send(data)
+                } catch (e) {
+                    Term.term.write('\r\nThe connection is lost and you are trying to reconnect!\r\n')
+                    Term.connect()
+                }
+            });
+            if (ssh_info) Term.ssh_info = ssh_info
+            Term.connect();
         });
 
     },
-    reset_login: function() {
+    reset_login: function () {
         var ssh_info = {
             data: JSON.stringify({
                 host: $("input[name='host']").val(),
@@ -4104,7 +4104,7 @@ var Term = {
                 password: $("input[name='password']").val()
             })
         }
-        $.post('/term_open', ssh_info, function(rdata) {
+        $.post('/term_open', ssh_info, function (rdata) {
             if (rdata.status === false) {
                 layer.msg(rdata.msg);
                 return;
@@ -4122,11 +4122,11 @@ function web_shell() {
 }
 
 socket = {
-    emit: function(data, data2) {
+    emit: function (data, data2) {
         if (data === 'webssh') {
             data = data2
         }
-        if (typeof(data) === 'object') {
+        if (typeof (data) === 'object') {
             return;
         }
         Term.send(data);
@@ -4176,7 +4176,7 @@ function show_ssh_login(is_config) {
                             <div class="line " style="margin-left: -40px;"><span class="tname">Method</span><div class="info-r "><button class="ssh_check_s2" id="pass_check" onclick="pass_check()">Password</button><button id="rsa_check" class="ssh_check_s1" onclick="rsa_check()">Key</button></div></div>\
                             <div class="line ssh_passwd" style="margin-left: -40px;"><span class="tname">Password</span><div class="info-r "><input name="ssh_passwd" readonly="readonly" class="bt-input-text mr5" type="password" style="width:330px" value="" autocomplete="off"></div></div>\
                             <div class="line ssh_pkey" style="display:none;margin-left: -40px;"><span class="tname">Key</span><div class="info-r "><textarea name="ssh_pkey" class="bt-input-text mr5" style="width:330px;height:80px;" ></textarea></div></div>\
-                            <div class="line " style="margin-left: -40px;"><span class="tname"></span><div class="info-r "><input style="margin-top: 1px;width: 16px;" name="ssh_is_save" id="ssh_is_save" class="bt-input-text mr5" type="checkbox" ><label style="position: absolute;margin-left: 5px;" for="ssh_is_save">Remember password, the next time you use the aaPanel terminal will automatically log in</label></div></div>\
+                            <div class="line " style="margin-left: -40px;"><span class="tname"></span><div class="info-r "><input style="margin-top: 1px;width: 16px;" name="ssh_is_save" id="ssh_is_save" class="bt-input-text mr5" type="checkbox" ><label style="position: absolute;margin-left: 5px;" for="ssh_is_save">Remember password, the next time you use the aaipanel terminal will automatically log in</label></div></div>\
                             <p style="color: red;margin-top: 10px;text-align: center;margin-left: -62px;">Only support login to this server</p>\
                             <div class="bt-form-submit-btn"><button type="button" class="btn btn-sm btn-danger" onclick="' + (is_config ? 'layer.close(ssh_login)' : 'layer.closeAll()') + '">Close</button><button type="button" class="btn btn-sm btn-success ssh-login" onclick="send_ssh_info()">' + (is_config ? 'Confirm' : 'Login SSH') + '</button></div></div>';
     ssh_login = layer.open({
@@ -4193,7 +4193,7 @@ function show_ssh_login(is_config) {
         $("input[name='ssh_passwd']").removeAttr('readonly');
         $("input[name='ssh_passwd']").focus();
 
-        $("input[name='ssh_passwd']").keydown(function(e) {
+        $("input[name='ssh_passwd']").keydown(function (e) {
             if (e.keyCode == 13) {
                 $('.ssh-login').click();
             }
@@ -4261,7 +4261,7 @@ function send_ssh_info() {
     }
 
     var loadT = layer.msg('Trying to log in to SSH...', { icon: 16, time: 0, shade: 0.3 });
-    $.post("/term_open", { data: JSON.stringify(pdata) }, function() {
+    $.post("/term_open", { data: JSON.stringify(pdata) }, function () {
         layer.close(loadT)
         Term.send('reset_connect');
         layer.close(ssh_login)
@@ -4274,21 +4274,21 @@ acme = {
     speed_msg: "<pre style='margin-bottom: 0px;height:250px;text-align: left;background-color: #000;color: #fff;white-space: pre-wrap;' id='create_lst'>[MSG]</pre>",
     loadT: null,
     //获取订单列表
-    get_orders: function(callback) {
-        acme.request('get_orders', {}, function(rdata) {
+    get_orders: function (callback) {
+        acme.request('get_orders', {}, function (rdata) {
             callback(rdata)
         }, 'Getting order list...');
     },
     //取指定订单
-    get_find: function(index, callback) {
-        acme.request('get_order_find', { index: index }, function(rdata) {
+    get_find: function (index, callback) {
+        acme.request('get_order_find', { index: index }, function (rdata) {
             callback(rdata)
         }, 'Getting order information...')
     },
 
     //下载指定证书包
-    download_cert: function(index, callback) {
-        acme.request('update_zip', { index: index }, function(rdata) {
+    download_cert: function (index, callback) {
+        acme.request('update_zip', { index: index }, function (rdata) {
             if (!rdata.status) {
                 bt.msg(rdata);
                 return;
@@ -4303,54 +4303,54 @@ acme = {
     },
 
     //删除订单
-    remove: function(index, callback) {
-        acme.request('remove_order', { index: index }, function(rdata) {
+    remove: function (index, callback) {
+        acme.request('remove_order', { index: index }, function (rdata) {
             bt.msg(rdata);
             if (callback) callback(rdata)
         });
     },
 
     //吊销证书
-    revoke: function(index, callback) {
-        acme.request('revoke_order', { index: index }, function(rdata) {
+    revoke: function (index, callback) {
+        acme.request('revoke_order', { index: index }, function (rdata) {
             bt.msg(rdata);
             if (callback) callback(rdata)
         }, 'Revoking certificate...');
     },
 
     //验证域名(手动DNS申请)
-    auth_domain: function(index, callback) {
-        acme.show_speed_window('Verifying DNS...', function() {
-            acme.request('apply_dns_auth', { index: index }, function(rdata) {
+    auth_domain: function (index, callback) {
+        acme.show_speed_window('Verifying DNS...', function () {
+            acme.request('apply_dns_auth', { index: index }, function (rdata) {
                 callback(rdata)
             }, false);
         });
     },
 
     //取证书基本信息
-    get_cert_init: function(pem_file, siteName, callback) {
-        acme.request('get_cert_init_api', { pem_file: pem_file, siteName: siteName }, function(cert_init) {
+    get_cert_init: function (pem_file, siteName, callback) {
+        acme.request('get_cert_init_api', { pem_file: pem_file, siteName: siteName }, function (cert_init) {
             callback(cert_init);
         }, 'Getting certificate information...');
     },
 
     //显示进度
-    show_speed: function() {
+    show_speed: function () {
         bt.send('get_lines', 'ajax/get_lines', {
             num: 10,
             filename: "/www/server/panel/logs/letsencrypt.log"
-        }, function(rdata) {
+        }, function (rdata) {
             if ($("#create_lst").text() === "") return;
             if (rdata.status === true) {
                 $("#create_lst").text(rdata.msg);
                 $("#create_lst").scrollTop($("#create_lst")[0].scrollHeight);
             }
-            setTimeout(function() { acme.show_speed(); }, 1000);
+            setTimeout(function () { acme.show_speed(); }, 1000);
         });
     },
 
     //显示进度窗口
-    show_speed_window: function(msg, callback) {
+    show_speed_window: function (msg, callback) {
         acme.loadT = layer.open({
             title: false,
             type: 1,
@@ -4359,8 +4359,8 @@ acme = {
             area: "500px",
             offset: "30%",
             content: acme.speed_msg.replace('[MSG]', msg),
-            success: function(layers, index) {
-                setTimeout(function() {
+            success: function (layers, index) {
+                setTimeout(function () {
                     acme.show_speed();
                 }, 1000);
                 if (callback) callback();
@@ -4373,8 +4373,8 @@ acme = {
     //auth_type 验证类型 dns/http
     //auth_to 验证路径 网站根目录或dnsapi
     //auto_wildcard 是否自动组合通配符 1.是 0.否 默认0
-    apply_cert: function(domains, auth_type, auth_to, auto_wildcard, callback) {
-        acme.show_speed_window('Applying for a certificate...', function() {
+    apply_cert: function (domains, auth_type, auth_to, auto_wildcard, callback) {
+        acme.show_speed_window('Applying for a certificate...', function () {
             if (auto_wildcard === undefined) auto_wildcard = '0'
             pdata = {
                 domains: JSON.stringify(domains),
@@ -4385,43 +4385,43 @@ acme = {
 
             if (acme.id) pdata['id'] = acme.id;
             if (acme.siteName) pdata['siteName'] = acme.siteName;
-            acme.request('apply_cert_api', pdata, function(rdata) {
+            acme.request('apply_cert_api', pdata, function (rdata) {
                 callback(rdata);
             }, false);
         });
     },
 
     //续签证书
-    renew: function(index, callback) {
-        acme.show_speed_window('Renewing certificate...', function() {
-            acme.request('renew_cert', { index: index }, function(rdata) {
+    renew: function (index, callback) {
+        acme.show_speed_window('Renewing certificate...', function () {
+            acme.request('renew_cert', { index: index }, function (rdata) {
                 callback(rdata)
             }, false);
         });
     },
 
     //获取用户信息
-    get_account_info: function(callback) {
-        acme.request('get_account_info', {}, function(rdata) {
+    get_account_info: function (callback) {
+        acme.request('get_account_info', {}, function (rdata) {
             callback(rdata)
         });
     },
 
     //设置用户信息
-    set_account_info: function(account, callback) {
-        acme.request('set_account_info', account, function(rdata) {
+    set_account_info: function (account, callback) {
+        acme.request('set_account_info', account, function (rdata) {
             bt.msg(rdata)
             if (callback) callback(rdata)
         });
     },
 
     //发送到请求
-    request: function(action, pdata, callback, msg) {
+    request: function (action, pdata, callback, msg) {
         if (msg == undefined) msg = 'Processing, please wait...';
         if (msg) {
             var loadT = layer.msg(msg, { icon: 16, time: 0, shade: 0.3 });
         }
-        $.post("/acme?action=" + action, pdata, function(res) {
+        $.post("/acme?action=" + action, pdata, function (res) {
             if (msg) layer.close(loadT)
             if (callback) callback(res)
         });

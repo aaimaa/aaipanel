@@ -73,7 +73,7 @@ class config:
         # 自定义邮件
         self.mail.qq_stmp_insert(get.email.strip(), get.stmp_pwd.strip(), get.hosts.strip(),get.port.strip())
         # 测试发送
-        if self.mail.qq_smtp_send(get.email.strip(), 'aaPanel Alert Test Email', 'aaPanel Alert Test Email'):
+        if self.mail.qq_smtp_send(get.email.strip(), 'aaipanel Alert Test Email', 'aaipanel Alert Test Email'):
             if not get.email.strip() in self.__mail_list:
                 self.__mail_list.append(get.email.strip())
                 public.writeFile(self.__mail_list_data, json.dumps(self.__mail_list))
@@ -135,7 +135,7 @@ class config:
             get.atall = 'True'
         else: get.atall = 'False'
         self.mail.dingding_insert(get.url.strip(), get.atall)
-        if self.mail.dingding_send('aaPanel alarm test'):
+        if self.mail.dingding_send('aaipanel alarm test'):
             return public.returnMsg(True, 'Added successfully')
         else:
             ret = []

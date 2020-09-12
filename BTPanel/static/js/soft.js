@@ -1,6 +1,6 @@
 var soft = {
     is_install: false,
-    get_list: function(page, type, search) {
+    get_list: function (page, type, search) {
         if (page == undefined || page == 'null' || page == 'undefined') page = 0;
         if (type == undefined || type == 'null' || type == 'undefined') type = 0;
         if (!search) search = $("#SearchValue").val();
@@ -18,7 +18,7 @@ var soft = {
         }
         soft.is_install = false;
         console.log(type)
-        bt.soft.get_soft_list(page, type, search, function(rdata) {
+        bt.soft.get_soft_list(page, type, search, function (rdata) {
             if (rdata.pro < 0) {
                 $("#updata_pro_info").html('');
             } else if (rdata.pro === -2) {
@@ -59,7 +59,7 @@ var soft = {
             }
             if (page) bt.set_cookie('p' + type, page);
             $(".softtype").html(tBody);
-            $(".menu-sub span").click(function() {
+            $(".menu-sub span").click(function () {
                 var _type = $(this).attr('typeid');
                 bt.set_cookie('softType', _type);
                 $(this).addClass("on").siblings().removeClass("on");
@@ -76,275 +76,218 @@ var soft = {
             var _tab = bt.render({
                 table: '#softList',
                 columns: [{
-                        field: 'title',
-                        title: lan.soft.app_name,
-                        width: 165,
-                        templet: function(item) {
-                            var fName = item.name,
-                                version = item.version;
-                            if (bt.contains(item.name, 'php-')) {
-                                fName = 'php';
-                                version = '';
-                            }
-                            var click_opt = ' ',
-                                sStyle = '';
-                            if (item.setup) {
-                                sStyle = ' style="cursor:pointer"';
-                                if (item.admin) {
-                                    if (item.endtime >= 0 || item.price == 0) {
-                                        click_opt += 'onclick="bt.soft.set_lib_config(\'' + item.name + '\',\'' + item.title + '\')" ';
-                                    }
-
-                                } else {
-                                    click_opt += ' onclick="soft.set_soft_config(\'' + item.name + '\')" ';
+                    field: 'title',
+                    title: lan.soft.app_name,
+                    width: 165,
+                    templet: function (item) {
+                        var fName = item.name,
+                            version = item.version;
+                        if (bt.contains(item.name, 'php-')) {
+                            fName = 'php';
+                            version = '';
+                        }
+                        var click_opt = ' ',
+                            sStyle = '';
+                        if (item.setup) {
+                            sStyle = ' style="cursor:pointer"';
+                            if (item.admin) {
+                                if (item.endtime >= 0 || item.price == 0) {
+                                    click_opt += 'onclick="bt.soft.set_lib_config(\'' + item.name + '\',\'' + item.title + '\')" ';
                                 }
+
+                            } else {
+                                click_opt += ' onclick="soft.set_soft_config(\'' + item.name + '\')" ';
                             }
-                            var is_php5 = item.name.indexOf('php-5') >= 0,
+                        }
+                        var is_php5 = item.name.indexOf('php-5') >= 0,
                             webcache = bt.get_cookie('serverType') == 'openlitespeed' ? true : false,
                             distribution = bt.get_cookie('distribution');
-                            if (webcache) {
-                                switch (distribution) {
-                                    case 'centos8':
-                                        if (is_php5 || item.name == 'php-7.0') {
-                                            click_opt = ' title="' + lan.soft.ap2_2_not_support + '"';
-                                        }
-                                        break;
-                                    case 'centos7':
-                                        if (item.name == 'php-5.2') {
-                                            click_opt = ' title="' + lan.soft.ap2_2_not_support + '"';
-                                        }
-                                        break;
-                                    default:
-                                        if (is_php5) {
-                                            click_opt = ' title="' + lan.soft.ap2_2_not_support + '"';
-                                        }
-                                        break;
-                                }
-                            }else if (rdata.apache22 && item.name.indexOf('php-') >= 0 && $.inArray(item.name, phps) == -1){
-                                click_opt = ' title="' + lan.soft.ap2_2_not_support + '"';
+                        if (webcache) {
+                            switch (distribution) {
+                                case 'centos8':
+                                    if (is_php5 || item.name == 'php-7.0') {
+                                        click_opt = ' title="' + lan.soft.ap2_2_not_support + '"';
+                                    }
+                                    break;
+                                case 'centos7':
+                                    if (item.name == 'php-5.2') {
+                                        click_opt = ' title="' + lan.soft.ap2_2_not_support + '"';
+                                    }
+                                    break;
+                                default:
+                                    if (is_php5) {
+                                        click_opt = ' title="' + lan.soft.ap2_2_not_support + '"';
+                                    }
+                                    break;
                             }
-                            //if (rdata.apache22 && item.name.indexOf('php-') >= 0 && $.inArray(item.name, phps) == -1) click_opt = ' title="' + lan.soft.ap2_2_not_support + '"';
-                            return '<span ' + click_opt + ' ' + sStyle + ' ><img src="/static/img/soft_ico/ico-' + fName + '.png">' + item.title + ' ' + version + '</span>';
+                        } else if (rdata.apache22 && item.name.indexOf('php-') >= 0 && $.inArray(item.name, phps) == -1) {
+                            click_opt = ' title="' + lan.soft.ap2_2_not_support + '"';
                         }
-                    },
-                    {
-                        field: 'price',
-                        title: 'Developer',
-                        width: 92,
-                        templet: function(item) {
-                            if (!item.author) return 'official'
-                            return item.author;
-                        }
-                    },
-                    {
-                        field: 'ps',
-                        title: lan.soft.instructions,
-                        templet: function(item) {
-                            var ps = item.ps;
-                            var is_php = item.name.indexOf('php-') >= 0;
+                        //if (rdata.apache22 && item.name.indexOf('php-') >= 0 && $.inArray(item.name, phps) == -1) click_opt = ' title="' + lan.soft.ap2_2_not_support + '"';
+                        return '<span ' + click_opt + ' ' + sStyle + ' ><img src="/static/img/soft_ico/ico-' + fName + '.png">' + item.title + ' ' + version + '</span>';
+                    }
+                },
+                {
+                    field: 'price',
+                    title: 'Developer',
+                    width: 92,
+                    templet: function (item) {
+                        if (!item.author) return 'official'
+                        return item.author;
+                    }
+                },
+                {
+                    field: 'ps',
+                    title: lan.soft.instructions,
+                    templet: function (item) {
+                        var ps = item.ps;
+                        var is_php = item.name.indexOf('php-') >= 0;
 
-                            if (is_php && item.setup) {
-                                if (rdata.apache22 && $.inArray(item.name, phps) >= 0) {
-                                    if (item.fpm) {
-                                        ps += " <span style='color:red;'>(" + lan.soft.apache22 + ")</span>";
-                                    }
-                                } else if (!rdata.apache22) {
-                                    if (!item.fpm) {
-                                        ps += " <span style='color:red;'>(" + lan.soft.apache24 + ")</span>";
-                                    }
+                        if (is_php && item.setup) {
+                            if (rdata.apache22 && $.inArray(item.name, phps) >= 0) {
+                                if (item.fpm) {
+                                    ps += " <span style='color:red;'>(" + lan.soft.apache22 + ")</span>";
+                                }
+                            } else if (!rdata.apache22) {
+                                if (!item.fpm) {
+                                    ps += " <span style='color:red;'>(" + lan.soft.apache24 + ")</span>";
                                 }
                             }
-                            return '<span>' + ps + '</span>';
                         }
-                    },
-                    {
-                        field: 'price',
-                        title: lan.soft.price,
-                        width: 92,
-                        templet: function(item) {
-                            var price = lan.soft.free;
-                            if (item.price > 0) {
-                                price = '<span style="color:#fc6d26">￥' + item.price + '</span>';
-                            }
-                            return price;
+                        return '<span>' + ps + '</span>';
+                    }
+                },
+                {
+                    field: 'price',
+                    title: lan.soft.price,
+                    width: 92,
+                    templet: function (item) {
+                        var price = lan.soft.free;
+                        if (item.price > 0) {
+                            price = '<span style="color:#fc6d26">￥' + item.price + '</span>';
                         }
-                    },
-                    (type == 10 ? {
-                        field: 'sort',
-                        width: 60,
-                        title: 'Score',
-                        templet: function(item) {
-                            return item.sort !== undefined ? ('<a href="javascript:;" onclick="score.open_score_view(' + item.pid + ',\'' + item.title + '\',' + item.count + ')" class="btlink open_sort_view">' + (item.sort <= 0 || item.sort > 5 ? '无评分' : item.sort.toFixed(1)) + '</a>') : '--';
-                        }
-                    } : ''),
-                    {
-                        field: 'endtime',
-                        width: 120,
-                        title: lan.soft.expire_time,
-                        templet: function(item) {
-                            var endtime = '--';
-                            if (item.pid > 0) {
-                                if (item.endtime > 0) {
-                                    if (item.type != 10) {
-                                        endtime = bt.format_data(item.endtime, 'yyyy/MM/dd') + '<a class="btlink" onclick="bt.soft.re_plugin_pay(\'' + item.title + '\',\'' + item.pid + '\',1)"> (' + lan.soft.renew + ')</a>';
-                                    } else {
-                                        endtime = bt.format_data(item.endtime, 'yyyy/MM/dd') + '<a class="btlink" onclick="bt.soft.re_plugin_pay_other(\'' + item.title + '\',\'' + item.pid + '\',1,' + item.price + ')"> (' + lan.soft.renew + ')</a>';
-                                    }
-                                } else if (item.endtime === 0) {
-                                    endtime = lan.soft.permanent;
-                                } else if (item.endtime === -1) {
-                                    endtime = lan.soft.not_open;
-                                } else if (item.endtime === -2) {
-                                    if (item.type != 10) {
-                                        endtime = lan.soft.already_expire + '<a class="btlink" onclick="bt.soft.re_plugin_pay(\'' + item.title + '\',\'' + item.pid + '\',1)"> (' + lan.soft.renew + ')</a>';
-                                    } else {
-                                        endtime = lan.soft.already_expire + '<a class="btlink" onclick="bt.soft.re_plugin_pay_other(\'' + item.title + '\',\'' + item.pid + '\',1,' + item.price + ')"> (' + lan.soft.renew + ')</a>';
-                                    }
-                                }
-                            }
-                            return endtime;
-                        }
-                    },
-                    {
-                        field: 'path',
-                        width: 40,
-                        title: lan.soft.location,
-                        templet: function(item) {
-                            var path = '';
-                            if (item.setup) {
-                                path = '<span class="glyphicon glyphicon-folder-open"  onclick="openPath(\'' + item.uninsatll_checks + '\')"></span>';
-                            }
-                            return path;
-                        }
-                    },
-                    (type != 10 ? {
-                        field: 'status',
-                        width: 40,
-                        title: lan.soft.status1,
-                        templet: function(item) {
-                            var status = '';
-                            if (item.setup) {
-                                if (item.status) {
-                                    status = '<span style="color:#20a53a" class="glyphicon glyphicon-play"></span>';
-                                } else {
-                                    status = '<span style="color:red" class="glyphicon glyphicon-pause"></span>';
-                                }
-                            }
-                            return status;
-                        }
-                    } : ''),
-                    {
-                        field: 'index',
-                        width: 100,
-                        title: lan.soft.display_at_homepage,
-                        templet: function(item) {
-                            var to_index = '';
-                            if (item.setup) {
-                                var checked = '';
-                                if (item.index_display) checked = 'checked';
-                                var item_id = item.name.replace(/\./, "");
-                                to_index = '<div class="index-item"><input class="btswitch btswitch-ios" id="index_' + item_id + '" type="checkbox" ' + checked + '><label class="btswitch-btn" for="index_' + item_id + '" onclick="bt.soft.to_index(\'' + item.name + '\')"></label></div>';
-                            }
-                            return to_index;
-                        }
-                    },
-                    {
-                        field: 'opt',
-                        width: 190,
-                        title: lan.soft.operate,
-                        align: 'right',
-                        templet: function(item) {
-                            var option = '';
-
-                            var pay_opt = '';
-                            if (item.endtime < 0 && item.pid > 0) {
-                                var re_msg = '';
-                                var re_status = 0;
-                                switch (item.endtime) {
-                                    case -1:
-                                        re_msg = lan.soft.buy_now;
-                                        break;
-                                    case -2:
-                                        re_msg = lan.soft.renew_now;
-                                        re_status = 1;
-                                        break;
-                                }
+                        return price;
+                    }
+                },
+                (type == 10 ? {
+                    field: 'sort',
+                    width: 60,
+                    title: 'Score',
+                    templet: function (item) {
+                        return item.sort !== undefined ? ('<a href="javascript:;" onclick="score.open_score_view(' + item.pid + ',\'' + item.title + '\',' + item.count + ')" class="btlink open_sort_view">' + (item.sort <= 0 || item.sort > 5 ? '无评分' : item.sort.toFixed(1)) + '</a>') : '--';
+                    }
+                } : ''),
+                {
+                    field: 'endtime',
+                    width: 120,
+                    title: lan.soft.expire_time,
+                    templet: function (item) {
+                        var endtime = '--';
+                        if (item.pid > 0) {
+                            if (item.endtime > 0) {
                                 if (item.type != 10) {
-                                    pay_opt = '<a class="btlink" onclick="bt.soft.re_plugin_pay(\'' + item.title + '\',\'' + item.pid + '\',' + re_status + ')">' + re_msg + '</a>';
+                                    endtime = bt.format_data(item.endtime, 'yyyy/MM/dd') + '<a class="btlink" onclick="bt.soft.re_plugin_pay(\'' + item.title + '\',\'' + item.pid + '\',1)"> (' + lan.soft.renew + ')</a>';
                                 } else {
-                                    pay_opt = '<a class="btlink" onclick="bt.soft.re_plugin_pay_other(\'' + item.title + '\',\'' + item.pid + '\',' + re_status + ',' + item.price + ')">' + re_msg + '</a>';
+                                    endtime = bt.format_data(item.endtime, 'yyyy/MM/dd') + '<a class="btlink" onclick="bt.soft.re_plugin_pay_other(\'' + item.title + '\',\'' + item.pid + '\',1,' + item.price + ')"> (' + lan.soft.renew + ')</a>';
                                 }
-
+                            } else if (item.endtime === 0) {
+                                endtime = lan.soft.permanent;
+                            } else if (item.endtime === -1) {
+                                endtime = lan.soft.not_open;
+                            } else if (item.endtime === -2) {
+                                if (item.type != 10) {
+                                    endtime = lan.soft.already_expire + '<a class="btlink" onclick="bt.soft.re_plugin_pay(\'' + item.title + '\',\'' + item.pid + '\',1)"> (' + lan.soft.renew + ')</a>';
+                                } else {
+                                    endtime = lan.soft.already_expire + '<a class="btlink" onclick="bt.soft.re_plugin_pay_other(\'' + item.title + '\',\'' + item.pid + '\',1,' + item.price + ')"> (' + lan.soft.renew + ')</a>';
+                                }
                             }
-                            var is_php = item.name.indexOf('php-') >= 0,
+                        }
+                        return endtime;
+                    }
+                },
+                {
+                    field: 'path',
+                    width: 40,
+                    title: lan.soft.location,
+                    templet: function (item) {
+                        var path = '';
+                        if (item.setup) {
+                            path = '<span class="glyphicon glyphicon-folder-open"  onclick="openPath(\'' + item.uninsatll_checks + '\')"></span>';
+                        }
+                        return path;
+                    }
+                },
+                (type != 10 ? {
+                    field: 'status',
+                    width: 40,
+                    title: lan.soft.status1,
+                    templet: function (item) {
+                        var status = '';
+                        if (item.setup) {
+                            if (item.status) {
+                                status = '<span style="color:#20a53a" class="glyphicon glyphicon-play"></span>';
+                            } else {
+                                status = '<span style="color:red" class="glyphicon glyphicon-pause"></span>';
+                            }
+                        }
+                        return status;
+                    }
+                } : ''),
+                {
+                    field: 'index',
+                    width: 100,
+                    title: lan.soft.display_at_homepage,
+                    templet: function (item) {
+                        var to_index = '';
+                        if (item.setup) {
+                            var checked = '';
+                            if (item.index_display) checked = 'checked';
+                            var item_id = item.name.replace(/\./, "");
+                            to_index = '<div class="index-item"><input class="btswitch btswitch-ios" id="index_' + item_id + '" type="checkbox" ' + checked + '><label class="btswitch-btn" for="index_' + item_id + '" onclick="bt.soft.to_index(\'' + item.name + '\')"></label></div>';
+                        }
+                        return to_index;
+                    }
+                },
+                {
+                    field: 'opt',
+                    width: 190,
+                    title: lan.soft.operate,
+                    align: 'right',
+                    templet: function (item) {
+                        var option = '';
+
+                        var pay_opt = '';
+                        if (item.endtime < 0 && item.pid > 0) {
+                            var re_msg = '';
+                            var re_status = 0;
+                            switch (item.endtime) {
+                                case -1:
+                                    re_msg = lan.soft.buy_now;
+                                    break;
+                                case -2:
+                                    re_msg = lan.soft.renew_now;
+                                    re_status = 1;
+                                    break;
+                            }
+                            if (item.type != 10) {
+                                pay_opt = '<a class="btlink" onclick="bt.soft.re_plugin_pay(\'' + item.title + '\',\'' + item.pid + '\',' + re_status + ')">' + re_msg + '</a>';
+                            } else {
+                                pay_opt = '<a class="btlink" onclick="bt.soft.re_plugin_pay_other(\'' + item.title + '\',\'' + item.pid + '\',' + re_status + ',' + item.price + ')">' + re_msg + '</a>';
+                            }
+
+                        }
+                        var is_php = item.name.indexOf('php-') >= 0,
                             is_php5 = item.name.indexOf('php-5') >= 0,
                             webcache = bt.get_cookie('serverType') == 'openlitespeed' ? true : false,
                             distribution = bt.get_cookie('distribution');
-                            if (webcache && is_php) {
-                                if ((is_php5 || item.name == 'php-7.0') && distribution=='centos8') {
+                        if (webcache && is_php) {
+                            if ((is_php5 || item.name == 'php-7.0') && distribution == 'centos8') {
+                                option = '<span title="\' + lan.soft.ap2_2_not_support + \'">' + lan.soft.not_comp + '</span>';
+                            } else if (distribution == 'centos7' && item.name == 'php-5.2') {
+                                option = '<span title="\' + lan.soft.ap2_2_not_support + \'">' + lan.soft.not_comp + '</span>';
+                            } else {
+                                if (distribution != 'centos7' && is_php5) {
                                     option = '<span title="\' + lan.soft.ap2_2_not_support + \'">' + lan.soft.not_comp + '</span>';
-                                }else if (distribution=='centos7'&&item.name == 'php-5.2') {
-                                    option = '<span title="\' + lan.soft.ap2_2_not_support + \'">' + lan.soft.not_comp + '</span>';
-                                }else{
-                                    if (distribution!='centos7'&&is_php5) {
-                                        option = '<span title="\' + lan.soft.ap2_2_not_support + \'">' + lan.soft.not_comp + '</span>';
-                                    } else {
-                                        if (item.setup && item.task == '1') {
-                                            if (pay_opt == '') {
-                                                if (item.versions.length > 1) {
-                                                    for (var i = 0; i < item.versions.length; i++) {
-                                                        var min_version = item.versions[i]
-                                                        var ret = bt.check_version(item.version, min_version.m_version + '.' + min_version.version);
-                                                        if (ret > 0) {
-                                                            if (ret == 2) option += '<a class="btlink" onclick="bt.soft.update_soft(\'' + item.name + '\',\'' + item.title + '\',\'' + min_version.m_version + '\',\'' + min_version.version + '\',\'' + min_version.update_msg.replace(/\n/g, "_bt_") + '\')" >' + lan.soft.update + '</a> | ';
-                                                            break;
-                                                        }
-                                                    }
-                                                } else {
-                                                    var min_version = item.versions[0];
-                                                    var cloud_version = min_version.m_version + '.' + min_version.version;
-                                                    if (item.version != cloud_version) option += '<a class="btlink" onclick="bt.soft.update_soft(\'' + item.name + '\',\'' + item.title + '\',\'' + min_version.m_version + '\',\'' + min_version.version + '\',\'' + min_version.update_msg.replace(/\n/g, "_bt_") + '\')" >' + lan.soft.update + '</a> | ';
-                                                }
-                                                if (item.admin) {
-                                                    option += '<a class="btlink" onclick="bt.soft.set_lib_config(\'' + item.name + '\',\'' + item.title + '\')">' + lan.soft.setup + '</a> | ';
-                                                } else {
-                                                    option += '<a class="btlink" onclick="soft.set_soft_config(\'' + item.name + '\')">' + lan.soft.setup + '</a> | ';
-                                                }
-                                            } else {
-                                                option = pay_opt + ' | ' + option;
-                                            }
-                                            option += '<a class="btlink" onclick="bt.soft.un_install(\'' + item.name + '\')" >' + lan.soft.uninstall + '</a>';
-                                        } else if (item.task == '-1') {
-                                            option = '<a class="btlink" onclick="messagebox()"  >' + lan.soft.installing + '</a>';
-                                            soft.is_install = true;
-                                        } else if (item.task == '0') {
-                                            option = '<a class="btlink" onclick="messagebox()"  >' + lan.soft.wait_install + '</a>';
-                                            soft.is_install = true;
-                                        } else if (item.task == '-2') {
-                                            option = '<a class="btlink" onclick="messagebox()"  >Updating</a>';
-                                            soft.is_install = true;
-                                        } else {
-                                            if (pay_opt) {
-                                                option = pay_opt;
-                                            } else {
-                                                option = '<a class="btlink" onclick="bt.soft.install(\'' + item.name + '\')"  >' + lan.soft.install + '</a>';
-                                            }
-                                        }
-                                    }
-                                }
-                            }else {
-                                if (rdata.apache22 && is_php && $.inArray(item.name, phps) == -1) {
-                                    if (item.setup) {
-                                        option = '<a class="btlink" onclick="bt.soft.un_install(\'' + item.name + '\')" >' + lan.soft.uninstall + '</a>';
-                                    } else {
-                                        option = '<span title="\' + lan.soft.ap2_2_not_support + \'">' + lan.soft.not_comp + '</span>';
-                                    }
-                                } else if (rdata.apache24 && item.name == 'php-5.2') {
-                                    if (item.setup) {
-                                        option = '<a class="btlink" onclick="bt.soft.un_install(\'' + item.name + '\')" >' + lan.soft.uninstall + '</a>';
-                                    } else {
-                                        option = '<span title="\' + lan.soft.ap2_2_not_support + \'">' + lan.soft.not_comp + '</span>';
-                                    }
                                 } else {
                                     if (item.setup && item.task == '1') {
                                         if (pay_opt == '') {
@@ -389,9 +332,66 @@ var soft = {
                                     }
                                 }
                             }
-                            return option;
+                        } else {
+                            if (rdata.apache22 && is_php && $.inArray(item.name, phps) == -1) {
+                                if (item.setup) {
+                                    option = '<a class="btlink" onclick="bt.soft.un_install(\'' + item.name + '\')" >' + lan.soft.uninstall + '</a>';
+                                } else {
+                                    option = '<span title="\' + lan.soft.ap2_2_not_support + \'">' + lan.soft.not_comp + '</span>';
+                                }
+                            } else if (rdata.apache24 && item.name == 'php-5.2') {
+                                if (item.setup) {
+                                    option = '<a class="btlink" onclick="bt.soft.un_install(\'' + item.name + '\')" >' + lan.soft.uninstall + '</a>';
+                                } else {
+                                    option = '<span title="\' + lan.soft.ap2_2_not_support + \'">' + lan.soft.not_comp + '</span>';
+                                }
+                            } else {
+                                if (item.setup && item.task == '1') {
+                                    if (pay_opt == '') {
+                                        if (item.versions.length > 1) {
+                                            for (var i = 0; i < item.versions.length; i++) {
+                                                var min_version = item.versions[i]
+                                                var ret = bt.check_version(item.version, min_version.m_version + '.' + min_version.version);
+                                                if (ret > 0) {
+                                                    if (ret == 2) option += '<a class="btlink" onclick="bt.soft.update_soft(\'' + item.name + '\',\'' + item.title + '\',\'' + min_version.m_version + '\',\'' + min_version.version + '\',\'' + min_version.update_msg.replace(/\n/g, "_bt_") + '\')" >' + lan.soft.update + '</a> | ';
+                                                    break;
+                                                }
+                                            }
+                                        } else {
+                                            var min_version = item.versions[0];
+                                            var cloud_version = min_version.m_version + '.' + min_version.version;
+                                            if (item.version != cloud_version) option += '<a class="btlink" onclick="bt.soft.update_soft(\'' + item.name + '\',\'' + item.title + '\',\'' + min_version.m_version + '\',\'' + min_version.version + '\',\'' + min_version.update_msg.replace(/\n/g, "_bt_") + '\')" >' + lan.soft.update + '</a> | ';
+                                        }
+                                        if (item.admin) {
+                                            option += '<a class="btlink" onclick="bt.soft.set_lib_config(\'' + item.name + '\',\'' + item.title + '\')">' + lan.soft.setup + '</a> | ';
+                                        } else {
+                                            option += '<a class="btlink" onclick="soft.set_soft_config(\'' + item.name + '\')">' + lan.soft.setup + '</a> | ';
+                                        }
+                                    } else {
+                                        option = pay_opt + ' | ' + option;
+                                    }
+                                    option += '<a class="btlink" onclick="bt.soft.un_install(\'' + item.name + '\')" >' + lan.soft.uninstall + '</a>';
+                                } else if (item.task == '-1') {
+                                    option = '<a class="btlink" onclick="messagebox()"  >' + lan.soft.installing + '</a>';
+                                    soft.is_install = true;
+                                } else if (item.task == '0') {
+                                    option = '<a class="btlink" onclick="messagebox()"  >' + lan.soft.wait_install + '</a>';
+                                    soft.is_install = true;
+                                } else if (item.task == '-2') {
+                                    option = '<a class="btlink" onclick="messagebox()"  >Updating</a>';
+                                    soft.is_install = true;
+                                } else {
+                                    if (pay_opt) {
+                                        option = pay_opt;
+                                    } else {
+                                        option = '<a class="btlink" onclick="bt.soft.install(\'' + item.name + '\')"  >' + lan.soft.install + '</a>';
+                                    }
+                                }
+                            }
                         }
+                        return option;
                     }
+                }
                 ],
                 data: data
             })
@@ -399,13 +399,13 @@ var soft = {
             bt.set_cookie('load_type', type)
             bt.set_cookie('load_search', search)
             if (soft.is_install) {
-                setTimeout(function() {
+                setTimeout(function () {
                     soft.get_list(bt.get_cookie('load_page') + 'not_load', bt.get_cookie('load_type'), bt.get_cookie('load_search'));
                 }, 3000);
             }
         })
     },
-    get_dep_list: function(p) {
+    get_dep_list: function (p) {
         var loadT = layer.msg('Getting list <img src="/static/img/ing.gif">', {
             icon: 16,
             time: 0,
@@ -428,7 +428,7 @@ var soft = {
             pdata['force'] = force;
         }
         bt.set_cookie('force', 0);
-        $.post('/deployment?action=GetList', pdata, function(rdata) {
+        $.post('/deployment?action=GetList', pdata, function (rdata) {
             layer.close(loadT)
             var tBody = '';
             rdata.type.unshift({
@@ -453,7 +453,7 @@ var soft = {
             }
             $(".softtype").html(tBody);
 
-            $(".menu-sub span").click(function() {
+            $(".menu-sub span").click(function () {
                 var _type = $(this).attr('typeid');
                 bt.set_cookie('softType', _type);
                 $(this).addClass("on").siblings().removeClass("on");
@@ -467,7 +467,7 @@ var soft = {
             if ($(".onekey-type").attr("class") === undefined) {
 
                 tbody = '<div class="alert alert-info" style="margin-bottom: 10px;">\
-                        <strong class="mr5">aaPanel one-click deployment has been launched, and we invite global outstanding projects to settle in (limited to project officials)</strong>\
+                        <strong class="mr5">aaipanel one-click deployment has been launched, and we invite global outstanding projects to settle in (limited to project officials)</strong>\
                         <a class="btn btn-success btn-xs mr5" href="https://www.bt.cn/bbs/thread-33063-1-1.html" target="_blank">Free entry</a>\
                         <a class="btn btn-success btn-xs" onclick="soft.input_package()">Import project</a>\
                         </div><div class="onekey-menu-sub onekey-type" style="margin-bottom:15px">';
@@ -489,7 +489,7 @@ var soft = {
                 }
                 tbody += "</div>";
                 $("#updata_pro_info").html(tbody);
-                $(".onekey-menu-sub span").click(function() {
+                $(".onekey-menu-sub span").click(function () {
                     setCookie('depType', $(this).attr('typeid'));
                     $(this).addClass("on").siblings().removeClass("on");
                     soft.get_dep_list(1);
@@ -533,8 +533,8 @@ var soft = {
 
         });
     },
-    remove_other_dep: function(name) {
-        bt.show_confirm(lan.soft.del_custom_item, lan.soft.confirm_del.replace('{1}', name), function() {
+    remove_other_dep: function (name) {
+        bt.show_confirm(lan.soft.del_custom_item, lan.soft.confirm_del.replace('{1}', name), function () {
             var loadT = layer.msg(lan.soft.deleting, {
                 icon: 16,
                 time: 0,
@@ -542,10 +542,10 @@ var soft = {
             });
             $.post('/deployment?action=DelPackage', {
                 dname: name
-            }, function(rdata) {
+            }, function (rdata) {
                 layer.close(loadT);
                 if (rdata.status) soft.get_dep_list();
-                setTimeout(function() {
+                setTimeout(function () {
                     layer.msg(rdata.msg, {
                         icon: rdata.status ? 1 : 2
                     });
@@ -553,7 +553,7 @@ var soft = {
             });
         });
     },
-    input_package: function() {
+    input_package: function () {
         var con = '<form class="bt-form pd20 pb70" id="input_package">\
 					<div class="line"><span class="tname">Index name</span>\
 						<div class="info-r c9"><input class="bt-input-text" type="text" value="" name="name"  placeholder="Project index name" style="width:190px" />\
@@ -598,10 +598,10 @@ var soft = {
             content: con
         });
     },
-    update_package: function(p_name) {
+    update_package: function (p_name) {
         $.post('/deployment?action=GetPackageOther', {
             p_name: p_name
-        }, function(rdata) {
+        }, function (rdata) {
             var con = '<form class="bt-form pd20 pb70" id="input_package">\
 					<div class="line"><span class="tname">Index name</span>\
 						<input class="bt-input-text" type="text" value="' + rdata.name + '" name="name"  placeholder="Project index name" style="width:190px" />\
@@ -645,7 +645,7 @@ var soft = {
             });
         });
     },
-    input_package_to: function() {
+    input_package_to: function () {
         var pdata = new FormData($("#input_package")[0]);
         if (!pdata.get('name') || !pdata.get('title') || !pdata.get('version') || !pdata.get('php') || !pdata.get('ps')) {
             layer.msg('The following are required (Index name / Name / Project version / PHP version / Introduction)', {
@@ -679,150 +679,150 @@ var soft = {
             data: pdata,
             processData: false,
             contentType: false,
-            success: function(data) {
+            success: function (data) {
                 layer.close(loadT);
                 if (data.status) {
                     layer.closeAll();
                     setCookie('depType', 100)
                     soft.get_dep_list();
-                    setTimeout(function() {
+                    setTimeout(function () {
                         layer.msg('Successfully imported!');
                     }, 1000)
                 }
             },
-            error: function(responseStr) {
+            error: function (responseStr) {
                 layer.msg('Upload failed 2!', {
                     icon: 2
                 });
             }
         });
     },
-    flush_cache: function() {
+    flush_cache: function () {
         bt.set_cookie('force', 1);
         soft.get_list();
     },
-    get_config_menu: function(name) //获取设置菜单显示
-        {
-            var meun = '';
-            if (bt.os == 'Linux') {
+    get_config_menu: function (name) //获取设置菜单显示
+    {
+        var meun = '';
+        if (bt.os == 'Linux') {
 
-                var datas = {
-                    public: [{
-                            type: 'config',
-                            title: lan.soft.config_edit
-                        },
-                        {
-                            type: 'change_version',
-                            title: lan.soft.nginx_version
-                        }
-                    ],
-                    openlitespeed: [{
-                        type: 'openliMa_set',
-                        title: 'OpenLiteSpeed'
-                    }],
-                    mysqld: [{
-                            type: 'change_data_path',
-                            title: lan.soft.save_path
-                        },
-                        {
-                            type: 'change_mysql_port',
-                            title: lan.site.port
-                        },
-                        {
-                            type: 'change_mysql_ssl',
-                            title: lan.site.site_menu_7
-                        },
-                        {
-                            type: 'get_mysql_run_status',
-                            title: lan.soft.status
-                        },
-                        {
-                            type: 'get_mysql_status',
-                            title: lan.soft.php_main7
-                        },
-                        {
-                            type: 'mysql_log',
-                            title: lan.soft.log
-                        },
-                        {
-                            type: 'mysql_slow_log',
-                            title: lan.public.slow_log
-                        },
-                    ],
-                    phpmyadmin: [{
-                            type: 'phpmyadmin_php',
-                            title: lan.soft.php_version
-                        },
-                        {
-                            type: 'phpmyadmin_safe',
-                            title: lan.soft.safe
-                        }
-                    ],
-                    memcached: [{
-                            type: 'memcached_status',
-                            title: lan.soft.php_main8
-                        },
-                        {
-                            type: 'memcached_set',
-                            title: lan.soft.php_main7
-                        },
-                    ],
-                    redis: [{
-                        type: 'get_redis_status',
-                        title: lan.soft.php_main8
-                    }, ],
-                    tomcat: [{
-                        type: 'log',
-                        title: lan.soft.run_log
-                    }],
-                    apache: [{
-                            type: 'apache_set',
-                            title: lan.soft.php_main7
-                        },
-                        {
-                            type: 'apache_status',
-                            title: lan.soft.nginx_status
-                        },
-                        {
-                            type: 'log',
-                            title: lan.soft.run_log
-                        }
-                    ],
-                    nginx: [{
-                            type: 'nginx_set',
-                            title: lan.soft.php_main7
-                        },
-                        {
-                            type: 'nginx_status',
-                            title: lan.soft.nginx_status
-                        },
-                        {
-                            type: 'log',
-                            title: lan.soft.err_log
-                        }
-                    ]
-                };
-                var arrs = datas.public;
-                if (name == 'phpmyadmin') arrs = [];
-                if (name == 'openlitespeed') arrs.length = 1;
-                arrs = arrs.concat(datas[name]);
-                if (arrs) {
-                    for (var i = 0; i < arrs.length; i++) {
-                        var item = arrs[i];
-                        if (item) {
-                            var tit = item.title.length >= 24 ? item.title : '';
-                            meun += '<p onclick="soft.get_tab_contents(\'' + item.type + '\',this)" title="' + tit + '">' + item.title + '</p>';
-                        }
+            var datas = {
+                public: [{
+                    type: 'config',
+                    title: lan.soft.config_edit
+                },
+                {
+                    type: 'change_version',
+                    title: lan.soft.nginx_version
+                }
+                ],
+                openlitespeed: [{
+                    type: 'openliMa_set',
+                    title: 'OpenLiteSpeed'
+                }],
+                mysqld: [{
+                    type: 'change_data_path',
+                    title: lan.soft.save_path
+                },
+                {
+                    type: 'change_mysql_port',
+                    title: lan.site.port
+                },
+                {
+                    type: 'change_mysql_ssl',
+                    title: lan.site.site_menu_7
+                },
+                {
+                    type: 'get_mysql_run_status',
+                    title: lan.soft.status
+                },
+                {
+                    type: 'get_mysql_status',
+                    title: lan.soft.php_main7
+                },
+                {
+                    type: 'mysql_log',
+                    title: lan.soft.log
+                },
+                {
+                    type: 'mysql_slow_log',
+                    title: lan.public.slow_log
+                },
+                ],
+                phpmyadmin: [{
+                    type: 'phpmyadmin_php',
+                    title: lan.soft.php_version
+                },
+                {
+                    type: 'phpmyadmin_safe',
+                    title: lan.soft.safe
+                }
+                ],
+                memcached: [{
+                    type: 'memcached_status',
+                    title: lan.soft.php_main8
+                },
+                {
+                    type: 'memcached_set',
+                    title: lan.soft.php_main7
+                },
+                ],
+                redis: [{
+                    type: 'get_redis_status',
+                    title: lan.soft.php_main8
+                },],
+                tomcat: [{
+                    type: 'log',
+                    title: lan.soft.run_log
+                }],
+                apache: [{
+                    type: 'apache_set',
+                    title: lan.soft.php_main7
+                },
+                {
+                    type: 'apache_status',
+                    title: lan.soft.nginx_status
+                },
+                {
+                    type: 'log',
+                    title: lan.soft.run_log
+                }
+                ],
+                nginx: [{
+                    type: 'nginx_set',
+                    title: lan.soft.php_main7
+                },
+                {
+                    type: 'nginx_status',
+                    title: lan.soft.nginx_status
+                },
+                {
+                    type: 'log',
+                    title: lan.soft.err_log
+                }
+                ]
+            };
+            var arrs = datas.public;
+            if (name == 'phpmyadmin') arrs = [];
+            if (name == 'openlitespeed') arrs.length = 1;
+            arrs = arrs.concat(datas[name]);
+            if (arrs) {
+                for (var i = 0; i < arrs.length; i++) {
+                    var item = arrs[i];
+                    if (item) {
+                        var tit = item.title.length >= 24 ? item.title : '';
+                        meun += '<p onclick="soft.get_tab_contents(\'' + item.type + '\',this)" title="' + tit + '">' + item.title + '</p>';
                     }
                 }
             }
-            return meun;
-        },
-    set_soft_config: function(name) {
+        }
+        return meun;
+    },
+    set_soft_config: function (name) {
         //软件设置
         var _this = this;
         var loading = bt.load();
-        bt.soft.get_soft_find(name, function(rdata) {
+        bt.soft.get_soft_find(name, function (rdata) {
             loading.close();
 
             if (name == 'mysql') name = 'mysqld';
@@ -835,91 +835,91 @@ var soft = {
                 content: '<div class="bt-w-main" style="width:800px;height:650px;"><div class="bt-w-menu bt-soft-menu"></div><div id="webEdit-con" class="bt-w-con pd15" style="height:639px;overflow:auto"><div class="soft-man-con bt-form"></div></div></div>'
             });
             var menu = $('.bt-soft-menu').data("data", rdata);
-            setTimeout(function() {
+            setTimeout(function () {
                 menu.append($('<p class="bgw bt_server" onclick="soft.get_tab_contents(\'service\',this)">' + lan.soft.service + '</p>'))
                 if (rdata.version_coexist) {
                     var ver = name.split('-')[1].replace('.', '');
                     var opt_list = [{
-                            type: 'set_php_config',
-                            val: ver,
-                            title: lan.soft.php_main5
-                        },
-                        {
-                            type: 'config_edit',
-                            val: ver,
-                            title: lan.soft.config_edit
-                        },
-                        {
-                            type: 'set_upload_limit',
-                            val: ver,
-                            title: lan.soft.php_main2
-                        },
-                        {
-                            type: 'set_timeout_limit',
-                            val: ver,
-                            title: lan.soft.php_main3,
-                            php53: true
-                        },
-                        {
-                            type: 'config',
-                            val: ver,
-                            title: lan.soft.php_main4
-                        },
-                        {
-                            type: 'set_dis_fun',
-                            val: ver,
-                            title: lan.soft.php_main6
-                        },
-                        {
-                            type: 'set_fpm_config',
-                            val: ver,
-                            title: lan.soft.php_main7,
-                            apache24: true,
-                            php53: true
-                        },
-                        {
-                            type: 'get_php_status',
-                            val: ver,
-                            title: lan.soft.php_main8,
-                            apache24: true,
-                            php53: true
-                        },
-                        {
-                            type: 'get_php_session',
-                            val: ver,
-                            title: lan.soft.php_main9,
-                            apache24: true,
-                            php53: true
-                        },
-                        {
-                            type: 'get_fpm_logs',
-                            val: ver,
-                            title: lan.soft.log,
-                            apache24: true,
-                            php53: true
-                        },
-                        {
-                            type: 'get_slow_logs',
-                            val: ver,
-                            title: lan.public.slow_log,
-                            apache24: true,
-                            php53: true
-                        },
-                        {
-                            type: 'get_phpinfo',
-                            val: ver,
-                            title: 'phpinfo'
-                        }
+                        type: 'set_php_config',
+                        val: ver,
+                        title: lan.soft.php_main5
+                    },
+                    {
+                        type: 'config_edit',
+                        val: ver,
+                        title: lan.soft.config_edit
+                    },
+                    {
+                        type: 'set_upload_limit',
+                        val: ver,
+                        title: lan.soft.php_main2
+                    },
+                    {
+                        type: 'set_timeout_limit',
+                        val: ver,
+                        title: lan.soft.php_main3,
+                        php53: true
+                    },
+                    {
+                        type: 'config',
+                        val: ver,
+                        title: lan.soft.php_main4
+                    },
+                    {
+                        type: 'set_dis_fun',
+                        val: ver,
+                        title: lan.soft.php_main6
+                    },
+                    {
+                        type: 'set_fpm_config',
+                        val: ver,
+                        title: lan.soft.php_main7,
+                        apache24: true,
+                        php53: true
+                    },
+                    {
+                        type: 'get_php_status',
+                        val: ver,
+                        title: lan.soft.php_main8,
+                        apache24: true,
+                        php53: true
+                    },
+                    {
+                        type: 'get_php_session',
+                        val: ver,
+                        title: lan.soft.php_main9,
+                        apache24: true,
+                        php53: true
+                    },
+                    {
+                        type: 'get_fpm_logs',
+                        val: ver,
+                        title: lan.soft.log,
+                        apache24: true,
+                        php53: true
+                    },
+                    {
+                        type: 'get_slow_logs',
+                        val: ver,
+                        title: lan.public.slow_log,
+                        apache24: true,
+                        php53: true
+                    },
+                    {
+                        type: 'get_phpinfo',
+                        val: ver,
+                        title: 'phpinfo'
+                    }
                     ]
 
                     var phpSort = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-                    webcache = bt.get_cookie('serverType') == 'openlitespeed' ? true : false;
+                        webcache = bt.get_cookie('serverType') == 'openlitespeed' ? true : false;
                     for (var i = 0; i < phpSort.length; i++) {
                         var item = opt_list[i];
                         if (item) {
                             if (item.os == undefined || item['os'] == bt.os) {
                                 if (name.indexOf("5.2") >= 0 && item.php53) continue;
-                                if (webcache && item.type=='set_fpm_config' || item.type=='get_php_status') continue;
+                                if (webcache && item.type == 'set_fpm_config' || item.type == 'get_php_status') continue;
                                 var apache24 = item.apache24 ? 'class="apache24"' : '';
                                 menu.append($('<p data-id="' + i + '" ' + apache24 + ' onclick="soft.get_tab_contents(\'' + item.type + '\',this)" >' + item.title + '</p>').data('item', item))
                             }
@@ -928,11 +928,11 @@ var soft = {
                 } else {
                     menu.append(soft.get_config_menu(name));
                 }
-                $(".bt-w-menu p").click(function() {
+                $(".bt-w-menu p").click(function () {
                     $(this).addClass("bgw").siblings().removeClass("bgw");
                 });
                 $(".bt-w-menu p:eq(0)").trigger("click");
-                bt.soft.get_soft_find('apache', function(rdata) {
+                bt.soft.get_soft_find('apache', function (rdata) {
                     if (rdata.setup) {
                         if (rdata.version.indexOf('2.2') >= 0) {
                             if (name.indexOf('php-') != -1) {
@@ -951,257 +951,257 @@ var soft = {
             }, 100)
         })
     },
-    get_tab_contents: function(key, obj) //获取设置菜单操作
-        {
-            var data = $(obj).parents('.bt-soft-menu').data('data');
-            var version = data.name;
-            if (data.name.indexOf('php-') >= 0) version = data.name.split('-')[1].replace('.', '');
-            switch (key) {
-                case 'service':
-                    var tabCon = $(".soft-man-con").empty();
-                    var status_list = [{
-                            opt: data.status ? 'stop' : 'start',
-                            title: data.status ? lan.soft.stop : lan.soft.start
-                        },
-                        {
-                            opt: 'restart',
-                            title: lan.soft.restart
-                        },
-                        {
-                            opt: 'reload',
-                            title: lan.soft.reload
-                        }
-                    ]
-                    if (data.name == 'phpmyadmin') {
-                        status_list = [status_list[0]];
-                    }else{
-                        var btns = $('<div class="sfm-opt"></div>');
-                        for (var i = 0; i < status_list.length; i++)  btns.append('<button class="btn btn-default btn-sm" onclick="bt.pub.set_server_status(\'' + data.name + '\',\'' + status_list[i].opt + '\')">' + status_list[i].title + '</button>');
-                        tabCon.append('<p class="status">' + lan.soft.status + '：<span>' + (data.status ? lan.soft.on : lan.soft.off) + '</span><span style="color: ' + (data.status ? '#20a53a;' : 'red;') + ' margin-left: 3px;" class="glyphicon ' + (data.status ? 'glyphicon glyphicon-play' : 'glyphicon-pause') + '"></span></p');
-                        tabCon.append(btns);
-                    }
+    get_tab_contents: function (key, obj) //获取设置菜单操作
+    {
+        var data = $(obj).parents('.bt-soft-menu').data('data');
+        var version = data.name;
+        if (data.name.indexOf('php-') >= 0) version = data.name.split('-')[1].replace('.', '');
+        switch (key) {
+            case 'service':
+                var tabCon = $(".soft-man-con").empty();
+                var status_list = [{
+                    opt: data.status ? 'stop' : 'start',
+                    title: data.status ? lan.soft.stop : lan.soft.start
+                },
+                {
+                    opt: 'restart',
+                    title: lan.soft.restart
+                },
+                {
+                    opt: 'reload',
+                    title: lan.soft.reload
+                }
+                ]
+                if (data.name == 'phpmyadmin') {
+                    status_list = [status_list[0]];
+                } else {
+                    var btns = $('<div class="sfm-opt"></div>');
+                    for (var i = 0; i < status_list.length; i++)  btns.append('<button class="btn btn-default btn-sm" onclick="bt.pub.set_server_status(\'' + data.name + '\',\'' + status_list[i].opt + '\')">' + status_list[i].title + '</button>');
+                    tabCon.append('<p class="status">' + lan.soft.status + '：<span>' + (data.status ? lan.soft.on : lan.soft.off) + '</span><span style="color: ' + (data.status ? '#20a53a;' : 'red;') + ' margin-left: 3px;" class="glyphicon ' + (data.status ? 'glyphicon glyphicon-play' : 'glyphicon-pause') + '"></span></p');
+                    tabCon.append(btns);
+                }
 
-                    // var btns = $('<div class="sfm-opt"></div>');
-                    // for (var i = 0; i < status_list.length; i++) btns.append('<button class="btn btn-default btn-sm" onclick="bt.pub.set_server_status(\'' + data.name + '\',\'' + status_list[i].opt + '\')">' + status_list[i].title + '</button>');
-                    // tabCon.append('<p class="status">' + lan.soft.status + '：<span>' + (data.status ? lan.soft.running : lan.soft.stop) + '</span><span style="color: ' + (data.status ? '#20a53a;' : 'red;') + ' margin-left: 3px;" class="glyphicon ' + (data.status ? 'glyphicon glyphicon-play' : 'glyphicon-pause') + '"></span></p');
-                    // tabCon.append(btns);
+                // var btns = $('<div class="sfm-opt"></div>');
+                // for (var i = 0; i < status_list.length; i++) btns.append('<button class="btn btn-default btn-sm" onclick="bt.pub.set_server_status(\'' + data.name + '\',\'' + status_list[i].opt + '\')">' + status_list[i].title + '</button>');
+                // tabCon.append('<p class="status">' + lan.soft.status + '：<span>' + (data.status ? lan.soft.running : lan.soft.stop) + '</span><span style="color: ' + (data.status ? '#20a53a;' : 'red;') + ' margin-left: 3px;" class="glyphicon ' + (data.status ? 'glyphicon glyphicon-play' : 'glyphicon-pause') + '"></span></p');
+                // tabCon.append(btns);
 
-                    if (data.name == 'phpmyadmin') {
-                        tabCon.append('<div style="padding-top:25px;">\
-                        <div class="info-r "><input type="checkbox" class="status" '+(data.status?'checked':'')+' id="pma_status" name="status" onclick="bt.pub.set_server_status(\'' + data.name + '\',\'' + (data.status?'stop':'start') + '\')" style="vertical-align: top;margin-right: 10px;"><label class="mr20" for="pma_status" style="font-weight:normal;vertical-align: sub;">Enable public access</label></div>\
+                if (data.name == 'phpmyadmin') {
+                    tabCon.append('<div style="padding-top:25px;">\
+                        <div class="info-r "><input type="checkbox" class="status" '+ (data.status ? 'checked' : '') + ' id="pma_status" name="status" onclick="bt.pub.set_server_status(\'' + data.name + '\',\'' + (data.status ? 'stop' : 'start') + '\')" style="vertical-align: top;margin-right: 10px;"><label class="mr20" for="pma_status" style="font-weight:normal;vertical-align: sub;">Enable public access</label></div>\
                         <p style="margin-top:5px;"><span>Public access address: </span><a class="btlink" href="' + data.ext.url + '" target="_blank">' + data.ext.url + '</a></p>\
                         </div>');
-                        tabCon.append('<ul class="help-info-text c7 mtb15" style="padding-top:30px">\
+                    tabCon.append('<ul class="help-info-text c7 mtb15" style="padding-top:30px">\
                             <li>PhpMyAdmin enabling public access may have security risks. It is recommended not to enable it unnecessarily!</li>\
                             <li>The current version of phpmyadin no longer relies on Nginx / Apache without requiring public access.</li>\
                             <li>The service state of phpMyAdmin does not affect access to phpMyAdmin through the panel (non-public).</li>\
                             <li>If the public access right is not turned on, the panel will take over the access right, that is, you need to log in to the panel to access.</li>\
                         </ul>');
-                    }
+                }
 
-                    var help = '<ul class="help-info-text c7 mtb15" style="padding-top:30px"><li>' + lan.soft.mysql_mem_err + '</li></ul>';
-                    if (name == 'mysqld') tabCon.append(help);
-                    break;
-                case 'config':
-                    var tabCon = $(".soft-man-con").empty();
-                    tabCon.append('<p style="color: #666; margin-bottom: 7px">' + lan.bt.edit_ps + '</p>');
-                    tabCon.append('<textarea class="bt-input-text" style="height: 320px; line-height:18px;" id="textBody"></textarea>')
-                    tabCon.append('<button id="OnlineEditFileBtn" class="btn btn-success btn-sm" style="margin-top:10px;">' + lan.public.save + '</button>')
-                    tabCon.append(bt.render_help([lan.get('config_edit_ps', [version])]))
-                    
-                    var fileName = bt.soft.get_config_path(version);
-                    if (data.php_ini) fileName = data.php_ini;
-                    var loadT = bt.load(lan.soft.get);
-                    bt.send('GetFileBody', 'files/GetFileBody', {
-                        path: fileName
-                    }, function(rdata) {
-                        loadT.close();
-                        $("#textBody").text(rdata.data);
-                        $(".CodeMirror").remove();
-                        var editor = CodeMirror.fromTextArea(document.getElementById("textBody"), {
-                            extraKeys: {
-                                "Ctrl-Space": "autocomplete"
-                            },
-                            lineNumbers: true,
-                            matchBrackets: true,
-                        });
-                        editor.focus();
-                        $(".CodeMirror-scroll").css({
-                            "height": "510px",
-                            "margin": 0,
-                            "padding": 0
-                        });
-                        $("#OnlineEditFileBtn").click(function() {
-                            $("#textBody").text(editor.getValue());
-                            bt.soft.save_config(fileName, editor.getValue())
-                        });
-                    })
-                    break;
-                case 'change_version':
-                    var _list = [];
-                    var opt_version = '';
-                    for (var i = 0; i < data.versions.length; i++) {
-                        if (data.versions[i].setup) opt_version = data.name + ' ' + data.versions[i].m_version;
-                        _list.push({
-                            value: data.name + ' ' + data.versions[i].m_version,
-                            title: data.name + ' ' + data.versions[i].m_version
-                        });
-                    }
-                    var _form_data = {
-                        title: lan.soft.select_version,
-                        items: [{
-                                name: 'phpVersion',
-                                width: '160px',
-                                type: 'select',
-                                value: opt_version,
-                                items: _list
-                            },
-                            {
-                                name: 'btn_change_version',
-                                type: 'button',
-                                text: lan.soft.version_to,
-                                callback: function(ldata) {
-                                    if (ldata.phpVersion == opt_version) {
-                                        bt.msg({
-                                            msg: 'Is already[' + opt_version + ']',
-                                            icon: 2
-                                        })
-                                        return;
+                var help = '<ul class="help-info-text c7 mtb15" style="padding-top:30px"><li>' + lan.soft.mysql_mem_err + '</li></ul>';
+                if (name == 'mysqld') tabCon.append(help);
+                break;
+            case 'config':
+                var tabCon = $(".soft-man-con").empty();
+                tabCon.append('<p style="color: #666; margin-bottom: 7px">' + lan.bt.edit_ps + '</p>');
+                tabCon.append('<textarea class="bt-input-text" style="height: 320px; line-height:18px;" id="textBody"></textarea>')
+                tabCon.append('<button id="OnlineEditFileBtn" class="btn btn-success btn-sm" style="margin-top:10px;">' + lan.public.save + '</button>')
+                tabCon.append(bt.render_help([lan.get('config_edit_ps', [version])]))
+
+                var fileName = bt.soft.get_config_path(version);
+                if (data.php_ini) fileName = data.php_ini;
+                var loadT = bt.load(lan.soft.get);
+                bt.send('GetFileBody', 'files/GetFileBody', {
+                    path: fileName
+                }, function (rdata) {
+                    loadT.close();
+                    $("#textBody").text(rdata.data);
+                    $(".CodeMirror").remove();
+                    var editor = CodeMirror.fromTextArea(document.getElementById("textBody"), {
+                        extraKeys: {
+                            "Ctrl-Space": "autocomplete"
+                        },
+                        lineNumbers: true,
+                        matchBrackets: true,
+                    });
+                    editor.focus();
+                    $(".CodeMirror-scroll").css({
+                        "height": "510px",
+                        "margin": 0,
+                        "padding": 0
+                    });
+                    $("#OnlineEditFileBtn").click(function () {
+                        $("#textBody").text(editor.getValue());
+                        bt.soft.save_config(fileName, editor.getValue())
+                    });
+                })
+                break;
+            case 'change_version':
+                var _list = [];
+                var opt_version = '';
+                for (var i = 0; i < data.versions.length; i++) {
+                    if (data.versions[i].setup) opt_version = data.name + ' ' + data.versions[i].m_version;
+                    _list.push({
+                        value: data.name + ' ' + data.versions[i].m_version,
+                        title: data.name + ' ' + data.versions[i].m_version
+                    });
+                }
+                var _form_data = {
+                    title: lan.soft.select_version,
+                    items: [{
+                        name: 'phpVersion',
+                        width: '160px',
+                        type: 'select',
+                        value: opt_version,
+                        items: _list
+                    },
+                    {
+                        name: 'btn_change_version',
+                        type: 'button',
+                        text: lan.soft.version_to,
+                        callback: function (ldata) {
+                            if (ldata.phpVersion == opt_version) {
+                                bt.msg({
+                                    msg: 'Is already[' + opt_version + ']',
+                                    icon: 2
+                                })
+                                return;
+                            }
+                            if (data.name == 'mysql') {
+                                var ver = ldata.phpVersion.split("mysql "),
+                                    pdata = { sName: 'mysql', version: ver[1], type: 0 };
+                                $.post('/plugin?action=check_install_limit', pdata, function (rdata) {
+                                    if (rdata !== null && rdata.status == false) {
+                                        bt.msg({ msg: rdata.msg, icon: 2, time: 3000 });
+                                        return false
                                     }
-                                    if (data.name == 'mysql') {
-                                    	var ver = ldata.phpVersion.split("mysql "),
-                                    	pdata = {sName: 'mysql', version: ver[1], type: 0};
-                                    	$.post('/plugin?action=check_install_limit', pdata ,function(rdata) {
-                                    		if(rdata !==null && rdata.status == false) {
-                                    			bt.msg({msg: rdata.msg,icon: 2,time: 3000});
-                                        		return false
-                                    		}
-	                                        bt.database.get_list(1, '', function(ddata) {
-	                                            if (ddata.data.length > 0) {
-	                                                bt.msg({
-	                                                    msg: lan.soft.mysql_d,
-	                                                    icon: 5,
-	                                                    time: 5000
-	                                                })
-	                                                return;
-	                                            }
-	                                            bt.soft.install_soft(data, ldata.phpVersion.split(" ")[1], 0);
-	                                        })
-                                    	});
-                                    } else {
+                                    bt.database.get_list(1, '', function (ddata) {
+                                        if (ddata.data.length > 0) {
+                                            bt.msg({
+                                                msg: lan.soft.mysql_d,
+                                                icon: 5,
+                                                time: 5000
+                                            })
+                                            return;
+                                        }
                                         bt.soft.install_soft(data, ldata.phpVersion.split(" ")[1], 0);
-                                    }
+                                    })
+                                });
+                            } else {
+                                bt.soft.install_soft(data, ldata.phpVersion.split(" ")[1], 0);
+                            }
+                        }
+                    }
+                    ]
+                }
+                bt.render_form_line(_form_data, '', $(".soft-man-con").empty())
+                break;
+            case 'change_data_path':
+                bt.send('GetMySQLInfo', 'database/GetMySQLInfo', {}, function (rdata) {
+                    var form_data = {
+                        items: [{
+                            type: 'text',
+                            name: 'datadir',
+                            value: rdata.datadir,
+                            event: {
+                                css: 'glyphicon-folder-open',
+                                callback: function (obj) {
+                                    bt.select_path(obj);
                                 }
                             }
+                        },
+                        {
+                            name: 'btn_change_path',
+                            type: 'button',
+                            text: lan.soft.mysql_to,
+                            callback: function (ldata) {
+                                var loadT = bt.load(lan.soft.mysql_to_msg1);
+                                bt.send('SetDataDir', 'database/SetDataDir', {
+                                    datadir: ldata.datadir
+                                }, function (rdata) {
+                                    loadT.close();
+                                    bt.msg(rdata);
+                                });
+                            }
+                        }
                         ]
                     }
-                    bt.render_form_line(_form_data, '', $(".soft-man-con").empty())
-                    break;
-                case 'change_data_path':
-                    bt.send('GetMySQLInfo', 'database/GetMySQLInfo', {}, function(rdata) {
-                        var form_data = {
-                            items: [{
-                                    type: 'text',
-                                    name: 'datadir',
-                                    value: rdata.datadir,
-                                    event: {
-                                        css: 'glyphicon-folder-open',
-                                        callback: function(obj) {
-                                            bt.select_path(obj);
-                                        }
-                                    }
-                                },
-                                {
-                                    name: 'btn_change_path',
-                                    type: 'button',
-                                    text: lan.soft.mysql_to,
-                                    callback: function(ldata) {
-                                        var loadT = bt.load(lan.soft.mysql_to_msg1);
-                                        bt.send('SetDataDir', 'database/SetDataDir', {
-                                            datadir: ldata.datadir
-                                        }, function(rdata) {
-                                            loadT.close();
-                                            bt.msg(rdata);
-                                        });
-                                    }
-                                }
-                            ]
+                    bt.render_form_line(form_data, '', $(".soft-man-con").empty());
+                });
+                break;
+            case 'change_mysql_port':
+                bt.send('GetMySQLInfo', 'database/GetMySQLInfo', {}, function (rdata) {
+                    var form_data = {
+                        items: [{
+                            type: 'text',
+                            width: '100px',
+                            name: 'port',
+                            value: rdata.port
+                        },
+                        {
+                            name: 'btn_change_port',
+                            type: 'button',
+                            text: lan.public.edit,
+                            callback: function (ldata) {
+                                var loadT = bt.load();
+                                bt.send('SetMySQLPort', 'database/SetMySQLPort', {
+                                    port: ldata.port
+                                }, function (rdata) {
+                                    loadT.close();
+                                    bt.msg(rdata);
+                                });
+                            }
                         }
-                        bt.render_form_line(form_data, '', $(".soft-man-con").empty());
-                    });
-                    break;
-                case 'change_mysql_port':
-                    bt.send('GetMySQLInfo', 'database/GetMySQLInfo', {}, function(rdata) {
-                        var form_data = {
-                            items: [{
-                                    type: 'text',
-                                    width: '100px',
-                                    name: 'port',
-                                    value: rdata.port
-                                },
-                                {
-                                    name: 'btn_change_port',
-                                    type: 'button',
-                                    text: lan.public.edit,
-                                    callback: function(ldata) {
-                                        var loadT = bt.load();
-                                        bt.send('SetMySQLPort', 'database/SetMySQLPort', {
-                                            port: ldata.port
-                                        }, function(rdata) {
-                                            loadT.close();
-                                            bt.msg(rdata);
-                                        });
-                                    }
-                                }
-                            ]
+                        ]
+                    }
+                    bt.render_form_line(form_data, '', $(".soft-man-con").empty());
+                });
+                break;
+            case 'change_mysql_ssl':
+                bt.send('check_mysql_ssl_status', 'database/check_mysql_ssl_status', {}, function (rdata) {
+                    var form_data = {
+                        title: 'Mysql SSL',
+                        items: [{
+                            type: 'switch',
+                            name: 'write_ssl',
+                            value: rdata
                         }
-                        bt.render_form_line(form_data, '', $(".soft-man-con").empty());
+                        ]
+                    };
+                    bt.render_form_line(form_data, '', $(".soft-man-con").empty());
+                    var downssl = "/www/server/data/ssl.zip";
+                    $(".soft-man-con").append(bt.render_help(["After setting, manually restart the database to take effect", "Download Mysql SSL self-signed certificate<a class='btlink downssl' href='javascript:;'>【SSL.zip】</a>"]));
+                    $("a.downssl").click(function () {
+                        window.open('/download?filename=' + encodeURIComponent(downssl));
                     });
-                    break;
-                case 'change_mysql_ssl':
-                    bt.send('check_mysql_ssl_status', 'database/check_mysql_ssl_status', {}, function(rdata) {
-                        var form_data = {
-                            title: 'Mysql SSL',
-                            items: [{
-                                    type: 'switch',
-                                    name: 'write_ssl',
-                                    value: rdata
-                                }
-                            ]
-                        };
-                        bt.render_form_line(form_data, '', $(".soft-man-con").empty());
-                        var downssl = "/www/server/data/ssl.zip";
-                        $(".soft-man-con").append(bt.render_help(["After setting, manually restart the database to take effect","Download Mysql SSL self-signed certificate<a class='btlink downssl' href='javascript:;'>【SSL.zip】</a>"]));
-                        $("a.downssl").click(function() {
-                            window.open('/download?filename=' + encodeURIComponent(downssl));
-                        });
-                        $("#write_ssl").change(function() {
-                            var loadT = bt.load();
-                            $.post('/database?action=write_ssl_to_mysql', function(rdata) {
-                                loadT.close(loadT);
-                                var open_type = $("#write_ssl").prop('checked')?'turned on':'turned off',
-                                loadP = layer.confirm('The SSL setting is '+open_type+' successfully.<br> Do you need to restart the database immediately to make it effective?', {
+                    $("#write_ssl").change(function () {
+                        var loadT = bt.load();
+                        $.post('/database?action=write_ssl_to_mysql', function (rdata) {
+                            loadT.close(loadT);
+                            var open_type = $("#write_ssl").prop('checked') ? 'turned on' : 'turned off',
+                                loadP = layer.confirm('The SSL setting is ' + open_type + ' successfully.<br> Do you need to restart the database immediately to make it effective?', {
                                     btn: ['Restart now', 'Restart later'],
                                     icon: 3,
                                     title: 'Confirm Restart?'
-                                }, function() {
-                                    bt.pub.set_server_status('mysql','restart');
-                                }, function() {
+                                }, function () {
+                                    bt.pub.set_server_status('mysql', 'restart');
+                                }, function () {
                                     layer.close(loadP);
                                 });
-                            });
                         });
                     });
-                    break;
-                case 'get_mysql_run_status':
-                    bt.send('GetRunStatus', 'database/GetRunStatus', {}, function(rdata) {
-                        var cache_size = ((parseInt(rdata.Qcache_hits) / (parseInt(rdata.Qcache_hits) + parseInt(rdata.Qcache_inserts))) * 100).toFixed(2) + '%';
-                        if (cache_size == 'NaN%') cache_size = 'OFF';
-                        var title10 = ((1 - rdata.Threads_created / rdata.Connections) * 100).toFixed(2);
-                        var title11 = ((1 - rdata.Key_reads / rdata.Key_read_requests) * 100).toFixed(2);
-                        var title12 = ((1 - rdata.Innodb_buffer_pool_reads / rdata.Innodb_buffer_pool_read_requests) * 100).toFixed(2);
-                        var title14 = ((rdata.Created_tmp_disk_tables / rdata.Created_tmp_tables) * 100).toFixed(2);
-                        var Con = '<div class="divtable"><table class="table table-hover table-bordered" style="margin-bottom:10px;background-color:#fafafa">\
+                });
+                break;
+            case 'get_mysql_run_status':
+                bt.send('GetRunStatus', 'database/GetRunStatus', {}, function (rdata) {
+                    var cache_size = ((parseInt(rdata.Qcache_hits) / (parseInt(rdata.Qcache_hits) + parseInt(rdata.Qcache_inserts))) * 100).toFixed(2) + '%';
+                    if (cache_size == 'NaN%') cache_size = 'OFF';
+                    var title10 = ((1 - rdata.Threads_created / rdata.Connections) * 100).toFixed(2);
+                    var title11 = ((1 - rdata.Key_reads / rdata.Key_read_requests) * 100).toFixed(2);
+                    var title12 = ((1 - rdata.Innodb_buffer_pool_reads / rdata.Innodb_buffer_pool_read_requests) * 100).toFixed(2);
+                    var title14 = ((rdata.Created_tmp_disk_tables / rdata.Created_tmp_tables) * 100).toFixed(2);
+                    var Con = '<div class="divtable"><table class="table table-hover table-bordered" style="margin-bottom:10px;background-color:#fafafa">\
 								<tbody>\
 									<tr><th>' + lan.soft.mysql_status_title1 + '</th><td>' + getLocalTime(rdata.Run) + '</td><th>' + lan.soft.mysql_status_title5 + '</th><td>' + parseInt(rdata.Questions / rdata.Uptime) + '</td></tr>\
 									<tr><th>' + lan.soft.mysql_status_title2 + '</th><td>' + rdata.Connections + '</td><th>' + lan.soft.mysql_status_title6 + '</th><td>' + parseInt((parseInt(rdata.Com_commit) + parseInt(rdata.Com_rollback)) / rdata.Uptime) + '</td></tr>\
@@ -1225,705 +1225,705 @@ var soft = {
 									<tr><th>' + lan.soft.mysql_status_title19 + '</th><td>' + rdata.Table_locks_waited + '</td><td colspan="2">' + lan.soft.mysql_status_ps11 + '</td></tr>\
 								<tbody>\
 						</table></div>'
-                        $(".soft-man-con").html(Con);
-                    })
-                    break;
-                case 'get_mysql_status':
-                    bt.send('GetDbStatus', 'database/GetDbStatus', {}, function(rdata) {
-                        var key_buffer_size = bt.format_size(rdata.mem.key_buffer_size, false, 0, 'MB')
-                        var query_cache_size = bt.format_size(rdata.mem.query_cache_size, false, 0, 'MB')
-                        var tmp_table_size = bt.format_size(rdata.mem.tmp_table_size, false, 0, 'MB')
-                        var innodb_buffer_pool_size = bt.format_size(rdata.mem.innodb_buffer_pool_size, false, 0, 'MB')
-                        var innodb_additional_mem_pool_size = bt.format_size(rdata.mem.innodb_additional_mem_pool_size, false, 0, 'MB')
-                        var innodb_log_buffer_size = bt.format_size(rdata.mem.innodb_log_buffer_size, false, 0, 'MB')
+                    $(".soft-man-con").html(Con);
+                })
+                break;
+            case 'get_mysql_status':
+                bt.send('GetDbStatus', 'database/GetDbStatus', {}, function (rdata) {
+                    var key_buffer_size = bt.format_size(rdata.mem.key_buffer_size, false, 0, 'MB')
+                    var query_cache_size = bt.format_size(rdata.mem.query_cache_size, false, 0, 'MB')
+                    var tmp_table_size = bt.format_size(rdata.mem.tmp_table_size, false, 0, 'MB')
+                    var innodb_buffer_pool_size = bt.format_size(rdata.mem.innodb_buffer_pool_size, false, 0, 'MB')
+                    var innodb_additional_mem_pool_size = bt.format_size(rdata.mem.innodb_additional_mem_pool_size, false, 0, 'MB')
+                    var innodb_log_buffer_size = bt.format_size(rdata.mem.innodb_log_buffer_size, false, 0, 'MB')
 
-                        var sort_buffer_size = bt.format_size(rdata.mem.sort_buffer_size, false, 0, 'MB')
-                        var read_buffer_size = bt.format_size(rdata.mem.read_buffer_size, false, 0, 'MB')
-                        var read_rnd_buffer_size = bt.format_size(rdata.mem.read_rnd_buffer_size, false, 0, 'MB')
-                        var join_buffer_size = bt.format_size(rdata.mem.join_buffer_size, false, 0, 'MB')
-                        var thread_stack = bt.format_size(rdata.mem.thread_stack, false, 0, 'MB')
-                        var binlog_cache_size = bt.format_size(rdata.mem.binlog_cache_size, false, 0, 'MB')
+                    var sort_buffer_size = bt.format_size(rdata.mem.sort_buffer_size, false, 0, 'MB')
+                    var read_buffer_size = bt.format_size(rdata.mem.read_buffer_size, false, 0, 'MB')
+                    var read_rnd_buffer_size = bt.format_size(rdata.mem.read_rnd_buffer_size, false, 0, 'MB')
+                    var join_buffer_size = bt.format_size(rdata.mem.join_buffer_size, false, 0, 'MB')
+                    var thread_stack = bt.format_size(rdata.mem.thread_stack, false, 0, 'MB')
+                    var binlog_cache_size = bt.format_size(rdata.mem.binlog_cache_size, false, 0, 'MB')
+                    var a = key_buffer_size + query_cache_size + tmp_table_size + innodb_buffer_pool_size + innodb_additional_mem_pool_size + innodb_log_buffer_size
+                    var b = sort_buffer_size + read_buffer_size + read_rnd_buffer_size + join_buffer_size + thread_stack + binlog_cache_size
+                    var memSize = a + rdata.mem.max_connections * b
+
+                    var mysql_select = {
+                        '1': {
+                            title: '1-2GB',
+                            data: {
+                                key_buffer_size: 128,
+                                query_cache_size: 64,
+                                tmp_table_size: 64,
+                                innodb_buffer_pool_size: 256,
+                                sort_buffer_size: 768,
+                                read_buffer_size: 768,
+                                read_rnd_buffer_size: 512,
+                                join_buffer_size: 1024,
+                                thread_stack: 256,
+                                binlog_cache_size: 64,
+                                thread_cache_size: 64,
+                                table_open_cache: 128,
+                                max_connections: 100
+                            }
+                        },
+                        '2': {
+                            title: '2-4GB',
+                            data: {
+                                key_buffer_size: 256,
+                                query_cache_size: 128,
+                                tmp_table_size: 384,
+                                innodb_buffer_pool_size: 384,
+                                sort_buffer_size: 768,
+                                read_buffer_size: 768,
+                                read_rnd_buffer_size: 512,
+                                join_buffer_size: 2048,
+                                thread_stack: 256,
+                                binlog_cache_size: 64,
+                                thread_cache_size: 96,
+                                table_open_cache: 192,
+                                max_connections: 200
+                            }
+                        },
+                        '3': {
+                            title: '4-8GB',
+                            data: {
+                                key_buffer_size: 384,
+                                query_cache_size: 192,
+                                tmp_table_size: 512,
+                                innodb_buffer_pool_size: 512,
+                                sort_buffer_size: 1024,
+                                read_buffer_size: 1024,
+                                read_rnd_buffer_size: 768,
+                                join_buffer_size: 2048,
+                                thread_stack: 256,
+                                binlog_cache_size: 128,
+                                thread_cache_size: 128,
+                                table_open_cache: 384,
+                                max_connections: 300
+                            }
+                        },
+                        '4': {
+                            title: '8-16GB',
+                            data: {
+                                key_buffer_size: 512,
+                                query_cache_size: 256,
+                                tmp_table_size: 1024,
+                                innodb_buffer_pool_size: 1024,
+                                sort_buffer_size: 2048,
+                                read_buffer_size: 2048,
+                                read_rnd_buffer_size: 1024,
+                                join_buffer_size: 4096,
+                                thread_stack: 384,
+                                binlog_cache_size: 192,
+                                thread_cache_size: 192,
+                                table_open_cache: 1024,
+                                max_connections: 400
+                            }
+                        },
+                        '5': {
+                            title: '16-32GB',
+                            data: {
+                                key_buffer_size: 1024,
+                                query_cache_size: 384,
+                                tmp_table_size: 2048,
+                                innodb_buffer_pool_size: 4096,
+                                sort_buffer_size: 4096,
+                                read_buffer_size: 4096,
+                                read_rnd_buffer_size: 2048,
+                                join_buffer_size: 8192,
+                                thread_stack: 512,
+                                binlog_cache_size: 256,
+                                thread_cache_size: 256,
+                                table_open_cache: 2048,
+                                max_connections: 500
+                            }
+                        }
+
+                    }
+                    var mysql_arrs = [{
+                        value: 0,
+                        title: lan.soft.mysql_set_select
+                    }]
+                    for (var key in mysql_select) mysql_arrs.push({
+                        value: key,
+                        title: mysql_select[key].title
+                    })
+
+                    var form_datas = [{
+                        items: [{
+                            title: lan.soft.mysql_set_msg,
+                            name: 'mysql_set',
+                            type: 'select',
+                            items: mysql_arrs,
+                            callback: function (item) {
+                                if (item.val() > 0) {
+                                    var data = mysql_select[item.val()].data;
+                                    for (var key in data) $('.' + key).val(data[key]);
+                                    if (!data.query_cache_size) data['query_cache_size'] = 0;
+                                    $("input[name='max_connections']").trigger('change')
+
+                                }
+                            }
+                        },
+                        {
+                            title: lan.soft.mysql_set_maxmem,
+                            name: 'memSize',
+                            width: '70px',
+                            disabled: true,
+                            value: memSize.toFixed(2),
+                            ps: 'MB'
+                        }
+                        ]
+                    },
+                    {
+                        title: 'key_buffer_size',
+                        type: 'number',
+                        name: 'key_buffer_size',
+                        width: '70px',
+                        value: key_buffer_size,
+                        ps: 'MB, <font>' + lan.soft.mysql_set_key_buffer_size + '</font>'
+                    },
+                    {
+                        title: 'query_cache_size',
+                        type: 'number',
+                        name: 'query_cache_size',
+                        width: '70px',
+                        value: query_cache_size,
+                        ps: 'MB, <font>' + lan.soft.mysql_set_query_cache_size + '</font>'
+                    },
+                    {
+                        title: 'tmp_table_size',
+                        type: 'number',
+                        name: 'tmp_table_size',
+                        width: '70px',
+                        value: tmp_table_size,
+                        ps: 'MB, <font>' + lan.soft.mysql_set_tmp_table_size + '</font>'
+                    },
+                    {
+                        title: 'innodb_buffer_pool_size',
+                        type: 'number',
+                        name: 'innodb_buffer_pool_size',
+                        value: innodb_buffer_pool_size,
+                        width: '70px',
+                        ps: 'MB, <font>' + lan.soft.mysql_set_innodb_buffer_pool_size + '</font>'
+                    },
+                    {
+                        title: 'innodb_log_buffer_size',
+                        type: 'number',
+                        name: 'innodb_log_buffer_size',
+                        value: innodb_log_buffer_size,
+                        width: '70px',
+                        ps: 'MB, <font>' + lan.soft.mysql_set_innodb_log_buffer_size + '</font>'
+                    },
+                    {
+                        title: 'sort_buffer_size',
+                        type: 'number',
+                        name: 'sort_buffer_size',
+                        width: '70px',
+                        value: (sort_buffer_size * 1024),
+                        ps: 'KB * ' + lan.soft.mysql_set_conn + ', <font>' + lan.soft.mysql_set_sort_buffer_size + '</font>'
+                    },
+                    {
+                        title: 'read_buffer_size',
+                        type: 'number',
+                        name: 'read_buffer_size',
+                        width: '70px',
+                        value: (read_buffer_size * 1024),
+                        ps: 'KB * ' + lan.soft.mysql_set_conn + ', <font>' + lan.soft.mysql_set_read_buffer_size + '</font>'
+                    },
+                    {
+                        title: 'read_rnd_buffer_size',
+                        type: 'number',
+                        name: 'read_rnd_buffer_size',
+                        width: '70px',
+                        value: (read_rnd_buffer_size * 1024),
+                        ps: 'KB * ' + lan.soft.mysql_set_conn + ', <font>' + lan.soft.mysql_set_read_rnd_buffer_size + '</font>'
+                    },
+                    {
+                        title: 'join_buffer_size',
+                        type: 'number',
+                        name: 'join_buffer_size',
+                        width: '70px',
+                        value: (join_buffer_size * 1024),
+                        ps: 'KB * ' + lan.soft.mysql_set_conn + ', <font>' + lan.soft.mysql_set_join_buffer_size + '</font>'
+                    },
+                    {
+                        title: 'thread_stack',
+                        type: 'number',
+                        name: 'thread_stack',
+                        width: '70px',
+                        value: (thread_stack * 1024),
+                        ps: 'KB * ' + lan.soft.mysql_set_conn + ', <font>' + lan.soft.mysql_set_thread_stack + '</font>'
+                    },
+                    {
+                        title: 'binlog_cache_size',
+                        type: 'number',
+                        name: 'binlog_cache_size',
+                        value: (binlog_cache_size * 1024),
+                        width: '70px',
+                        ps: 'KB * ' + lan.soft.mysql_set_conn + ', <font>' + lan.soft.mysql_set_binlog_cache_size + '</font>'
+                    },
+                    {
+                        title: 'thread_cache_size',
+                        type: 'number',
+                        name: 'thread_cache_size',
+                        value: rdata.mem.thread_cache_size,
+                        width: '70px',
+                        ps: lan.soft.mysql_set_thread_cache_size
+                    },
+                    {
+                        title: 'table_open_cache',
+                        type: 'number',
+                        name: 'table_open_cache',
+                        value: rdata.mem.table_open_cache,
+                        width: '70px',
+                        ps: lan.soft.mysql_set_table_open_cache
+                    },
+                    {
+                        title: 'max_connections',
+                        type: 'number',
+                        name: 'max_connections',
+                        value: rdata.mem.max_connections,
+                        width: '70px',
+                        ps: lan.soft.mysql_set_max_connections
+                    },
+                    {
+                        items: [{
+                            text: lan.soft.mysql_set_restart,
+                            type: 'button',
+                            name: 'bt_mysql_restart',
+                            callback: function (ldata) {
+                                bt.pub.set_server_status('mysqld', 'restart');
+                            }
+                        },
+                        {
+                            text: lan.public.save,
+                            type: 'button',
+                            name: 'bt_mysql_save',
+                            callback: function (ldata) {
+                                ldata.query_cache_type = 0;
+                                if (ldata.query_cache_size > 0) ldata.query_cache_type = 1;
+                                ldata['max_heap_table_size'] = ldata.tmp_table_size;
+                                bt.send('SetDbConf', 'database/SetDbConf', ldata, function (rdata) {
+                                    layer.msg(rdata.msg, {
+                                        icon: rdata.status ? 1 : 2
+                                    });
+                                });
+                            }
+                        }
+                        ]
+                    }
+                    ]
+                    var tabCon = $(".soft-man-con").empty().append("<div class='tab-db-status'></div>");
+                    for (var i = 0; i < form_datas.length; i++) {
+                        bt.render_form_line(form_datas[i], '', $('.tab-db-status'));
+                    }
+
+                    $(".tab-db-status input[name*='size'],.tab-db-status input[name='max_connections'],.tab-db-status input[name='thread_stack']").change(function () {
+
+                        var key_buffer_size = parseInt($("input[name='key_buffer_size']").val());
+                        var query_cache_size = parseInt($("input[name='query_cache_size']").val());
+                        var tmp_table_size = parseInt($("input[name='tmp_table_size']").val());
+                        var innodb_buffer_pool_size = parseInt($("input[name='innodb_buffer_pool_size']").val());
+                        var innodb_log_buffer_size = parseInt($("input[name='innodb_log_buffer_size']").val());
+
+                        var sort_buffer_size = $("input[name='sort_buffer_size']").val() / 1024;
+                        var read_buffer_size = $("input[name='read_buffer_size']").val() / 1024;
+                        var read_rnd_buffer_size = $("input[name='read_rnd_buffer_size']").val() / 1024;
+                        var join_buffer_size = $("input[name='join_buffer_size']").val() / 1024;
+                        var thread_stack = $("input[name='thread_stack']").val() / 1024;
+                        var binlog_cache_size = $("input[name='binlog_cache_size']").val() / 1024;
+                        var max_connections = $("input[name='max_connections']").val();
+
                         var a = key_buffer_size + query_cache_size + tmp_table_size + innodb_buffer_pool_size + innodb_additional_mem_pool_size + innodb_log_buffer_size
                         var b = sort_buffer_size + read_buffer_size + read_rnd_buffer_size + join_buffer_size + thread_stack + binlog_cache_size
-                        var memSize = a + rdata.mem.max_connections * b
-
-                        var mysql_select = {
-                            '1': {
-                                title: '1-2GB',
-                                data: {
-                                    key_buffer_size: 128,
-                                    query_cache_size: 64,
-                                    tmp_table_size: 64,
-                                    innodb_buffer_pool_size: 256,
-                                    sort_buffer_size: 768,
-                                    read_buffer_size: 768,
-                                    read_rnd_buffer_size: 512,
-                                    join_buffer_size: 1024,
-                                    thread_stack: 256,
-                                    binlog_cache_size: 64,
-                                    thread_cache_size: 64,
-                                    table_open_cache: 128,
-                                    max_connections: 100
-                                }
-                            },
-                            '2': {
-                                title: '2-4GB',
-                                data: {
-                                    key_buffer_size: 256,
-                                    query_cache_size: 128,
-                                    tmp_table_size: 384,
-                                    innodb_buffer_pool_size: 384,
-                                    sort_buffer_size: 768,
-                                    read_buffer_size: 768,
-                                    read_rnd_buffer_size: 512,
-                                    join_buffer_size: 2048,
-                                    thread_stack: 256,
-                                    binlog_cache_size: 64,
-                                    thread_cache_size: 96,
-                                    table_open_cache: 192,
-                                    max_connections: 200
-                                }
-                            },
-                            '3': {
-                                title: '4-8GB',
-                                data: {
-                                    key_buffer_size: 384,
-                                    query_cache_size: 192,
-                                    tmp_table_size: 512,
-                                    innodb_buffer_pool_size: 512,
-                                    sort_buffer_size: 1024,
-                                    read_buffer_size: 1024,
-                                    read_rnd_buffer_size: 768,
-                                    join_buffer_size: 2048,
-                                    thread_stack: 256,
-                                    binlog_cache_size: 128,
-                                    thread_cache_size: 128,
-                                    table_open_cache: 384,
-                                    max_connections: 300
-                                }
-                            },
-                            '4': {
-                                title: '8-16GB',
-                                data: {
-                                    key_buffer_size: 512,
-                                    query_cache_size: 256,
-                                    tmp_table_size: 1024,
-                                    innodb_buffer_pool_size: 1024,
-                                    sort_buffer_size: 2048,
-                                    read_buffer_size: 2048,
-                                    read_rnd_buffer_size: 1024,
-                                    join_buffer_size: 4096,
-                                    thread_stack: 384,
-                                    binlog_cache_size: 192,
-                                    thread_cache_size: 192,
-                                    table_open_cache: 1024,
-                                    max_connections: 400
-                                }
-                            },
-                            '5': {
-                                title: '16-32GB',
-                                data: {
-                                    key_buffer_size: 1024,
-                                    query_cache_size: 384,
-                                    tmp_table_size: 2048,
-                                    innodb_buffer_pool_size: 4096,
-                                    sort_buffer_size: 4096,
-                                    read_buffer_size: 4096,
-                                    read_rnd_buffer_size: 2048,
-                                    join_buffer_size: 8192,
-                                    thread_stack: 512,
-                                    binlog_cache_size: 256,
-                                    thread_cache_size: 256,
-                                    table_open_cache: 2048,
-                                    max_connections: 500
-                                }
-                            }
-
-                        }
-                        var mysql_arrs = [{
-                            value: 0,
-                            title: lan.soft.mysql_set_select
-                        }]
-                        for (var key in mysql_select) mysql_arrs.push({
-                            value: key,
-                            title: mysql_select[key].title
-                        })
-
-                        var form_datas = [{
-                                items: [{
-                                        title: lan.soft.mysql_set_msg,
-                                        name: 'mysql_set',
-                                        type: 'select',
-                                        items: mysql_arrs,
-                                        callback: function(item) {
-                                            if (item.val() > 0) {
-                                                var data = mysql_select[item.val()].data;
-                                                for (var key in data) $('.' + key).val(data[key]);
-                                                if (!data.query_cache_size) data['query_cache_size'] = 0;
-                                                $("input[name='max_connections']").trigger('change')
-
-                                            }
-                                        }
-                                    },
-                                    {
-                                        title: lan.soft.mysql_set_maxmem,
-                                        name: 'memSize',
-                                        width: '70px',
-                                        disabled: true,
-                                        value: memSize.toFixed(2),
-                                        ps: 'MB'
-                                    }
-                                ]
-                            },
-                            {
-                                title: 'key_buffer_size',
-                                type: 'number',
-                                name: 'key_buffer_size',
-                                width: '70px',
-                                value: key_buffer_size,
-                                ps: 'MB, <font>' + lan.soft.mysql_set_key_buffer_size + '</font>'
-                            },
-                            {
-                                title: 'query_cache_size',
-                                type: 'number',
-                                name: 'query_cache_size',
-                                width: '70px',
-                                value: query_cache_size,
-                                ps: 'MB, <font>' + lan.soft.mysql_set_query_cache_size + '</font>'
-                            },
-                            {
-                                title: 'tmp_table_size',
-                                type: 'number',
-                                name: 'tmp_table_size',
-                                width: '70px',
-                                value: tmp_table_size,
-                                ps: 'MB, <font>' + lan.soft.mysql_set_tmp_table_size + '</font>'
-                            },
-                            {
-                                title: 'innodb_buffer_pool_size',
-                                type: 'number',
-                                name: 'innodb_buffer_pool_size',
-                                value: innodb_buffer_pool_size,
-                                width: '70px',
-                                ps: 'MB, <font>' + lan.soft.mysql_set_innodb_buffer_pool_size + '</font>'
-                            },
-                            {
-                                title: 'innodb_log_buffer_size',
-                                type: 'number',
-                                name: 'innodb_log_buffer_size',
-                                value: innodb_log_buffer_size,
-                                width: '70px',
-                                ps: 'MB, <font>' + lan.soft.mysql_set_innodb_log_buffer_size + '</font>'
-                            },
-                            {
-                                title: 'sort_buffer_size',
-                                type: 'number',
-                                name: 'sort_buffer_size',
-                                width: '70px',
-                                value: (sort_buffer_size * 1024),
-                                ps: 'KB * ' + lan.soft.mysql_set_conn + ', <font>' + lan.soft.mysql_set_sort_buffer_size + '</font>'
-                            },
-                            {
-                                title: 'read_buffer_size',
-                                type: 'number',
-                                name: 'read_buffer_size',
-                                width: '70px',
-                                value: (read_buffer_size * 1024),
-                                ps: 'KB * ' + lan.soft.mysql_set_conn + ', <font>' + lan.soft.mysql_set_read_buffer_size + '</font>'
-                            },
-                            {
-                                title: 'read_rnd_buffer_size',
-                                type: 'number',
-                                name: 'read_rnd_buffer_size',
-                                width: '70px',
-                                value: (read_rnd_buffer_size * 1024),
-                                ps: 'KB * ' + lan.soft.mysql_set_conn + ', <font>' + lan.soft.mysql_set_read_rnd_buffer_size + '</font>'
-                            },
-                            {
-                                title: 'join_buffer_size',
-                                type: 'number',
-                                name: 'join_buffer_size',
-                                width: '70px',
-                                value: (join_buffer_size * 1024),
-                                ps: 'KB * ' + lan.soft.mysql_set_conn + ', <font>' + lan.soft.mysql_set_join_buffer_size + '</font>'
-                            },
-                            {
-                                title: 'thread_stack',
-                                type: 'number',
-                                name: 'thread_stack',
-                                width: '70px',
-                                value: (thread_stack * 1024),
-                                ps: 'KB * ' + lan.soft.mysql_set_conn + ', <font>' + lan.soft.mysql_set_thread_stack + '</font>'
-                            },
-                            {
-                                title: 'binlog_cache_size',
-                                type: 'number',
-                                name: 'binlog_cache_size',
-                                value: (binlog_cache_size * 1024),
-                                width: '70px',
-                                ps: 'KB * ' + lan.soft.mysql_set_conn + ', <font>' + lan.soft.mysql_set_binlog_cache_size + '</font>'
-                            },
-                            {
-                                title: 'thread_cache_size',
-                                type: 'number',
-                                name: 'thread_cache_size',
-                                value: rdata.mem.thread_cache_size,
-                                width: '70px',
-                                ps: lan.soft.mysql_set_thread_cache_size
-                            },
-                            {
-                                title: 'table_open_cache',
-                                type: 'number',
-                                name: 'table_open_cache',
-                                value: rdata.mem.table_open_cache,
-                                width: '70px',
-                                ps: lan.soft.mysql_set_table_open_cache
-                            },
-                            {
-                                title: 'max_connections',
-                                type: 'number',
-                                name: 'max_connections',
-                                value: rdata.mem.max_connections,
-                                width: '70px',
-                                ps: lan.soft.mysql_set_max_connections
-                            },
-                            {
-                                items: [{
-                                        text: lan.soft.mysql_set_restart,
-                                        type: 'button',
-                                        name: 'bt_mysql_restart',
-                                        callback: function(ldata) {
-                                            bt.pub.set_server_status('mysqld', 'restart');
-                                        }
-                                    },
-                                    {
-                                        text: lan.public.save,
-                                        type: 'button',
-                                        name: 'bt_mysql_save',
-                                        callback: function(ldata) {
-                                            ldata.query_cache_type = 0;
-                                            if (ldata.query_cache_size > 0) ldata.query_cache_type = 1;
-                                            ldata['max_heap_table_size'] = ldata.tmp_table_size;
-                                            bt.send('SetDbConf', 'database/SetDbConf', ldata, function(rdata) {
-                                                layer.msg(rdata.msg, {
-                                                    icon: rdata.status ? 1 : 2
-                                                });
-                                            });
-                                        }
-                                    }
-                                ]
-                            }
-                        ]
-                        var tabCon = $(".soft-man-con").empty().append("<div class='tab-db-status'></div>");
-                        for (var i = 0; i < form_datas.length; i++) {
-                            bt.render_form_line(form_datas[i], '', $('.tab-db-status'));
-                        }
-
-                        $(".tab-db-status input[name*='size'],.tab-db-status input[name='max_connections'],.tab-db-status input[name='thread_stack']").change(function() {
-
-                            var key_buffer_size = parseInt($("input[name='key_buffer_size']").val());
-                            var query_cache_size = parseInt($("input[name='query_cache_size']").val());
-                            var tmp_table_size = parseInt($("input[name='tmp_table_size']").val());
-                            var innodb_buffer_pool_size = parseInt($("input[name='innodb_buffer_pool_size']").val());
-                            var innodb_log_buffer_size = parseInt($("input[name='innodb_log_buffer_size']").val());
-
-                            var sort_buffer_size = $("input[name='sort_buffer_size']").val() / 1024;
-                            var read_buffer_size = $("input[name='read_buffer_size']").val() / 1024;
-                            var read_rnd_buffer_size = $("input[name='read_rnd_buffer_size']").val() / 1024;
-                            var join_buffer_size = $("input[name='join_buffer_size']").val() / 1024;
-                            var thread_stack = $("input[name='thread_stack']").val() / 1024;
-                            var binlog_cache_size = $("input[name='binlog_cache_size']").val() / 1024;
-                            var max_connections = $("input[name='max_connections']").val();
-
-                            var a = key_buffer_size + query_cache_size + tmp_table_size + innodb_buffer_pool_size + innodb_additional_mem_pool_size + innodb_log_buffer_size
-                            var b = sort_buffer_size + read_buffer_size + read_rnd_buffer_size + join_buffer_size + thread_stack + binlog_cache_size
-                            var memSize = a + max_connections * b
-                            $("input[name='memSize']").val(memSize.toFixed(2));
-                        });
-                    })
-                    break;
-                case 'mysql_log':
-                    var loadT = bt.load();
-                    bt.send('BinLog', 'database/BinLog', {
-                        status: 1
-                    }, function(rdata) {
-                        loadT.close();
-                        var limitCon = '<p class="conf_p">\
+                        var memSize = a + max_connections * b
+                        $("input[name='memSize']").val(memSize.toFixed(2));
+                    });
+                })
+                break;
+            case 'mysql_log':
+                var loadT = bt.load();
+                bt.send('BinLog', 'database/BinLog', {
+                    status: 1
+                }, function (rdata) {
+                    loadT.close();
+                    var limitCon = '<p class="conf_p">\
 										<span class="f14 c6 mr20">' + lan.soft.mysql_log_bin + ' </span><span class="f14 c6 mr20">' + ToSize(rdata.msg) + '</span>\
 										<button class="btn btn-success btn-xs btn-bin va0">' + (rdata.status ? lan.soft.off : lan.soft.on) + '</button>\
 										<p class="f14 c6 mtb10" style="border-top:#ddd 1px solid; padding:10px 0">' + lan.soft.mysql_log_err + '<button class="btn btn-default btn-clear btn-xs" style="float:right;" >' + lan.soft.mysql_log_close + '</button></p>\
 										<textarea readonly style="margin: 0px;width: 597px;height: 538px;background-color: #333;color:#fff; padding:0 5px" id="error_log"></textarea>\
 									</p>'
-                        $(".soft-man-con").html(limitCon);
+                    $(".soft-man-con").html(limitCon);
 
-                        //设置二进制日志
-                        $(".btn-bin").click(function() {
-                            var loadT = layer.msg(lan.public.the, {
-                                icon: 16,
-                                time: 0,
-                                shade: 0.3
+                    //设置二进制日志
+                    $(".btn-bin").click(function () {
+                        var loadT = layer.msg(lan.public.the, {
+                            icon: 16,
+                            time: 0,
+                            shade: 0.3
+                        });
+                        $.post('/database?action=BinLog', "", function (rdata) {
+                            layer.close(loadT);
+                            layer.msg(rdata.msg, {
+                                icon: rdata.status ? 1 : 5
                             });
-                            $.post('/database?action=BinLog', "", function(rdata) {
-                                layer.close(loadT);
-                                layer.msg(rdata.msg, {
-                                    icon: rdata.status ? 1 : 5
-                                });
-                                soft.get_tab_contents('mysql_log')
-                            });
-                        })
-
-                        //清空日志
-                        $(".btn-clear").click(function() {
-                            var loadT = layer.msg(lan.public.the, {
-                                icon: 16,
-                                time: 0,
-                                shade: 0.3
-                            });
-                            $.post('/database?action=GetErrorLog', "close=1", function(rdata) {
-                                layer.close(loadT);
-                                layer.msg(rdata.msg, {
-                                    icon: rdata.status ? 1 : 5
-                                });
-                                soft.get_tab_contents('mysql_log')
-                            });
-                        })
-                        bt.send('GetErrorLog', 'database/GetErrorLog', {}, function(error_body) {
-                            if (error_body.status === false) {
-                                layer.msg(error_body.msg, {
-                                    icon: 5
-                                });
-                                error_body = lan.soft.mysql_log_ps1;
-                            }
-                            if (error_body == "") error_body = lan.soft.mysql_log_ps1;
-                            $("#error_log").text(error_body);
-                            var ob = document.getElementById('error_log');
-                            ob.scrollTop = ob.scrollHeight;
+                            soft.get_tab_contents('mysql_log')
                         });
                     })
-                    break;
-                case 'mysql_slow_log':
-                    var loadT = bt.load();
-                    bt.send('GetSlowLogs', 'database/GetSlowLogs', {}, function(logs) {
-                        loadT.close();
-                        if (!logs.status) {
-                            logs.msg = '';
+
+                    //清空日志
+                    $(".btn-clear").click(function () {
+                        var loadT = layer.msg(lan.public.the, {
+                            icon: 16,
+                            time: 0,
+                            shade: 0.3
+                        });
+                        $.post('/database?action=GetErrorLog', "close=1", function (rdata) {
+                            layer.close(loadT);
+                            layer.msg(rdata.msg, {
+                                icon: rdata.status ? 1 : 5
+                            });
+                            soft.get_tab_contents('mysql_log')
+                        });
+                    })
+                    bt.send('GetErrorLog', 'database/GetErrorLog', {}, function (error_body) {
+                        if (error_body.status === false) {
+                            layer.msg(error_body.msg, {
+                                icon: 5
+                            });
+                            error_body = lan.soft.mysql_log_ps1;
                         }
-                        if (logs.msg == '') logs.msg = lan.soft.no_slow_log;
-                        var phpCon = '<textarea readonly="" style="margin: 0px;width: 601px;height: 619px;background-color: #333;color:#fff; padding:0 5px" id="error_log">' + logs.msg + '</textarea>';
-                        $(".soft-man-con").html(phpCon);
+                        if (error_body == "") error_body = lan.soft.mysql_log_ps1;
+                        $("#error_log").text(error_body);
                         var ob = document.getElementById('error_log');
                         ob.scrollTop = ob.scrollHeight;
-                    })
-                    break;
-                case 'log':
-                    var loadT = bt.load(lan.public.the_get);
-                    bt.send('GetOpeLogs', 'ajax/GetOpeLogs', {
-                        path: '/www/wwwlogs/nginx_error.log'
-                    }, function(rdata) {
-                        loadT.close();
-                        if (rdata.msg == '') rdata.msg = lan.soft.no_log;
-                        var ebody = '<div class="soft-man-con"><textarea readonly="" style="margin: 0px;width: 600px;height: 520px;background-color: #333;color:#fff; padding:0 5px" id="error_log">' + rdata.msg + '</textarea></div>';
-                        $(".soft-man-con").html(ebody);
-                        var ob = document.getElementById('error_log');
-                        ob.scrollTop = ob.scrollHeight;
-                    })
-                    break;
-                case 'nginx_status':
-                    var loadT = bt.load();
-                    bt.send('GetNginxStatus', 'ajax/GetNginxStatus', {}, function(rdata) {
-                        loadT.close();
-                        $(".soft-man-con").html("<div><table id='tab-nginx-status' class='table table-hover table-bordered'> </table></div>");
-                        var arrs = []
-                        arrs[lan.bt.nginx_active] = rdata.active;
-                        arrs[lan.bt.nginx_accepts] = rdata.accepts;
-                        arrs[lan.bt.nginx_handled] = rdata.handled;
-                        arrs[lan.bt.nginx_requests] = rdata.requests;
-                        arrs[lan.bt.nginx_reading] = rdata.Reading;
-                        arrs[lan.bt.nginx_writing] = rdata.Writing;
-                        arrs[lan.bt.nginx_waiting] = rdata.Waiting;
-                        arrs[lan.bt.nginx_worker] = rdata.worker;
-                        arrs[lan.bt.nginx_workercpu] = rdata.workercpu;
-                        arrs[lan.bt.nginx_workermen] = rdata.workermen;
-                        bt.render_table("tab-nginx-status", arrs);
-                    })
-                    break;
-                case 'apache_status':
-                    var loadT = bt.load();
-                    bt.send('GetApacheStatus', 'ajax/GetApacheStatus', {}, function(rdata) {
-                        loadT.close();
-                        $(".soft-man-con").html("<div><table id='tab-Apache-status' class='table table-hover table-bordered'> </table></div>");
-                        var arrs = []
-                        arrs[lan.bt.apache_uptime] = rdata.UpTime;
-                        arrs[lan.bt.apache_idleworkers] = rdata.IdleWorkers;
-                        arrs[lan.bt.apache_totalaccesses] = rdata.TotalAccesses;
-                        arrs[lan.bt.apache_totalkbytes] = rdata.TotalKBytes;
-                        arrs[lan.bt.apache_workermem] = rdata.workermem;
-                        arrs[lan.bt.apache_workercpu] = rdata.workercpu;
-                        arrs[lan.bt.apache_reqpersec] = rdata.ReqPerSec;
-                        arrs[lan.bt.apache_restarttime] = rdata.RestartTime;
-                        arrs[lan.bt.apache_busyworkers] = rdata.BusyWorkers;
-                        bt.render_table("tab-Apache-status", arrs);
-                    })
-                    break;
-                case 'nginx_set':
-                    var loadT = bt.load();
-                    bt.send('GetNginxValue', 'config/GetNginxValue', {}, function(rdata) {
-                        loadT.close();
-                        var form_datas = []
-                        for (var i = 0; i < rdata.length; i++) {
-                            if (rdata[i].name == 'worker_processes') {
-                                form_datas.push({
-                                    title: rdata[i].name,
-                                    name: rdata[i].name,
-                                    width: '60px',
-                                    value: rdata[i].value,
-                                    ps: rdata[i].ps,
-                                    text: ''
-                                })
-                            } else if (rdata[i].name == 'gzip') {
-                                form_datas.push({
-                                    title: rdata[i].name,
-                                    type: 'select',
-                                    items: [{
-                                        title: lan.soft.on,
-                                        value: 'on'
-                                    }, {
-                                        title: lan.soft.off,
-                                        value: 'off'
-                                    }],
-                                    name: rdata[i].name,
-                                    width: '60px',
-                                    value: rdata[i].value,
-                                    ps: rdata[i].ps,
-                                    text: ''
-                                })
-                            } else {
-                                form_datas.push({
-                                    title: rdata[i].name,
-                                    type: 'number',
-                                    name: rdata[i].name,
-                                    width: '60px',
-                                    value: rdata[i].value,
-                                    ps: rdata[i].ps,
-                                    text: ''
-                                })
-                            }
-
-                        }
-                        form_datas.push({
-                            items: [{
-                                text: lan.public.save,
-                                type: 'button',
-                                name: 'bt_nginx_save',
-                                callback: function(item) {
-                                    delete item['bt_nginx_save']
-                                    bt.send('SetNginxValue', 'config/SetNginxValue', item, function(rdata) {
-                                        layer.msg(rdata.msg, {
-                                            icon: rdata.status ? 1 : 2
-                                        });
-                                    });
-                                }
-                            }]
-                        })
-                        $(".soft-man-con").empty().append('<div class="set_nginx_config"></div>');
-                        for (var i = 0; i < form_datas.length; i++) {
-                            bt.render_form_line(form_datas[i], '', $(".soft-man-con .set_nginx_config"));
-                        }
                     });
-                    break;
-                case 'apache_set':
-                    var loadT = bt.load();
-                    bt.send('GetNginxValue', 'config/GetApacheValue', {}, function(rdata) {
-                        loadT.close();
-                        var form_datas = []
-                        for (var i = 0; i < rdata.length; i++) {
-                            if (rdata[i].name == 'KeepAlive') {
-                                form_datas.push({
-                                    title: rdata[i].name,
-                                    type: 'select',
-                                    items: [{
-                                        title: lan.soft.on,
-                                        value: 'on'
-                                    }, {
-                                        title: lan.soft.off,
-                                        value: 'off'
-                                    }],
-                                    name: rdata[i].name,
-                                    width: '65px',
-                                    value: rdata[i].value,
-                                    ps: rdata[i].ps,
-                                    text: ''
-                                })
-                            } else {
-                                form_datas.push({
-                                    title: rdata[i].name,
-                                    type: 'number',
-                                    name: rdata[i].name,
-                                    width: '65px',
-                                    value: rdata[i].value,
-                                    ps: rdata[i].ps,
-                                    text: ''
-                                })
-                            }
-
-                        }
-                        form_datas.push({
-                            items: [{
-                                text: lan.public.save,
-                                type: 'button',
-                                name: 'bt_apache_save',
-                                callback: function(item) {
-                                    delete item['bt_apache_save'];
-                                    bt.send('SetApacheValue', 'config/SetApacheValue', item, function(rdata) {
-                                        layer.msg(rdata.msg, {
-                                            icon: rdata.status ? 1 : 2
-                                        });
-                                    });
-                                }
-                            }]
-                        })
-                        $(".soft-man-con").empty().append('<div class="set_Apache_config"></div>');
-                        for (var i = 0; i < form_datas.length; i++) {
-                            bt.render_form_line(form_datas[i], '', $(".soft-man-con .set_Apache_config"));
-                        }
-                    });
-                    break;
-                case 'memcached_status':
-                case 'memcached_set':
-                    var loadT = bt.load(lan.public.get_the);
-                    bt.send('GetMemcachedStatus', 'ajax/GetMemcachedStatus', {}, function(rdata) {
-                        loadT.close();
-                        if (key == 'memcached_set') {
-                            var form_data = [{
-                                    title: 'BindIP',
-                                    name: 'ip',
-                                    width: '120px',
-                                    value: rdata.bind,
-                                    ps: lan.soft.listen_ip_tips
-                                },
-                                {
-                                    title: 'PORT',
-                                    name: 'port',
-                                    type: 'number',
-                                    width: '120px',
-                                    value: rdata.port,
-                                    ps: lan.soft.listen_port_tips
-                                },
-                                {
-                                    title: 'CACHESIZE',
-                                    name: 'cachesize',
-                                    type: 'number',
-                                    width: '120px',
-                                    value: rdata.cachesize,
-                                    ps: lan.soft.cache_size
-                                },
-                                {
-                                    title: 'MAXCONN',
-                                    name: 'maxconn',
-                                    type: 'number',
-                                    width: '120px',
-                                    value: rdata.maxconn,
-                                    ps: lan.soft.mac_connect
-                                },
-                                {
-                                    title: ' ',
-                                    items: [{
-                                        text: lan.public.save,
-                                        name: 'btn_set_memcached',
-                                        type: 'button',
-                                        callback: function(ldata) {
-                                            if (ldata.ip.split('.').length < 4) {
-                                                layer.msg(lan.soft.ip_format_err, {
-                                                    icon: 2
-                                                });
-                                                return;
-                                            }
-                                            if (ldata.port < 1 || ldata.port > 65535) {
-                                                layer.msg(lan.soft.port_range_err, {
-                                                    icon: 2
-                                                });
-                                                return;
-                                            }
-                                            if (ldata.cachesize < 8) {
-                                                layer.msg(lan.soft.cache_too_small, {
-                                                    icon: 2
-                                                });
-                                                return;
-                                            }
-                                            if (ldata.maxconn < 4) {
-                                                layer.msg(lan.soft.connect_too_small, {
-                                                    icon: 2
-                                                });
-                                                return;
-                                            }
-                                            var loadT = bt.load(lan.public.the);
-                                            bt.send('SetMemcachedCache', 'ajax/SetMemcachedCache', ldata, function(rdata) {
-                                                loadT.close();
-                                                bt.msg(rdata)
-                                            });
-                                        }
-                                    }]
-                                }
-                            ]
-                            var tabCon = $(".soft-man-con").empty();
-                            for (var i = 0; i < form_data.length; i++) {
-                                bt.render_form_line(form_data[i], '', tabCon);
-                            }
-                            return;
-                        } else {
-                            var arr = {};
-                            arr['BindIP'] = [rdata.bind, lan.soft.listen_ip];
-                            arr['PORT'] = [rdata.port, lan.soft.listen_port];
-                            arr['CACHESIZE'] = [rdata.cachesize + ' MB', lan.soft.max_cache];
-                            arr['MAXCONN'] = [rdata.maxconn, lan.soft.max_connect_limit];
-                            arr['curr_connections'] = [rdata.curr_connections, lan.soft.curr_connect];
-                            arr['cmd_get'] = [rdata.cmd_get, lan.soft.get_request_num];
-                            arr['get_hits'] = [rdata.get_hits, lan.soft.get_hit_num];
-                            arr['get_misses'] = [rdata.get_misses, lan.soft.get_miss_num];
-                            arr['hit'] = [rdata.hit.toFixed(2) + ' %', lan.soft.get_hit_percent];
-                            arr['curr_items'] = [rdata.curr_items, lan.soft.curr_cache_rows];
-                            arr['evictions'] = [rdata.evictions, lan.soft.mem_not_enough];
-                            arr['bytes'] = [ToSize(rdata.bytes), lan.soft.curr_mem_use];
-                            arr['bytes_read'] = [ToSize(rdata.bytes_read), lan.soft.request_size_total];
-                            arr['bytes_written'] = [ToSize(rdata.bytes_written), lan.soft.send_size_total];
-
-                            var con = "<div class=\"divtable\"><table id='tab_memcached_status' style=\"width: 600px;\" class='table table-hover table-bordered '><thead><th>" + lan.soft.field + "</th><th>" + lan.soft.curr_val + "</th><th>" + lan.soft.instructions + "</th></thead></table></div>";
-                            $(".soft-man-con").html(con);
-                            bt.render_table('tab_memcached_status', arr, true);
-                        }
-                    })
-                    break;
-                case 'phpmyadmin_php':
-                    bt.send('GetPHPVersion', 'site/GetPHPVersion', {}, function(rdata) {
-                        var sdata = $('.bt-soft-menu').data('data');
-
-                        var body = "<div class='ver line'><span class='tname' style='text-align: center;'>" + lan.soft.php_version + "</span><select id='get_phpVersion' class='bt-input-text mr20' name='phpVersion' style='width:110px'>";
-                        for (var i = 0; i < rdata.length; i++) {
-                            optionSelect = rdata[i].version == sdata.ext.phpversion ? 'selected' : '';
-                            body += "<option value='" + rdata[i].version + "' " + optionSelect + ">" + rdata[i].name + "</option>"
-                        }
-                        body += '</select><button class="btn btn-success btn-sm" >' + lan.public.save + '</button></div>';
-                        $(".soft-man-con").html(body);
-                        $('.btn-success').click(function() {
-                            var loadT = bt.load(lan.public.the);
-                            bt.send('setPHPMyAdmin', 'ajax/setPHPMyAdmin', {
-                                phpversion: $("#get_phpVersion").val()
-                            }, function(rdata) {
-                                loadT.close();
-                                bt.msg(rdata);
-                                if (rdata.status) {
-                                    setTimeout(function() {
-                                        window.location.reload();
-                                    }, 3000);
-                                }
+                })
+                break;
+            case 'mysql_slow_log':
+                var loadT = bt.load();
+                bt.send('GetSlowLogs', 'database/GetSlowLogs', {}, function (logs) {
+                    loadT.close();
+                    if (!logs.status) {
+                        logs.msg = '';
+                    }
+                    if (logs.msg == '') logs.msg = lan.soft.no_slow_log;
+                    var phpCon = '<textarea readonly="" style="margin: 0px;width: 601px;height: 619px;background-color: #333;color:#fff; padding:0 5px" id="error_log">' + logs.msg + '</textarea>';
+                    $(".soft-man-con").html(phpCon);
+                    var ob = document.getElementById('error_log');
+                    ob.scrollTop = ob.scrollHeight;
+                })
+                break;
+            case 'log':
+                var loadT = bt.load(lan.public.the_get);
+                bt.send('GetOpeLogs', 'ajax/GetOpeLogs', {
+                    path: '/www/wwwlogs/nginx_error.log'
+                }, function (rdata) {
+                    loadT.close();
+                    if (rdata.msg == '') rdata.msg = lan.soft.no_log;
+                    var ebody = '<div class="soft-man-con"><textarea readonly="" style="margin: 0px;width: 600px;height: 520px;background-color: #333;color:#fff; padding:0 5px" id="error_log">' + rdata.msg + '</textarea></div>';
+                    $(".soft-man-con").html(ebody);
+                    var ob = document.getElementById('error_log');
+                    ob.scrollTop = ob.scrollHeight;
+                })
+                break;
+            case 'nginx_status':
+                var loadT = bt.load();
+                bt.send('GetNginxStatus', 'ajax/GetNginxStatus', {}, function (rdata) {
+                    loadT.close();
+                    $(".soft-man-con").html("<div><table id='tab-nginx-status' class='table table-hover table-bordered'> </table></div>");
+                    var arrs = []
+                    arrs[lan.bt.nginx_active] = rdata.active;
+                    arrs[lan.bt.nginx_accepts] = rdata.accepts;
+                    arrs[lan.bt.nginx_handled] = rdata.handled;
+                    arrs[lan.bt.nginx_requests] = rdata.requests;
+                    arrs[lan.bt.nginx_reading] = rdata.Reading;
+                    arrs[lan.bt.nginx_writing] = rdata.Writing;
+                    arrs[lan.bt.nginx_waiting] = rdata.Waiting;
+                    arrs[lan.bt.nginx_worker] = rdata.worker;
+                    arrs[lan.bt.nginx_workercpu] = rdata.workercpu;
+                    arrs[lan.bt.nginx_workermen] = rdata.workermen;
+                    bt.render_table("tab-nginx-status", arrs);
+                })
+                break;
+            case 'apache_status':
+                var loadT = bt.load();
+                bt.send('GetApacheStatus', 'ajax/GetApacheStatus', {}, function (rdata) {
+                    loadT.close();
+                    $(".soft-man-con").html("<div><table id='tab-Apache-status' class='table table-hover table-bordered'> </table></div>");
+                    var arrs = []
+                    arrs[lan.bt.apache_uptime] = rdata.UpTime;
+                    arrs[lan.bt.apache_idleworkers] = rdata.IdleWorkers;
+                    arrs[lan.bt.apache_totalaccesses] = rdata.TotalAccesses;
+                    arrs[lan.bt.apache_totalkbytes] = rdata.TotalKBytes;
+                    arrs[lan.bt.apache_workermem] = rdata.workermem;
+                    arrs[lan.bt.apache_workercpu] = rdata.workercpu;
+                    arrs[lan.bt.apache_reqpersec] = rdata.ReqPerSec;
+                    arrs[lan.bt.apache_restarttime] = rdata.RestartTime;
+                    arrs[lan.bt.apache_busyworkers] = rdata.BusyWorkers;
+                    bt.render_table("tab-Apache-status", arrs);
+                })
+                break;
+            case 'nginx_set':
+                var loadT = bt.load();
+                bt.send('GetNginxValue', 'config/GetNginxValue', {}, function (rdata) {
+                    loadT.close();
+                    var form_datas = []
+                    for (var i = 0; i < rdata.length; i++) {
+                        if (rdata[i].name == 'worker_processes') {
+                            form_datas.push({
+                                title: rdata[i].name,
+                                name: rdata[i].name,
+                                width: '60px',
+                                value: rdata[i].value,
+                                ps: rdata[i].ps,
+                                text: ''
                             })
+                        } else if (rdata[i].name == 'gzip') {
+                            form_datas.push({
+                                title: rdata[i].name,
+                                type: 'select',
+                                items: [{
+                                    title: lan.soft.on,
+                                    value: 'on'
+                                }, {
+                                    title: lan.soft.off,
+                                    value: 'off'
+                                }],
+                                name: rdata[i].name,
+                                width: '60px',
+                                value: rdata[i].value,
+                                ps: rdata[i].ps,
+                                text: ''
+                            })
+                        } else {
+                            form_datas.push({
+                                title: rdata[i].name,
+                                type: 'number',
+                                name: rdata[i].name,
+                                width: '60px',
+                                value: rdata[i].value,
+                                ps: rdata[i].ps,
+                                text: ''
+                            })
+                        }
+
+                    }
+                    form_datas.push({
+                        items: [{
+                            text: lan.public.save,
+                            type: 'button',
+                            name: 'bt_nginx_save',
+                            callback: function (item) {
+                                delete item['bt_nginx_save']
+                                bt.send('SetNginxValue', 'config/SetNginxValue', item, function (rdata) {
+                                    layer.msg(rdata.msg, {
+                                        icon: rdata.status ? 1 : 2
+                                    });
+                                });
+                            }
+                        }]
+                    })
+                    $(".soft-man-con").empty().append('<div class="set_nginx_config"></div>');
+                    for (var i = 0; i < form_datas.length; i++) {
+                        bt.render_form_line(form_datas[i], '', $(".soft-man-con .set_nginx_config"));
+                    }
+                });
+                break;
+            case 'apache_set':
+                var loadT = bt.load();
+                bt.send('GetNginxValue', 'config/GetApacheValue', {}, function (rdata) {
+                    loadT.close();
+                    var form_datas = []
+                    for (var i = 0; i < rdata.length; i++) {
+                        if (rdata[i].name == 'KeepAlive') {
+                            form_datas.push({
+                                title: rdata[i].name,
+                                type: 'select',
+                                items: [{
+                                    title: lan.soft.on,
+                                    value: 'on'
+                                }, {
+                                    title: lan.soft.off,
+                                    value: 'off'
+                                }],
+                                name: rdata[i].name,
+                                width: '65px',
+                                value: rdata[i].value,
+                                ps: rdata[i].ps,
+                                text: ''
+                            })
+                        } else {
+                            form_datas.push({
+                                title: rdata[i].name,
+                                type: 'number',
+                                name: rdata[i].name,
+                                width: '65px',
+                                value: rdata[i].value,
+                                ps: rdata[i].ps,
+                                text: ''
+                            })
+                        }
+
+                    }
+                    form_datas.push({
+                        items: [{
+                            text: lan.public.save,
+                            type: 'button',
+                            name: 'bt_apache_save',
+                            callback: function (item) {
+                                delete item['bt_apache_save'];
+                                bt.send('SetApacheValue', 'config/SetApacheValue', item, function (rdata) {
+                                    layer.msg(rdata.msg, {
+                                        icon: rdata.status ? 1 : 2
+                                    });
+                                });
+                            }
+                        }]
+                    })
+                    $(".soft-man-con").empty().append('<div class="set_Apache_config"></div>');
+                    for (var i = 0; i < form_datas.length; i++) {
+                        bt.render_form_line(form_datas[i], '', $(".soft-man-con .set_Apache_config"));
+                    }
+                });
+                break;
+            case 'memcached_status':
+            case 'memcached_set':
+                var loadT = bt.load(lan.public.get_the);
+                bt.send('GetMemcachedStatus', 'ajax/GetMemcachedStatus', {}, function (rdata) {
+                    loadT.close();
+                    if (key == 'memcached_set') {
+                        var form_data = [{
+                            title: 'BindIP',
+                            name: 'ip',
+                            width: '120px',
+                            value: rdata.bind,
+                            ps: lan.soft.listen_ip_tips
+                        },
+                        {
+                            title: 'PORT',
+                            name: 'port',
+                            type: 'number',
+                            width: '120px',
+                            value: rdata.port,
+                            ps: lan.soft.listen_port_tips
+                        },
+                        {
+                            title: 'CACHESIZE',
+                            name: 'cachesize',
+                            type: 'number',
+                            width: '120px',
+                            value: rdata.cachesize,
+                            ps: lan.soft.cache_size
+                        },
+                        {
+                            title: 'MAXCONN',
+                            name: 'maxconn',
+                            type: 'number',
+                            width: '120px',
+                            value: rdata.maxconn,
+                            ps: lan.soft.mac_connect
+                        },
+                        {
+                            title: ' ',
+                            items: [{
+                                text: lan.public.save,
+                                name: 'btn_set_memcached',
+                                type: 'button',
+                                callback: function (ldata) {
+                                    if (ldata.ip.split('.').length < 4) {
+                                        layer.msg(lan.soft.ip_format_err, {
+                                            icon: 2
+                                        });
+                                        return;
+                                    }
+                                    if (ldata.port < 1 || ldata.port > 65535) {
+                                        layer.msg(lan.soft.port_range_err, {
+                                            icon: 2
+                                        });
+                                        return;
+                                    }
+                                    if (ldata.cachesize < 8) {
+                                        layer.msg(lan.soft.cache_too_small, {
+                                            icon: 2
+                                        });
+                                        return;
+                                    }
+                                    if (ldata.maxconn < 4) {
+                                        layer.msg(lan.soft.connect_too_small, {
+                                            icon: 2
+                                        });
+                                        return;
+                                    }
+                                    var loadT = bt.load(lan.public.the);
+                                    bt.send('SetMemcachedCache', 'ajax/SetMemcachedCache', ldata, function (rdata) {
+                                        loadT.close();
+                                        bt.msg(rdata)
+                                    });
+                                }
+                            }]
+                        }
+                        ]
+                        var tabCon = $(".soft-man-con").empty();
+                        for (var i = 0; i < form_data.length; i++) {
+                            bt.render_form_line(form_data[i], '', tabCon);
+                        }
+                        return;
+                    } else {
+                        var arr = {};
+                        arr['BindIP'] = [rdata.bind, lan.soft.listen_ip];
+                        arr['PORT'] = [rdata.port, lan.soft.listen_port];
+                        arr['CACHESIZE'] = [rdata.cachesize + ' MB', lan.soft.max_cache];
+                        arr['MAXCONN'] = [rdata.maxconn, lan.soft.max_connect_limit];
+                        arr['curr_connections'] = [rdata.curr_connections, lan.soft.curr_connect];
+                        arr['cmd_get'] = [rdata.cmd_get, lan.soft.get_request_num];
+                        arr['get_hits'] = [rdata.get_hits, lan.soft.get_hit_num];
+                        arr['get_misses'] = [rdata.get_misses, lan.soft.get_miss_num];
+                        arr['hit'] = [rdata.hit.toFixed(2) + ' %', lan.soft.get_hit_percent];
+                        arr['curr_items'] = [rdata.curr_items, lan.soft.curr_cache_rows];
+                        arr['evictions'] = [rdata.evictions, lan.soft.mem_not_enough];
+                        arr['bytes'] = [ToSize(rdata.bytes), lan.soft.curr_mem_use];
+                        arr['bytes_read'] = [ToSize(rdata.bytes_read), lan.soft.request_size_total];
+                        arr['bytes_written'] = [ToSize(rdata.bytes_written), lan.soft.send_size_total];
+
+                        var con = "<div class=\"divtable\"><table id='tab_memcached_status' style=\"width: 600px;\" class='table table-hover table-bordered '><thead><th>" + lan.soft.field + "</th><th>" + lan.soft.curr_val + "</th><th>" + lan.soft.instructions + "</th></thead></table></div>";
+                        $(".soft-man-con").html(con);
+                        bt.render_table('tab_memcached_status', arr, true);
+                    }
+                })
+                break;
+            case 'phpmyadmin_php':
+                bt.send('GetPHPVersion', 'site/GetPHPVersion', {}, function (rdata) {
+                    var sdata = $('.bt-soft-menu').data('data');
+
+                    var body = "<div class='ver line'><span class='tname' style='text-align: center;'>" + lan.soft.php_version + "</span><select id='get_phpVersion' class='bt-input-text mr20' name='phpVersion' style='width:110px'>";
+                    for (var i = 0; i < rdata.length; i++) {
+                        optionSelect = rdata[i].version == sdata.ext.phpversion ? 'selected' : '';
+                        body += "<option value='" + rdata[i].version + "' " + optionSelect + ">" + rdata[i].name + "</option>"
+                    }
+                    body += '</select><button class="btn btn-success btn-sm" >' + lan.public.save + '</button></div>';
+                    $(".soft-man-con").html(body);
+                    $('.btn-success').click(function () {
+                        var loadT = bt.load(lan.public.the);
+                        bt.send('setPHPMyAdmin', 'ajax/setPHPMyAdmin', {
+                            phpversion: $("#get_phpVersion").val()
+                        }, function (rdata) {
+                            loadT.close();
+                            bt.msg(rdata);
+                            if (rdata.status) {
+                                setTimeout(function () {
+                                    window.location.reload();
+                                }, 3000);
+                            }
                         })
                     })
-                    break;
-                case 'phpmyadmin_safe':
-                    var sdata = $('.bt-soft-menu').data('data'),
-                        sslPortNum = '';
-                    var con = '<div class="ver line user_set_info">\
+                })
+                break;
+            case 'phpmyadmin_safe':
+                var sdata = $('.bt-soft-menu').data('data'),
+                    sslPortNum = '';
+                var con = '<div class="ver line user_set_info">\
                                     <span class="tit">' + lan.soft.pma_port + '</span>\
                                     <input class="bt-input-text phpmyadmindk mr20" name="Name" id="pmport" value="' + sdata.ext.port + '" placeholder="' + lan.soft.pma_port_title + '" maxlength="5" type="number">\
                                     <button class="btn btn-success btn-sm phpmyadmin_port" >' + lan.public.save + '</button>\
@@ -1953,640 +1953,640 @@ var soft = {
                                 </div>\
                                 <ul class="help-info-text c7"><li>' + lan.soft.pma_ps + '</li></ul>';
 
-                    $(".soft-man-con").html(con);
-                    if (sdata.ext.port) {
-                        $(".user_pw").show();
-                    }
+                $(".soft-man-con").html(con);
+                if (sdata.ext.port) {
+                    $(".user_pw").show();
+                }
 
-                    function get_phpmyadmin_ssl() {
-                        var loading = bt.load('Getting SSL Status...');
-                        bt.send('get_phpmyadmin_ssl', 'ajax/get_phpmyadmin_ssl', {}, function(tdata) {
-                            loading.close();
-                            $('#ssl_safe_checkbox').prop("checked", tdata.status);
-                            $('#sslport').val(tdata.port)
-                        })
+                function get_phpmyadmin_ssl() {
+                    var loading = bt.load('Getting SSL Status...');
+                    bt.send('get_phpmyadmin_ssl', 'ajax/get_phpmyadmin_ssl', {}, function (tdata) {
+                        loading.close();
+                        $('#ssl_safe_checkbox').prop("checked", tdata.status);
+                        $('#sslport').val(tdata.port)
+                    })
+                }
+                get_phpmyadmin_ssl()
+                $('.phpmyadmin_port').click(function () {
+                    var pmport = $("#pmport").val();
+                    var loadT = bt.load(lan.public.the);
+                    bt.send('setPHPMyAdmin', 'ajax/setPHPMyAdmin', {
+                        port: pmport
+                    }, function (rdata) {
+                        loadT.close();
+                        bt.msg(rdata);
+                    })
+                })
+                $('.ssl_safe_label').click(function () {
+                    var stat = $('#ssl_safe_checkbox').prop("checked");
+                    bt.send('set_phpmyadmin_ssl', 'ajax/set_phpmyadmin_ssl', {
+                        v: !stat ? 1 : 0
+                    }, function (rdata) {
+                        bt.msg(rdata)
+                    })
+                    setTimeout(function () {
+                        get_phpmyadmin_ssl();
+                    }, 500)
+
+                })
+                $('.ssl_port_button').click(function () {
+                    var sslPort = $('#sslport').val();
+                    if (!bt.check_port(sslPort)) {
+                        layer.msg(lan.firewall.port_err, {
+                            icon: 2
+                        });
+                        return;
                     }
-                    get_phpmyadmin_ssl()
-                    $('.phpmyadmin_port').click(function() {
-                        var pmport = $("#pmport").val();
-                        var loadT = bt.load(lan.public.the);
-                        bt.send('setPHPMyAdmin', 'ajax/setPHPMyAdmin', {
-                            port: pmport
-                        }, function(rdata) {
-                            loadT.close();
+                    var loadTo = bt.load(lan.public.the);
+                    if (sslPort > 0) {
+                        bt.send('change_phpmyadmin_ssl_port', 'ajax/change_phpmyadmin_ssl_port', {
+                            port: sslPort
+                        }, function (rdata) {
+                            loadTo.close();
                             bt.msg(rdata);
                         })
-                    })
-                    $('.ssl_safe_label').click(function() {
-                        var stat = $('#ssl_safe_checkbox').prop("checked");
-                        bt.send('set_phpmyadmin_ssl', 'ajax/set_phpmyadmin_ssl', {
-                            v: !stat ? 1 : 0
-                        }, function(rdata) {
-                            bt.msg(rdata)
-                        })
-                        setTimeout(function() {
-                            get_phpmyadmin_ssl();
-                        }, 500)
+                    }
+                })
+                $('.phpmyadmin_safe').click(function () {
+                    var stat = $("#phpmyadminsafe").prop("checked");
+                    if (stat) {
+                        $(".user_pw").hide();
+                        set_phpmyadmin('close');
+                    } else {
+                        $(".user_pw").show();
+                    }
+                })
+                $('.phpmyadmin_safe_save').click(function () {
+                    set_phpmyadmin('get');
+                })
 
-                    })
-                    $('.ssl_port_button').click(function() {
-                        var sslPort = $('#sslport').val();
-                        if (!bt.check_port(sslPort)) {
-                            layer.msg(lan.firewall.port_err, {
-                                icon: 2
-                            });
-                            return;
-                        }
-                        var loadTo = bt.load(lan.public.the);
-                        if (sslPort > 0) {
-                            bt.send('change_phpmyadmin_ssl_port', 'ajax/change_phpmyadmin_ssl_port', {
-                                port: sslPort
-                            }, function(rdata) {
-                                loadTo.close();
+                function set_phpmyadmin(msg) {
+                    var type = 'password';
+                    if (msg == 'close') {
+                        bt.confirm({
+                            msg: lan.soft.pma_pass_close
+                        }, function () {
+                            var loading = bt.load(lan.public.the);
+                            bt.send('setPHPMyAdmin', 'ajax/setPHPMyAdmin', {
+                                password: msg,
+                                siteName: 'phpmyadmin'
+                            }, function (rdata) {
+                                loading.close();
                                 bt.msg(rdata);
                             })
+                        })
+                        return;
+                    } else {
+                        username = $("#username_get").val()
+                        password_1 = $("#password_get_1").val()
+                        password_2 = $("#password_get_2").val()
+                        if (username.length < 1 || password_1.length < 1) {
+                            bt.msg({
+                                msg: lan.soft.pma_pass_empty,
+                                icon: 2
+                            })
+                            return;
+                        }
+                        if (password_1 != password_2) {
+                            bt.msg({
+                                msg: lan.soft.pass_err_re,
+                                icon: 2
+                            })
+                            return;
+                        }
+                    }
+                    var loading = bt.load(lan.public.the);
+                    bt.send('setPHPMyAdmin', 'ajax/setPHPMyAdmin', {
+                        password: password_1,
+                        username: username,
+                        siteName: 'phpmyadmin'
+                    }, function (rdata) {
+                        loading.close();
+                        bt.msg(rdata);
+                    })
+                }
+                break;
+            case 'set_php_config':
+
+                bt.soft.php.get_config(version, function (rdata) {
+                    var divObj = document.getElementById('phpextdiv');
+                    var scrollTopNum = 0;
+                    if (divObj) scrollTopNum = divObj.scrollTop;
+
+                    $(".soft-man-con").empty().append('<div class="divtable" id="phpextdiv" style="height: 478px; overflow: auto;padding-bottom: 1px;margin-bottom: 25px;"><table id="tab_phpext" class="table table-hover" width="100%" cellspacing="0" cellpadding="0" border="0"></div></div>');
+
+                    var list = [];
+                    for (var i = 0; i < rdata.libs.length; i++) {
+                        if (rdata.libs[i].versions.indexOf(version) == -1) continue;
+                        list.push(rdata.libs[i]);
+                    }
+                    var _tab = bt.render({
+                        table: '#tab_phpext',
+                        data: list,
+                        columns: [{
+                            field: 'name',
+                            title: lan.soft.php_ext_name
+                        },
+                        {
+                            field: 'type',
+                            title: lan.soft.php_ext_type,
+                            width: 64
+                        },
+                        {
+                            field: 'msg',
+                            title: lan.soft.php_ext_ps
+                        },
+                        {
+                            field: 'status',
+                            title: lan.soft.php_ext_status,
+                            width: 40,
+                            templet: function (item) {
+                                return '<span class="ico-' + (item.status ? 'start' : 'stop') + ' glyphicon glyphicon-' + (item.status ? 'ok' : 'remove') + '"></span>'
+                            }
+                        },
+                        {
+                            field: 'opt',
+                            title: lan.public.action,
+                            width: 60,
+                            templet: function (item) {
+                                var opt = '<a class="btlink lib-install" data-name="' + item.name + '" data-title="' + item.title + '"  href="javascript:;">' + lan.soft.install + '</a>'
+                                if (item['task'] == '-1' && item.phpversions.indexOf(version) != -1) {
+                                    opt = '<a style="color:green;" href="javascript:messagebox();">' + lan.soft.the_install + '</a>'
+                                } else if (item['task'] == '0' && item.phpversions.indexOf(version) != -1) {
+                                    opt = '<a style="color:#C0C0C0;" href="javascript:messagebox();">' + lan.soft.sleep_install + '</a>'
+                                } else if (item.status) {
+                                    opt = '<a style="color:red;" data-name="' + item.name + '" data-title="' + item.title + '" class="lib-uninstall" href="javascript:;">' + lan.soft.uninstall + '</a>'
+                                }
+                                return opt;
+                            }
+                        },
+                        ]
+                    })
+                    var helps = [lan.soft.php_plug_tips1, lan.soft.php_plug_tips2]
+                    $(".soft-man-con").append(bt.render_help(helps));
+
+                    var divObj = document.getElementById('phpextdiv');
+                    if (divObj) divObj.scrollTop = scrollTopNum;
+                    $('a').click(function () {
+                        var _obj = $(this);
+                        if (_obj.hasClass('lib-uninstall')) {
+                            bt.soft.php.un_install_php_lib(version, _obj.attr('data-name'), _obj.attr('data-title'), function (rdata) {
+                                setTimeout(function () {
+                                    soft.get_tab_contents('set_php_config', obj);
+                                }, 1000)
+                            });
+                        } else if (_obj.hasClass('lib-install')) {
+                            bt.soft.php.install_php_lib(version, _obj.attr('data-name'), _obj.attr('data-title'), function (rdata) {
+                                setTimeout(function () {
+                                    soft.get_tab_contents('set_php_config', obj);
+                                }, 1000)
+                            });
                         }
                     })
-                    $('.phpmyadmin_safe').click(function() {
-                        var stat = $("#phpmyadminsafe").prop("checked");
-                        if (stat) {
-                            $(".user_pw").hide();
-                            set_phpmyadmin('close');
-                        } else {
-                            $(".user_pw").show();
+                    setTimeout(function () {
+                        if ($(".bt-soft-menu .bgw").text() === "Installation extension") {
+                            soft.get_tab_contents('set_php_config', obj);
                         }
-                    })
-                    $('.phpmyadmin_safe_save').click(function() {
-                        set_phpmyadmin('get');
+                    }, 3000)
+                })
+                break;
+            case 'get_phpinfo':
+                var con = '';
+                var p_status = {
+                    true: '<span style="color:green;">Yes</span>',
+                    false: '<span style="color:red;">No</span>'
+                };
+                $.post('/ajax?action=php_info', {
+                    php_version: version
+                }, function (php_info) {
+                    con += '<button id="btn_phpinfo" class="btn btn-default btn-sm" >' + lan.soft.phpinfo + '</button>'
+                    con += '<div class="php_info_group"><p>' + lan.soft.php_base_info + ' </p>'
+                    con += '<table id="tab_php_status" class="table table-hover table-bordered" style="margin:0;padding:0">';
+                    con += '<tr><td>' + lan.soft.version + '</td><td>' + php_info.phpinfo.php_version + '</td><td>' + lan.soft.install_path + '</td><td>' + php_info.phpinfo.php_path + '</td></tr>'
+                    con += '<tr><td>php.ini</td><td colspan="3">' + php_info.phpinfo.php_ini + '</td></tr>'
+                    con += '<tr><td>' + lan.soft.loaded + '</td><td colspan="3">' + php_info.phpinfo.modules + '</td></tr>'
+                    con += '</table></div>';
+                    Object.keys(php_info).sort().forEach(function (k) {
+                        if (k !== 'phpinfo') {
+                            con += '<div class="php_info_group"><p>' + php_info.phpinfo.keys[k] + '</p>'
+                            con += '<table id="tab_php_status" class="table table-hover table-bordered" style="margin:0;padding:0">';
+                            var nkey = 0;
+                            Object.keys(php_info[k]).forEach(function (key) {
+                                if (nkey == 0) con += '<tr>';
+                                con += '<td>' + key + '</td><td>' + p_status[php_info[k][key]] + '</td>'
+                                nkey++;
+                                if (nkey >= 3) {
+                                    nkey = 0;
+                                    con += '</tr>';
+                                }
+                            });
+
+                            con += '</table></div>';
+                        }
                     })
 
-                    function set_phpmyadmin(msg) {
-                        var type = 'password';
-                        if (msg == 'close') {
-                            bt.confirm({
-                                msg: lan.soft.pma_pass_close
-                            }, function() {
-                                var loading = bt.load(lan.public.the);
-                                bt.send('setPHPMyAdmin', 'ajax/setPHPMyAdmin', {
-                                    password: msg,
-                                    siteName: 'phpmyadmin'
-                                }, function(rdata) {
-                                    loading.close();
+
+
+                    $(".soft-man-con").html(con);
+
+                    $('#btn_phpinfo').click(function () {
+                        var loadT = bt.load(lan.soft.get);
+                        bt.send('GetPHPInfo', 'ajax/GetPHPInfo', {
+                            version: version
+                        }, function (rdata) {
+                            loadT.close();
+                            var content = rdata.replace('a:link {color: #009; text-decoration: none; background-color: #fff;}', '').replace('a:link {color: #000099; text-decoration: none; background-color: #ffffff;}', '');
+                            bt.open({
+                                type: 1,
+                                title: "PHP-" + version + "-PHPINFO",
+                                area: ['70%', '90%'],
+                                closeBtn: 2,
+                                shadeClose: true,
+                                content: '<div style="white-space: pre-wrap;">' + content + '</div>'
+                            })
+                        })
+                    })
+                });
+
+
+                break;
+            case 'config_edit':
+                bt.soft.php.get_php_config(version, function (rdata) {
+                    var mlist = '';
+                    for (var i = 0; i < rdata.length; i++) {
+                        var w = '70'
+                        if (rdata[i].name == 'error_reporting') w = '250';
+                        var ibody = '<input style="width: ' + w + 'px;" class="bt-input-text mr5" name="' + rdata[i].name + '" value="' + rdata[i].value + '" type="text" >';
+                        switch (rdata[i].type) {
+                            case 0:
+                                var selected_1 = (rdata[i].value == 1) ? 'selected' : '';
+                                var selected_0 = (rdata[i].value == 0) ? 'selected' : '';
+                                ibody = '<select class="bt-input-text mr5" name="' + rdata[i].name + '" style="width: ' + w + 'px;"><option value="1" ' + selected_1 + '>' + lan.soft.on + '</option><option value="0" ' + selected_0 + '>' + lan.soft.off + '</option></select>'
+                                break;
+                            case 1:
+                                var selected_1 = (rdata[i].value == 'On') ? 'selected' : '';
+                                var selected_0 = (rdata[i].value == 'Off') ? 'selected' : '';
+                                ibody = '<select class="bt-input-text mr5" name="' + rdata[i].name + '" style="width: ' + w + 'px;"><option value="On" ' + selected_1 + '>' + lan.soft.on + '</option><option value="Off" ' + selected_0 + '>' + lan.soft.off + '</option></select>'
+                                break;
+                        }
+                        mlist += '<p><span>' + rdata[i].name + '</span>' + ibody + ', <font>' + rdata[i].ps + '</font></p>'
+                    }
+                    var tabCon = $(".soft-man-con").empty()
+                    tabCon.append('<div class="conf_p">' + mlist + '</div></div>')
+                    var datas = {
+                        title: ' ',
+                        items: [{
+                            name: 'btn_fresh',
+                            text: lan.public.fresh,
+                            type: 'button',
+                            callback: function (ldata) {
+                                soft.get_tab_contents(key, obj);
+                            }
+                        },
+                        {
+                            name: 'btn_save',
+                            text: lan.public.save,
+                            type: 'button',
+                            callback: function (ldata) {
+                                var loadT = bt.load();
+                                ldata['version'] = version;
+                                bt.send('SetPHPConf', 'config/SetPHPConf', ldata, function (rdata) {
+                                    loadT.close();
+                                    soft.get_tab_contents(key, obj);
+                                    bt.msg(rdata)
+                                });
+                            }
+                        }
+                        ]
+                    }
+                    var _form_data = bt.render_form_line(datas);
+                    $('.conf_p').append(_form_data.html)
+                    bt.render_clicks(_form_data.clicks);
+                    $(".conf_p > .line").css("margin-top", "25px");
+                });
+                break;
+            case 'set_upload_limit':
+                bt.soft.php.get_limit_config(version, function (ret) {
+                    var datas = [{
+                        items: [{
+                            title: '',
+                            type: 'number',
+                            width: '100px',
+                            value: ret.max,
+                            unit: 'MB',
+                            name: 'phpUploadLimit'
+                        },
+                        {
+                            name: 'btn_limit_get',
+                            text: lan.public.save,
+                            type: 'button',
+                            callback: function (ldata) {
+                                var max = ldata.phpUploadLimit;
+                                if (max < 2) {
+                                    layer.msg(lan.soft.php_upload_size, {
+                                        icon: 2
+                                    });
+                                    return;
+                                }
+                                bt.soft.php.set_upload_max(version, max, function (rdata) {
+                                    if (rdata.status) {
+                                        soft.get_tab_contents(key, obj);
+                                    }
+                                    bt.msg(rdata);
+                                })
+                            }
+                        }
+                        ]
+                    }]
+                    var clicks = [];
+                    var tabCon = $(".soft-man-con").empty().append("<div class='set_upload_limit'></div>")
+                    for (var i = 0; i < datas.length; i++) {
+                        var _form_data = bt.render_form_line(datas[i]);
+                        $('.set_upload_limit').append(_form_data.html);
+                        clicks = clicks.concat(_form_data.clicks);
+                    }
+                    bt.render_clicks(clicks);
+                })
+                break;
+            case 'set_timeout_limit':
+                bt.soft.php.get_limit_config(version, function (ret) {
+                    var datas = [{
+                        items: [{
+                            title: '',
+                            type: 'number',
+                            width: '100px',
+                            value: ret.maxTime,
+                            name: 'phpTimeLimit',
+                            unit: 'Sec'
+                        },
+                        {
+                            name: 'btn_limit_get',
+                            text: lan.public.save,
+                            type: 'button',
+                            callback: function (ldata) {
+                                var max = ldata.phpTimeLimit;
+                                bt.soft.php.set_php_timeout(version, max, function (rdata) {
+                                    if (rdata.status) {
+                                        soft.get_tab_contents(key, obj);
+                                    }
+                                    bt.msg(rdata);
+                                })
+                            }
+                        }
+                        ]
+                    }]
+                    var clicks = [];
+                    var tabCon = $(".soft-man-con").empty().append("<div class='set_timeout_limit bt-form'></div>")
+                    for (var i = 0; i < datas.length; i++) {
+                        var _form_data = bt.render_form_line(datas[i]);
+                        $('.set_timeout_limit').append(_form_data.html);
+                        clicks = clicks.concat(_form_data.clicks);
+                    }
+                    bt.render_clicks(clicks);
+                })
+                break;
+            case 'set_dis_fun':
+                bt.soft.php.get_config(version, function (rdata) {
+                    var list = [];
+                    var disable_functions = rdata.disable_functions.split(',');
+                    for (var i = 0; i < disable_functions.length; i++) {
+                        if (disable_functions[i] == '') continue;
+                        list.push({
+                            name: disable_functions[i]
+                        })
+                    }
+                    var _bt_form = $("<div class='bt-form' style='height:560px;'></div>")
+                    var tabCon = $(".soft-man-con").empty().append(_bt_form);
+                    var _line = bt.render_form_line({
+                        title: '',
+                        items: [{
+                            name: 'disable_function_val',
+                            placeholder: lan.soft.fun_ps1,
+                            width: '410px'
+                        },
+                        {
+                            name: 'btn_disable_function_val',
+                            text: lan.public.save,
+                            type: 'button',
+                            callback: function (ldata) {
+                                var disable_functions = rdata.disable_functions.split(',')
+                                if ($.inArray(ldata.disable_function_val, disable_functions) >= 0) {
+                                    bt.msg({
+                                        msg: lan.soft.fun_msg,
+                                        icon: 5
+                                    });
+                                    return;
+                                }
+                                disable_functions.push(ldata.disable_function_val);
+                                set_disable_functions(version, disable_functions.join(','))
+                            }
+                        }
+                        ]
+                    }, '', _bt_form)
+
+                    bt.render_clicks(_line.clicks);
+                    _bt_form.append("<div class='divtable mtb15' style='height:500px;overflow:auto'><table id=\"blacktable\" class='table table-hover' width='100%' style='margin-bottom:0'></table><div>")
+                    var _tab = bt.render({
+                        table: '#blacktable',
+                        data: list,
+                        columns: [{
+                            field: 'name',
+                            title: lan.soft.php_ext_name
+                        },
+                        {
+                            field: 'opt',
+                            title: lan.public.action,
+                            width: 50,
+                            templet: function (item) {
+                                var new_disable_functions = disable_functions.slice()
+                                new_disable_functions.splice($.inArray(item.name, new_disable_functions), 1)
+                                return '<a class="del_functions" style="color: #20a53a;" data-val="shell_exec" onclick="set_disable_functions(\'' + version + '\',\'' + new_disable_functions.join(',') + '\')" href="javascript:;">' + lan.soft.del + '</a>';
+                            }
+                        }
+                        ]
+                    })
+                    tabCon.append(bt.render_help([lan.soft.fun_ps2, lan.soft.fun_ps3]));
+
+
+                })
+                break;
+            case 'set_fpm_config':
+                bt.soft.php.get_fpm_config(version, function (rdata) {
+                    var datas = {
+                        '1GB Ram': {
+                            max_children: 30,
+                            start_servers: 5,
+                            min_spare_servers: 5,
+                            max_spare_servers: 20
+                        },
+                        '2GB Ram': {
+                            max_children: 50,
+                            start_servers: 5,
+                            min_spare_servers: 5,
+                            max_spare_servers: 30
+                        },
+                        '4GB Ram': {
+                            max_children: 80,
+                            start_servers: 10,
+                            min_spare_servers: 10,
+                            max_spare_servers: 30
+                        },
+                        '8GB Ram': {
+                            max_children: 120,
+                            start_servers: 10,
+                            min_spare_servers: 10,
+                            max_spare_servers: 30
+                        },
+                        '16GB Ram': {
+                            max_children: 200,
+                            start_servers: 15,
+                            min_spare_servers: 15,
+                            max_spare_servers: 50
+                        },
+                        '32GB Ram': {
+                            max_children: 300,
+                            start_servers: 20,
+                            min_spare_servers: 20,
+                            max_spare_servers: 50
+                        }
+                    }
+                    var limits = [],
+                        pmList = [];
+                    var my_selected = '';
+                    var num_max = Number(rdata.max_children);
+                    for (var k in datas) {
+                        if (datas[k].max_children === num_max) {
+                            my_selected = k;
+                        }
+                        limits.push({
+                            title: k,
+                            value: k
+                        });
+                    }
+                    var _form_datas = [{
+                        title: lan.soft.concurrency_type,
+                        name: 'limit',
+                        value: my_selected,
+                        type: 'select',
+                        items: limits,
+                        callback: function (iKey) {
+                            var item = datas[iKey.val()]
+                            for (var sk in item) $('.' + sk).val(item[sk]);
+                        }
+                    },
+                    {
+                        title: lan.soft.php_fpm_model,
+                        name: 'pm',
+                        value: rdata.pm,
+                        type: 'select',
+                        items: [{
+                            title: lan.bt.static,
+                            value: 'static'
+                        },
+                        {
+                            title: lan.bt.dynamic,
+                            value: 'dynamic'
+                        },
+                        { title: 'On-demand', value: 'ondemand' }
+                        ],
+                        ps: '*' + lan.soft.php_fpm_ps1
+                    },
+                    {
+                        title: 'max_children',
+                        name: 'max_children',
+                        value: rdata.max_children,
+                        type: 'number',
+                        width: '100px',
+                        ps: '*' + lan.soft.php_fpm_ps2
+                    },
+                    {
+                        title: 'start_servers',
+                        name: 'start_servers',
+                        value: rdata.start_servers,
+                        type: 'number',
+                        width: '100px',
+                        ps: '*' + lan.soft.php_fpm_ps3
+                    },
+                    {
+                        title: 'min_spare_servers',
+                        name: 'min_spare_servers',
+                        value: rdata.min_spare_servers,
+                        type: 'number',
+                        width: '100px',
+                        ps: '*' + lan.soft.php_fpm_ps4
+                    },
+                    {
+                        title: 'max_spare_servers',
+                        name: 'max_spare_servers',
+                        value: rdata.max_spare_servers,
+                        type: 'number',
+                        width: '100px',
+                        ps: '*' + lan.soft.php_fpm_ps5
+                    },
+                    {
+                        title: ' ',
+                        text: lan.public.save,
+                        name: 'btn_children_submit',
+                        css: 'btn-success',
+                        type: 'button',
+                        callback: function (ldata) {
+                            bt.pub.get_menm(function (memInfo) {
+                                var limit_children = parseInt(memInfo['memTotal'] / 8);
+                                if (limit_children < parseInt(ldata.max_children)) {
+                                    layer.msg(lan.soft.php_child_process.replace('{1}', limit_children), {
+                                        icon: 2
+                                    });
+                                    $("input[name='max_children']").focus();
+                                    return;
+                                }
+                                if (parseInt(ldata.max_children) < parseInt(ldata.max_spare_servers)) {
+                                    layer.msg(lan.soft.php_fpm_err1, {
+                                        icon: 2
+                                    });
+                                    return;
+                                }
+                                if (parseInt(ldata.min_spare_servers) > parseInt(ldata.start_servers)) {
+                                    layer.msg(lan.soft.php_fpm_err2, {
+                                        icon: 2
+                                    });
+                                    return;
+                                }
+                                if (parseInt(ldata.max_spare_servers) < parseInt(ldata.min_spare_servers)) {
+                                    layer.msg(lan.soft.php_fpm_err3, {
+                                        icon: 2
+                                    });
+                                    return;
+                                }
+                                if (parseInt(ldata.max_children) < parseInt(ldata.start_servers)) {
+                                    layer.msg(lan.soft.php_fpm_err4, {
+                                        icon: 2
+                                    });
+                                    return;
+                                }
+                                if (parseInt(ldata.max_children) < 1 || parseInt(ldata.start_servers) < 1 || parseInt(ldata.min_spare_servers) < 1 || parseInt(ldata.max_spare_servers) < 1) {
+                                    layer.msg(lan.soft.php_fpm_err5, {
+                                        icon: 2
+                                    });
+                                    return;
+                                }
+                                ldata['version'] = version;
+                                bt.soft.php.set_fpm_config(version, ldata, function (rdata) {
+                                    soft.get_tab_contents(key, obj);
                                     bt.msg(rdata);
                                 })
                             })
-                            return;
-                        } else {
-                            username = $("#username_get").val()
-                            password_1 = $("#password_get_1").val()
-                            password_2 = $("#password_get_2").val()
-                            if (username.length < 1 || password_1.length < 1) {
-                                bt.msg({
-                                    msg: lan.soft.pma_pass_empty,
-                                    icon: 2
-                                })
-                                return;
-                            }
-                            if (password_1 != password_2) {
-                                bt.msg({
-                                    msg: lan.soft.pass_err_re,
-                                    icon: 2
-                                })
-                                return;
-                            }
                         }
-                        var loading = bt.load(lan.public.the);
-                        bt.send('setPHPMyAdmin', 'ajax/setPHPMyAdmin', {
-                            password: password_1,
-                            username: username,
-                            siteName: 'phpmyadmin'
-                        }, function(rdata) {
-                            loading.close();
-                            bt.msg(rdata);
-                        })
                     }
-                    break;
-                case 'set_php_config':
-
-                    bt.soft.php.get_config(version, function(rdata) {
-                        var divObj = document.getElementById('phpextdiv');
-                        var scrollTopNum = 0;
-                        if (divObj) scrollTopNum = divObj.scrollTop;
-
-                        $(".soft-man-con").empty().append('<div class="divtable" id="phpextdiv" style="height: 478px; overflow: auto;padding-bottom: 1px;margin-bottom: 25px;"><table id="tab_phpext" class="table table-hover" width="100%" cellspacing="0" cellpadding="0" border="0"></div></div>');
-
-                        var list = [];
-                        for (var i = 0; i < rdata.libs.length; i++) {
-                            if (rdata.libs[i].versions.indexOf(version) == -1) continue;
-                            list.push(rdata.libs[i]);
-                        }
-                        var _tab = bt.render({
-                            table: '#tab_phpext',
-                            data: list,
-                            columns: [{
-                                    field: 'name',
-                                    title: lan.soft.php_ext_name
-                                },
-                                {
-                                    field: 'type',
-                                    title: lan.soft.php_ext_type,
-                                    width: 64
-                                },
-                                {
-                                    field: 'msg',
-                                    title: lan.soft.php_ext_ps
-                                },
-                                {
-                                    field: 'status',
-                                    title: lan.soft.php_ext_status,
-                                    width: 40,
-                                    templet: function(item) {
-                                        return '<span class="ico-' + (item.status ? 'start' : 'stop') + ' glyphicon glyphicon-' + (item.status ? 'ok' : 'remove') + '"></span>'
-                                    }
-                                },
-                                {
-                                    field: 'opt',
-                                    title: lan.public.action,
-                                    width: 60,
-                                    templet: function(item) {
-                                        var opt = '<a class="btlink lib-install" data-name="' + item.name + '" data-title="' + item.title + '"  href="javascript:;">' + lan.soft.install + '</a>'
-                                        if (item['task'] == '-1' && item.phpversions.indexOf(version) != -1) {
-                                            opt = '<a style="color:green;" href="javascript:messagebox();">' + lan.soft.the_install + '</a>'
-                                        } else if (item['task'] == '0' && item.phpversions.indexOf(version) != -1) {
-                                            opt = '<a style="color:#C0C0C0;" href="javascript:messagebox();">' + lan.soft.sleep_install + '</a>'
-                                        } else if (item.status) {
-                                            opt = '<a style="color:red;" data-name="' + item.name + '" data-title="' + item.title + '" class="lib-uninstall" href="javascript:;">' + lan.soft.uninstall + '</a>'
-                                        }
-                                        return opt;
-                                    }
-                                },
-                            ]
-                        })
-                        var helps = [lan.soft.php_plug_tips1, lan.soft.php_plug_tips2]
-                        $(".soft-man-con").append(bt.render_help(helps));
-
-                        var divObj = document.getElementById('phpextdiv');
-                        if (divObj) divObj.scrollTop = scrollTopNum;
-                        $('a').click(function() {
-                            var _obj = $(this);
-                            if (_obj.hasClass('lib-uninstall')) {
-                                bt.soft.php.un_install_php_lib(version, _obj.attr('data-name'), _obj.attr('data-title'), function(rdata) {
-                                    setTimeout(function() {
-                                        soft.get_tab_contents('set_php_config', obj);
-                                    }, 1000)
-                                });
-                            } else if (_obj.hasClass('lib-install')) {
-                                bt.soft.php.install_php_lib(version, _obj.attr('data-name'), _obj.attr('data-title'), function(rdata) {
-                                    setTimeout(function() {
-                                        soft.get_tab_contents('set_php_config', obj);
-                                    }, 1000)
-                                });
-                            }
-                        })
-                        setTimeout(function() {
-                            if ($(".bt-soft-menu .bgw").text() === "Installation extension") {
-                                soft.get_tab_contents('set_php_config', obj);
-                            }
-                        }, 3000)
-                    })
-                    break;
-                case 'get_phpinfo':
-                    var con = '';
-                    var p_status = {
-                        true: '<span style="color:green;">Yes</span>',
-                        false: '<span style="color:red;">No</span>'
-                    };
-                    $.post('/ajax?action=php_info', {
-                        php_version: version
-                    }, function(php_info) {
-                        con += '<button id="btn_phpinfo" class="btn btn-default btn-sm" >' + lan.soft.phpinfo + '</button>'
-                        con += '<div class="php_info_group"><p>' + lan.soft.php_base_info + ' </p>'
-                        con += '<table id="tab_php_status" class="table table-hover table-bordered" style="margin:0;padding:0">';
-                        con += '<tr><td>' + lan.soft.version + '</td><td>' + php_info.phpinfo.php_version + '</td><td>' + lan.soft.install_path + '</td><td>' + php_info.phpinfo.php_path + '</td></tr>'
-                        con += '<tr><td>php.ini</td><td colspan="3">' + php_info.phpinfo.php_ini + '</td></tr>'
-                        con += '<tr><td>' + lan.soft.loaded + '</td><td colspan="3">' + php_info.phpinfo.modules + '</td></tr>'
-                        con += '</table></div>';
-                        Object.keys(php_info).sort().forEach(function(k) {
-                            if (k !== 'phpinfo') {
-                                con += '<div class="php_info_group"><p>' + php_info.phpinfo.keys[k] + '</p>'
-                                con += '<table id="tab_php_status" class="table table-hover table-bordered" style="margin:0;padding:0">';
-                                var nkey = 0;
-                                Object.keys(php_info[k]).forEach(function(key) {
-                                    if (nkey == 0) con += '<tr>';
-                                    con += '<td>' + key + '</td><td>' + p_status[php_info[k][key]] + '</td>'
-                                    nkey++;
-                                    if (nkey >= 3) {
-                                        nkey = 0;
-                                        con += '</tr>';
-                                    }
-                                });
-
-                                con += '</table></div>';
-                            }
-                        })
-
-
-
-                        $(".soft-man-con").html(con);
-
-                        $('#btn_phpinfo').click(function() {
-                            var loadT = bt.load(lan.soft.get);
-                            bt.send('GetPHPInfo', 'ajax/GetPHPInfo', {
-                                version: version
-                            }, function(rdata) {
-                                loadT.close();
-                                var content = rdata.replace('a:link {color: #009; text-decoration: none; background-color: #fff;}', '').replace('a:link {color: #000099; text-decoration: none; background-color: #ffffff;}', '');
-                                bt.open({
-                                    type: 1,
-                                    title: "PHP-" + version + "-PHPINFO",
-                                    area: ['70%', '90%'],
-                                    closeBtn: 2,
-                                    shadeClose: true,
-                                    content: '<div style="white-space: pre-wrap;">'+content+'</div>'
-                                })
-                            })
-                        })
-                    });
-
-
-                    break;
-                case 'config_edit':
-                    bt.soft.php.get_php_config(version, function(rdata) {
-                        var mlist = '';
-                        for (var i = 0; i < rdata.length; i++) {
-                            var w = '70'
-                            if (rdata[i].name == 'error_reporting') w = '250';
-                            var ibody = '<input style="width: ' + w + 'px;" class="bt-input-text mr5" name="' + rdata[i].name + '" value="' + rdata[i].value + '" type="text" >';
-                            switch (rdata[i].type) {
-                                case 0:
-                                    var selected_1 = (rdata[i].value == 1) ? 'selected' : '';
-                                    var selected_0 = (rdata[i].value == 0) ? 'selected' : '';
-                                    ibody = '<select class="bt-input-text mr5" name="' + rdata[i].name + '" style="width: ' + w + 'px;"><option value="1" ' + selected_1 + '>' + lan.soft.on + '</option><option value="0" ' + selected_0 + '>' + lan.soft.off + '</option></select>'
-                                    break;
-                                case 1:
-                                    var selected_1 = (rdata[i].value == 'On') ? 'selected' : '';
-                                    var selected_0 = (rdata[i].value == 'Off') ? 'selected' : '';
-                                    ibody = '<select class="bt-input-text mr5" name="' + rdata[i].name + '" style="width: ' + w + 'px;"><option value="On" ' + selected_1 + '>' + lan.soft.on + '</option><option value="Off" ' + selected_0 + '>' + lan.soft.off + '</option></select>'
-                                    break;
-                            }
-                            mlist += '<p><span>' + rdata[i].name + '</span>' + ibody + ', <font>' + rdata[i].ps + '</font></p>'
-                        }
-                        var tabCon = $(".soft-man-con").empty()
-                        tabCon.append('<div class="conf_p">' + mlist + '</div></div>')
-                        var datas = {
-                            title: ' ',
-                            items: [{
-                                    name: 'btn_fresh',
-                                    text: lan.public.fresh,
-                                    type: 'button',
-                                    callback: function(ldata) {
-                                        soft.get_tab_contents(key, obj);
-                                    }
-                                },
-                                {
-                                    name: 'btn_save',
-                                    text: lan.public.save,
-                                    type: 'button',
-                                    callback: function(ldata) {
-                                        var loadT = bt.load();
-                                        ldata['version'] = version;
-                                        bt.send('SetPHPConf', 'config/SetPHPConf', ldata, function(rdata) {
-                                            loadT.close();
-                                            soft.get_tab_contents(key, obj);
-                                            bt.msg(rdata)
-                                        });
-                                    }
-                                }
-                            ]
-                        }
-                        var _form_data = bt.render_form_line(datas);
-                        $('.conf_p').append(_form_data.html)
-                        bt.render_clicks(_form_data.clicks);
-                        $(".conf_p > .line").css("margin-top","25px");
-                    });
-                    break;
-                case 'set_upload_limit':
-                    bt.soft.php.get_limit_config(version, function(ret) {
-                        var datas = [{
-                            items: [{
-                                    title: '',
-                                    type: 'number',
-                                    width: '100px',
-                                    value: ret.max,
-                                    unit: 'MB',
-                                    name: 'phpUploadLimit'
-                                },
-                                {
-                                    name: 'btn_limit_get',
-                                    text: lan.public.save,
-                                    type: 'button',
-                                    callback: function(ldata) {
-                                        var max = ldata.phpUploadLimit;
-                                        if (max < 2) {
-                                            layer.msg(lan.soft.php_upload_size, {
-                                                icon: 2
-                                            });
-                                            return;
-                                        }
-                                        bt.soft.php.set_upload_max(version, max, function(rdata) {
-                                            if (rdata.status) {
-                                                soft.get_tab_contents(key, obj);
-                                            }
-                                            bt.msg(rdata);
-                                        })
-                                    }
-                                }
-                            ]
-                        }]
-                        var clicks = [];
-                        var tabCon = $(".soft-man-con").empty().append("<div class='set_upload_limit'></div>")
-                        for (var i = 0; i < datas.length; i++) {
-                            var _form_data = bt.render_form_line(datas[i]);
-                            $('.set_upload_limit').append(_form_data.html);
-                            clicks = clicks.concat(_form_data.clicks);
-                        }
-                        bt.render_clicks(clicks);
-                    })
-                    break;
-                case 'set_timeout_limit':
-                    bt.soft.php.get_limit_config(version, function(ret) {
-                        var datas = [{
-                            items: [{
-                                    title: '',
-                                    type: 'number',
-                                    width: '100px',
-                                    value: ret.maxTime,
-                                    name: 'phpTimeLimit',
-                                    unit: 'Sec'
-                                },
-                                {
-                                    name: 'btn_limit_get',
-                                    text: lan.public.save,
-                                    type: 'button',
-                                    callback: function(ldata) {
-                                        var max = ldata.phpTimeLimit;
-                                        bt.soft.php.set_php_timeout(version, max, function(rdata) {
-                                            if (rdata.status) {
-                                                soft.get_tab_contents(key, obj);
-                                            }
-                                            bt.msg(rdata);
-                                        })
-                                    }
-                                }
-                            ]
-                        }]
-                        var clicks = [];
-                        var tabCon = $(".soft-man-con").empty().append("<div class='set_timeout_limit bt-form'></div>")
-                        for (var i = 0; i < datas.length; i++) {
-                            var _form_data = bt.render_form_line(datas[i]);
-                            $('.set_timeout_limit').append(_form_data.html);
-                            clicks = clicks.concat(_form_data.clicks);
-                        }
-                        bt.render_clicks(clicks);
-                    })
-                    break;
-                case 'set_dis_fun':
-                    bt.soft.php.get_config(version, function(rdata) {
-                        var list = [];
-                        var disable_functions = rdata.disable_functions.split(',');
-                        for (var i = 0; i < disable_functions.length; i++) {
-                            if (disable_functions[i] == '') continue;
-                            list.push({
-                                name: disable_functions[i]
-                            })
-                        }
-                        var _bt_form = $("<div class='bt-form' style='height:560px;'></div>")
-                        var tabCon = $(".soft-man-con").empty().append(_bt_form);
-                        var _line = bt.render_form_line({
-                            title: '',
-                            items: [{
-                                    name: 'disable_function_val',
-                                    placeholder: lan.soft.fun_ps1,
-                                    width: '410px'
-                                },
-                                {
-                                    name: 'btn_disable_function_val',
-                                    text: lan.public.save,
-                                    type: 'button',
-                                    callback: function(ldata) {
-                                        var disable_functions = rdata.disable_functions.split(',')
-                                        if ($.inArray(ldata.disable_function_val, disable_functions) >= 0) {
-                                            bt.msg({
-                                                msg: lan.soft.fun_msg,
-                                                icon: 5
-                                            });
-                                            return;
-                                        }
-                                        disable_functions.push(ldata.disable_function_val);
-                                        set_disable_functions(version, disable_functions.join(','))
-                                    }
-                                }
-                            ]
-                        }, '', _bt_form)
-
-                        bt.render_clicks(_line.clicks);
-                        _bt_form.append("<div class='divtable mtb15' style='height:500px;overflow:auto'><table id=\"blacktable\" class='table table-hover' width='100%' style='margin-bottom:0'></table><div>")
-                        var _tab = bt.render({
-                            table: '#blacktable',
-                            data: list,
-                            columns: [{
-                                    field: 'name',
-                                    title: lan.soft.php_ext_name
-                                },
-                                {
-                                    field: 'opt',
-                                    title: lan.public.action,
-                                    width: 50,
-                                    templet: function(item) {
-                                        var new_disable_functions = disable_functions.slice()
-                                        new_disable_functions.splice($.inArray(item.name, new_disable_functions), 1)
-                                        return '<a class="del_functions" style="color: #20a53a;" data-val="shell_exec" onclick="set_disable_functions(\'' + version + '\',\'' + new_disable_functions.join(',') + '\')" href="javascript:;">' + lan.soft.del + '</a>';
-                                    }
-                                }
-                            ]
-                        })
-                        tabCon.append(bt.render_help([lan.soft.fun_ps2, lan.soft.fun_ps3]));
-
-
-                    })
-                    break;
-                case 'set_fpm_config':
-                    bt.soft.php.get_fpm_config(version, function(rdata) {
-                        var datas = {
-                            '1GB Ram': {
-                                max_children: 30,
-                                start_servers: 5,
-                                min_spare_servers: 5,
-                                max_spare_servers: 20
-                            },
-                            '2GB Ram': {
-                                max_children: 50,
-                                start_servers: 5,
-                                min_spare_servers: 5,
-                                max_spare_servers: 30
-                            },
-                            '4GB Ram': {
-                                max_children: 80,
-                                start_servers: 10,
-                                min_spare_servers: 10,
-                                max_spare_servers: 30
-                            },
-                            '8GB Ram': {
-                                max_children: 120,
-                                start_servers: 10,
-                                min_spare_servers: 10,
-                                max_spare_servers: 30
-                            },
-                            '16GB Ram': {
-                                max_children: 200,
-                                start_servers: 15,
-                                min_spare_servers: 15,
-                                max_spare_servers: 50
-                            },
-                            '32GB Ram': {
-                                max_children: 300,
-                                start_servers: 20,
-                                min_spare_servers: 20,
-                                max_spare_servers: 50
-                            }
-                        }
-                        var limits = [],
-                            pmList = [];
-                        var my_selected = '';
-                        var num_max = Number(rdata.max_children);
-                        for (var k in datas) {
-                            if (datas[k].max_children === num_max) {
-                                my_selected = k;
-                            }
-                            limits.push({
-                                title: k,
-                                value: k
-                            });
-                        }
-                        var _form_datas = [{
-                                title: lan.soft.concurrency_type,
-                                name: 'limit',
-                                value: my_selected,
-                                type: 'select',
-                                items: limits,
-                                callback: function(iKey) {
-                                    var item = datas[iKey.val()]
-                                    for (var sk in item) $('.' + sk).val(item[sk]);
-                                }
-                            },
-                            {
-                                title: lan.soft.php_fpm_model,
-                                name: 'pm',
-                                value: rdata.pm,
-                                type: 'select',
-                                items: [{
-                                        title: lan.bt.static,
-                                        value: 'static'
-                                    },
-                                    {
-                                        title: lan.bt.dynamic,
-                                        value: 'dynamic'
-                                    },
-                                    { title:'On-demand', value: 'ondemand' }
-                                ],
-                                ps: '*' + lan.soft.php_fpm_ps1
-                            },
-                            {
-                                title: 'max_children',
-                                name: 'max_children',
-                                value: rdata.max_children,
-                                type: 'number',
-                                width: '100px',
-                                ps: '*' + lan.soft.php_fpm_ps2
-                            },
-                            {
-                                title: 'start_servers',
-                                name: 'start_servers',
-                                value: rdata.start_servers,
-                                type: 'number',
-                                width: '100px',
-                                ps: '*' + lan.soft.php_fpm_ps3
-                            },
-                            {
-                                title: 'min_spare_servers',
-                                name: 'min_spare_servers',
-                                value: rdata.min_spare_servers,
-                                type: 'number',
-                                width: '100px',
-                                ps: '*' + lan.soft.php_fpm_ps4
-                            },
-                            {
-                                title: 'max_spare_servers',
-                                name: 'max_spare_servers',
-                                value: rdata.max_spare_servers,
-                                type: 'number',
-                                width: '100px',
-                                ps: '*' + lan.soft.php_fpm_ps5
-                            },
-                            {
-                                title: ' ',
-                                text: lan.public.save,
-                                name: 'btn_children_submit',
-                                css: 'btn-success',
-                                type: 'button',
-                                callback: function(ldata) {
-                                    bt.pub.get_menm(function(memInfo) {
-                                        var limit_children = parseInt(memInfo['memTotal'] / 8);
-                                        if (limit_children < parseInt(ldata.max_children)) {
-                                            layer.msg(lan.soft.php_child_process.replace('{1}', limit_children), {
-                                                icon: 2
-                                            });
-                                            $("input[name='max_children']").focus();
-                                            return;
-                                        }
-                                        if (parseInt(ldata.max_children) < parseInt(ldata.max_spare_servers)) {
-                                            layer.msg(lan.soft.php_fpm_err1, {
-                                                icon: 2
-                                            });
-                                            return;
-                                        }
-                                        if (parseInt(ldata.min_spare_servers) > parseInt(ldata.start_servers)) {
-                                            layer.msg(lan.soft.php_fpm_err2, {
-                                                icon: 2
-                                            });
-                                            return;
-                                        }
-                                        if (parseInt(ldata.max_spare_servers) < parseInt(ldata.min_spare_servers)) {
-                                            layer.msg(lan.soft.php_fpm_err3, {
-                                                icon: 2
-                                            });
-                                            return;
-                                        }
-                                        if (parseInt(ldata.max_children) < parseInt(ldata.start_servers)) {
-                                            layer.msg(lan.soft.php_fpm_err4, {
-                                                icon: 2
-                                            });
-                                            return;
-                                        }
-                                        if (parseInt(ldata.max_children) < 1 || parseInt(ldata.start_servers) < 1 || parseInt(ldata.min_spare_servers) < 1 || parseInt(ldata.max_spare_servers) < 1) {
-                                            layer.msg(lan.soft.php_fpm_err5, {
-                                                icon: 2
-                                            });
-                                            return;
-                                        }
-                                        ldata['version'] = version;
-                                        bt.soft.php.set_fpm_config(version, ldata, function(rdata) {
-                                            soft.get_tab_contents(key, obj);
-                                            bt.msg(rdata);
-                                        })
-                                    })
-                                }
-                            }
-                        ]
-                        var tabCon = $(".soft-man-con").empty()
-                        var _c_form = $('<div class="bt-form php-limit-config"></div >')
-                        var clicks = [];
-                        for (var i = 0; i < _form_datas.length; i++) {
-                            var _form = bt.render_form_line(_form_datas[i]);
-                            _c_form.append(_form.html)
-                            clicks = clicks.concat(_form.clicks);
-                        }
-                        _c_form.append('<ul class="help-info-text c7">\
+                    ]
+                    var tabCon = $(".soft-man-con").empty()
+                    var _c_form = $('<div class="bt-form php-limit-config"></div >')
+                    var clicks = [];
+                    for (var i = 0; i < _form_datas.length; i++) {
+                        var _form = bt.render_form_line(_form_datas[i]);
+                        _c_form.append(_form.html)
+                        clicks = clicks.concat(_form.clicks);
+                    }
+                    _c_form.append('<ul class="help-info-text c7">\
                                         <li>[Max num of child processes] The larger the number, the stronger the concurrency, but max_children should not exceed 5000</li>\
                                         <li>[Ram] Each PHP child process needs about 20MB of Ram, too large max_children will cause server instability</li>\
                                         <li>[Static mode] In the static mode, the set number of child processes is always maintained, which has a large Ram overhead, but has a good concurrency capability.</li>\
@@ -2596,277 +2596,277 @@ var soft = {
                                         <li>[No database] If no database such as mysql is installed, it is recommended to set 2 times the recommended concurrency</li>\
                                         <li>[Note] The above are the recommended configuration instructions. The online projects are complex and diverse. Please adjust according to actual conditions.</li>\
                                     </ul>')
-                        tabCon.append(_c_form);
+                    tabCon.append(_c_form);
 
 
-                        bt.render_clicks(clicks);
-                    });
-                    break;
-                case 'get_php_status':
-                    bt.soft.php.get_php_status(version, function(rdata) {
-                        var arr = {};
-                        arr[lan.bt.php_pool] = rdata.pool;
-                        arr[lan.bt.php_manager] = ((rdata['process manager'] == 'dynamic') ? lan.bt.dynamic : lan.bt.static);
-                        arr[lan.bt.php_start] = rdata['start time'];
-                        arr[lan.bt.php_accepted] = rdata['accepted conn'];
-                        arr[lan.bt.php_queue] = rdata['listen queue'];
-                        arr[lan.bt.php_max_queue] = rdata['max listen queue'];
-                        arr[lan.bt.php_len_queue] = rdata['listen queue len'];
-                        arr[lan.bt.php_idle] = rdata['idle processes'];
-                        arr[lan.bt.php_active] = rdata['active processes'];
-                        arr[lan.bt.php_total] = rdata['total processes'];
-                        arr[lan.bt.php_max_active] = rdata['max active processes'];
-                        arr[lan.bt.php_max_children] = rdata['max children reached'];
-                        arr[lan.bt.php_slow] = rdata['slow requests'];
+                    bt.render_clicks(clicks);
+                });
+                break;
+            case 'get_php_status':
+                bt.soft.php.get_php_status(version, function (rdata) {
+                    var arr = {};
+                    arr[lan.bt.php_pool] = rdata.pool;
+                    arr[lan.bt.php_manager] = ((rdata['process manager'] == 'dynamic') ? lan.bt.dynamic : lan.bt.static);
+                    arr[lan.bt.php_start] = rdata['start time'];
+                    arr[lan.bt.php_accepted] = rdata['accepted conn'];
+                    arr[lan.bt.php_queue] = rdata['listen queue'];
+                    arr[lan.bt.php_max_queue] = rdata['max listen queue'];
+                    arr[lan.bt.php_len_queue] = rdata['listen queue len'];
+                    arr[lan.bt.php_idle] = rdata['idle processes'];
+                    arr[lan.bt.php_active] = rdata['active processes'];
+                    arr[lan.bt.php_total] = rdata['total processes'];
+                    arr[lan.bt.php_max_active] = rdata['max active processes'];
+                    arr[lan.bt.php_max_children] = rdata['max children reached'];
+                    arr[lan.bt.php_slow] = rdata['slow requests'];
 
-                        var con = "<div style='overflow:auto;'><table id='tab_php_status' class='table table-hover table-bordered' style='margin:0;padding:0'></table></div>";
-                        $(".soft-man-con").html(con);
-                        bt.render_table('tab_php_status', arr);
-                    })
-                    break;
-                case 'get_php_session':
-                    bt.soft.php.get_php_session(version, function(res) {
-                        $(".soft-man-con").html('<div class="conf_p">' +
-                            '<div class="line ">' +
-                            '<span class="tname">' + lan.soft.storage_mode + '</span>' +
-                            '<div class="info-r ">' +
-                            '<select class="bt-input-text mr5 change_select_session" name="save_handler" style="width:160px">' +
-                            '<option value="files" ' + (res.save_handler == 'files' ? 'selected' : '') + '>files</option>' +
-                            (version != '52' ? '<option value="redis" ' + (res.save_handler == 'redis' ? 'selected' : '') + '>redis</option>' : '') +
-                            (version != '73' ? '<option value="memcache" ' + (res.save_handler == 'memcache' ? 'selected' : '') + '>memcache</option>' : '') +
-                            '<option value="memcached" ' + (res.save_handler == 'memcached' ? 'selected' : '') + '>memcached</option>' +
-                            '</select>' +
-                            '</div>' +
-                            '</div>' +
-                            '<div class="line">' +
-                            '<span class="tname">' + lan.soft.ip_addr + '</span>' +
-                            '<div class="info-r ">' +
-                            '<input name="ip" class="bt-input-text mr5" type="text" style="width:180px" value="' + res.save_path + '">' +
-                            '</div>' +
-                            '</div>' +
-                            '<div class="line">' +
-                            '<span class="tname">' + lan.soft.port + '</span>' +
-                            '<div class="info-r ">' +
-                            '<input name="port" class="bt-input-text mr5" type="text" style="width:180px" value="' + res.port + '">' +
-                            '</div>' +
-                            '</div>' +
-                            '<div class="line">' +
-                            '<span class="tname">' + lan.soft.passwd + '</span>' +
-                            '<div class="info-r ">' +
-                            '<input name="passwd" class="bt-input-text mr5" placeholder="' + lan.soft.no_passwd_set_empty + '" type="text" style="width:180px" value="' + res.passwd + '">' +
-                            '</div>' +
-                            '</div>' +
-                            '<div class="line">' +
-                            '<button name="btn_save" class="btn btn-success btn-sm mr5 ml5 btn_conf_save" style="margin-left: 135px;">' + lan.soft.save + '</button>' +
-                            '</div>' +
-                            '<ul class="help-info-text c7">' +
-                            '<li>' + lan.soft.php_seesion_tips1 + '</li>' +
-                            '<li>' + lan.soft.php_seesion_tips2 + '</li>' +
-                            '<li>' + lan.soft.php_seesion_tips3 + '</li>' +
-                            '</ul>' +
-                            '<div class="session_clear" style="border-top: #ccc 1px dashed;padding-top: 15px;margin-top: 15px;">' +
-                            '<div class="clear_title" style="padding-bottom:15px;">' + lan.soft.clear_seesion_files + '</div><div class="clear_conter"></div></div>' +
-                            '</div>');
-                        if (res.save_handler == 'files') {
-                            bt.soft.php.get_session_count(function(res) {
-                                $('.clear_conter').html('<div class="session_clear_list"><div class="line"><span>' + lan.soft.total_seesion_files + '</span><span>' + res.total + '</span></div><div class="line"><span>' + lan.soft.can_clear_seesion + '</span><span>' + res.oldfile + '</span></div></div><button class="btn btn-success btn-sm clear_session_file">' + lan.soft.clear_seesion_files + '</button>')
-                                $('.clear_session_file').click(function() {
-                                    bt.soft.php.clear_session_count({
-                                        title: lan.soft.clear_php_seesion_files,
-                                        msg: lan.soft.sure_clear_php_seesion_files
-                                    }, function(res) {
-                                        layer.msg(res.msg, {
-                                            icon: res.status ? 1 : 2
-                                        });
-                                        setTimeout(function() {
-                                            $('.bt-soft-menu p:eq(9)').click();
-                                        }, 2000);
+                    var con = "<div style='overflow:auto;'><table id='tab_php_status' class='table table-hover table-bordered' style='margin:0;padding:0'></table></div>";
+                    $(".soft-man-con").html(con);
+                    bt.render_table('tab_php_status', arr);
+                })
+                break;
+            case 'get_php_session':
+                bt.soft.php.get_php_session(version, function (res) {
+                    $(".soft-man-con").html('<div class="conf_p">' +
+                        '<div class="line ">' +
+                        '<span class="tname">' + lan.soft.storage_mode + '</span>' +
+                        '<div class="info-r ">' +
+                        '<select class="bt-input-text mr5 change_select_session" name="save_handler" style="width:160px">' +
+                        '<option value="files" ' + (res.save_handler == 'files' ? 'selected' : '') + '>files</option>' +
+                        (version != '52' ? '<option value="redis" ' + (res.save_handler == 'redis' ? 'selected' : '') + '>redis</option>' : '') +
+                        (version != '73' ? '<option value="memcache" ' + (res.save_handler == 'memcache' ? 'selected' : '') + '>memcache</option>' : '') +
+                        '<option value="memcached" ' + (res.save_handler == 'memcached' ? 'selected' : '') + '>memcached</option>' +
+                        '</select>' +
+                        '</div>' +
+                        '</div>' +
+                        '<div class="line">' +
+                        '<span class="tname">' + lan.soft.ip_addr + '</span>' +
+                        '<div class="info-r ">' +
+                        '<input name="ip" class="bt-input-text mr5" type="text" style="width:180px" value="' + res.save_path + '">' +
+                        '</div>' +
+                        '</div>' +
+                        '<div class="line">' +
+                        '<span class="tname">' + lan.soft.port + '</span>' +
+                        '<div class="info-r ">' +
+                        '<input name="port" class="bt-input-text mr5" type="text" style="width:180px" value="' + res.port + '">' +
+                        '</div>' +
+                        '</div>' +
+                        '<div class="line">' +
+                        '<span class="tname">' + lan.soft.passwd + '</span>' +
+                        '<div class="info-r ">' +
+                        '<input name="passwd" class="bt-input-text mr5" placeholder="' + lan.soft.no_passwd_set_empty + '" type="text" style="width:180px" value="' + res.passwd + '">' +
+                        '</div>' +
+                        '</div>' +
+                        '<div class="line">' +
+                        '<button name="btn_save" class="btn btn-success btn-sm mr5 ml5 btn_conf_save" style="margin-left: 135px;">' + lan.soft.save + '</button>' +
+                        '</div>' +
+                        '<ul class="help-info-text c7">' +
+                        '<li>' + lan.soft.php_seesion_tips1 + '</li>' +
+                        '<li>' + lan.soft.php_seesion_tips2 + '</li>' +
+                        '<li>' + lan.soft.php_seesion_tips3 + '</li>' +
+                        '</ul>' +
+                        '<div class="session_clear" style="border-top: #ccc 1px dashed;padding-top: 15px;margin-top: 15px;">' +
+                        '<div class="clear_title" style="padding-bottom:15px;">' + lan.soft.clear_seesion_files + '</div><div class="clear_conter"></div></div>' +
+                        '</div>');
+                    if (res.save_handler == 'files') {
+                        bt.soft.php.get_session_count(function (res) {
+                            $('.clear_conter').html('<div class="session_clear_list"><div class="line"><span>' + lan.soft.total_seesion_files + '</span><span>' + res.total + '</span></div><div class="line"><span>' + lan.soft.can_clear_seesion + '</span><span>' + res.oldfile + '</span></div></div><button class="btn btn-success btn-sm clear_session_file">' + lan.soft.clear_seesion_files + '</button>')
+                            $('.clear_session_file').click(function () {
+                                bt.soft.php.clear_session_count({
+                                    title: lan.soft.clear_php_seesion_files,
+                                    msg: lan.soft.sure_clear_php_seesion_files
+                                }, function (res) {
+                                    layer.msg(res.msg, {
+                                        icon: res.status ? 1 : 2
                                     });
-                                })
-                            });
-                        } else {
-                            $('.clear_conter').html(lan.soft.only_files_storage_mode_can_clear).attr('style', 'color:#666')
-                        }
-                        switch_type(res.save_handler);
-                        $('.change_select_session').change(function() {
-                            switch_type($(this).val());
-                            switch ($(this).val()) {
-                                case 'redis':
-                                    $('[name="ip"]').val('127.0.0.1');
-                                    $('[name="port"]').val('6379');
-                                    break;
-                                case 'memcache':
-                                    $('[name="ip"]').val('127.0.0.1');
-                                    $('[name="port"]').val('11211');
-                                    break;
-                                case 'memcached':
-                                    $('[name="ip"]').val('127.0.0.1');
-                                    $('[name="port"]').val('11211');
-                                    break;
-                            }
-                        });
-                        $('.btn_conf_save').click(function() {
-                            bt.soft.php.set_php_session({
-                                version: version,
-                                save_handler: $('[name="save_handler"]').val(),
-                                ip: $('[name="ip"]').val(),
-                                port: $('[name="port"]').val(),
-                                passwd: $('[name="passwd"]').val()
-                            }, function(res) {
-                                layer.msg(res.msg, {
-                                    icon: res.status ? 1 : 2
+                                    setTimeout(function () {
+                                        $('.bt-soft-menu p:eq(9)').click();
+                                    }, 2000);
                                 });
-                                // setTimeout(function() {
-                                //     $('.bt-soft-menu p:eq(9)').click();
-                                // }, 2000);
                             })
                         });
-
-                        function switch_type(type) {
-                            switch (type) {
-                                case 'files':
-                                    $('[name="ip"]').attr('disabled', 'disabled').val('');
-                                    $('[name="port"]').attr('disabled', 'disabled').val('');
-                                    $('[name="passwd"]').attr('disabled', 'disabled').val('');
-                                    break;
-                                case 'redis':
-                                    $('[name="ip"]').attr('disabled', false);
-                                    $('[name="port"]').attr('disabled', false);
-                                    $('[name="passwd"]').attr('disabled', false);
-                                    break;
-                                case 'memcache':
-                                    $('[name="ip"]').attr('disabled', false);
-                                    $('[name="port"]').attr('disabled', false);
-                                    $('[name="passwd"]').attr('disabled', 'disabled').val('');
-                                    break;
-                                case 'memcached':
-                                    $('[name="ip"]').attr('disabled', false);
-                                    $('[name="port"]').attr('disabled', false);
-                                    $('[name="passwd"]').attr('disabled', 'disabled').val('');
-                                    break;
-                            }
+                    } else {
+                        $('.clear_conter').html(lan.soft.only_files_storage_mode_can_clear).attr('style', 'color:#666')
+                    }
+                    switch_type(res.save_handler);
+                    $('.change_select_session').change(function () {
+                        switch_type($(this).val());
+                        switch ($(this).val()) {
+                            case 'redis':
+                                $('[name="ip"]').val('127.0.0.1');
+                                $('[name="port"]').val('6379');
+                                break;
+                            case 'memcache':
+                                $('[name="ip"]').val('127.0.0.1');
+                                $('[name="port"]').val('11211');
+                                break;
+                            case 'memcached':
+                                $('[name="ip"]').val('127.0.0.1');
+                                $('[name="port"]').val('11211');
+                                break;
                         }
                     });
-                    break
-                case 'get_fpm_logs':
-                    bt.soft.php.get_fpm_logs(version, function(logs) {
-                        var phpCon = '<textarea readonly="" style="margin: 0px;width: 600px;height: 620px;background-color: #333;color:#fff; padding:0 5px" id="error_log">' + logs.msg + '</textarea>';
-                        $(".soft-man-con").html(phpCon);
-                        var ob = document.getElementById('error_log');
-                        ob.scrollTop = ob.scrollHeight;
-                    })
-                    break;
-                case 'get_slow_logs':
-                    bt.soft.php.get_slow_logs(version, function(logs) {
-                        var phpCon = '<textarea readonly="" style="margin: 0px;width: 600px;height: 620px;background-color: #333;color:#fff; padding:0 5px" id="error_log">' + logs.msg + '</textarea>';
-                        $(".soft-man-con").html(phpCon);
-                        var ob = document.getElementById('error_log');
-                        ob.scrollTop = ob.scrollHeight;
-                    })
-                    break;
-                case 'get_redis_status':
-                    bt.soft.redis.get_redis_status(function(rdata) {
-                        var hit = (parseInt(rdata.keyspace_hits) / (parseInt(rdata.keyspace_hits) + parseInt(rdata.keyspace_misses)) * 100).toFixed(2);
-                        var arrs = [];
-                        arrs['uptime_in_days'] = [rdata.uptime_in_days, lan.soft.run_days];
-                        arrs['tcp_port'] = [rdata.tcp_port, lan.soft.curr_listen_port];
-                        arrs['connected_clients'] = [rdata.connected_clients, lan.soft.connected_clients];
-                        arrs['used_memory_rss'] = [bt.format_size(rdata.used_memory_rss), lan.soft.used_memory_rss];
-                        arrs['used_memory'] = [bt.format_size(rdata.used_memory), lan.soft.used_memory];
-                        arrs['mem_fragmentation_ratio'] = [rdata.mem_fragmentation_ratio, lan.soft.mem_fragmentation_ratio];
-                        arrs['total_connections_received'] = [rdata.total_connections_received, lan.soft.total_connections_received];
-                        arrs['total_commands_processed'] = [rdata.total_commands_processed, lan.soft.total_commands_processed];
-                        arrs['instantaneous_ops_per_sec'] = [rdata.instantaneous_ops_per_sec, lan.soft.instantaneous_ops_per_sec];
-                        arrs['keyspace_hits'] = [rdata.keyspace_hits, lan.soft.keyspace_hits];
-                        arrs['keyspace_misses'] = [rdata.keyspace_misses, lan.soft.keyspace_misses];
-                        arrs['hit'] = [hit, lan.soft.db_his];
-                        arrs['latest_fork_usec'] = [rdata.latest_fork_usec, lan.soft.latest_fork_usec];
+                    $('.btn_conf_save').click(function () {
+                        bt.soft.php.set_php_session({
+                            version: version,
+                            save_handler: $('[name="save_handler"]').val(),
+                            ip: $('[name="ip"]').val(),
+                            port: $('[name="port"]').val(),
+                            passwd: $('[name="passwd"]').val()
+                        }, function (res) {
+                            layer.msg(res.msg, {
+                                icon: res.status ? 1 : 2
+                            });
+                            // setTimeout(function() {
+                            //     $('.bt-soft-menu p:eq(9)').click();
+                            // }, 2000);
+                        })
+                    });
 
-                        var con = "<div class=\"divtable\"><table id='tab_get_redis_status' style=\"width: 490px;\" class='table table-hover table-bordered '><thead><th>" + lan.soft.field + "</th><th>" + lan.soft.curr_val + "</th><th>" + lan.soft.instructions + "</th></thead></table></div>";
-                        $(".soft-man-con").html(con);
-                        bt.render_table('tab_get_redis_status', arrs, true);
-                    })
-                    break;
-                case 'openliMa_set':
-                    var loadT = bt.load();
-                    $.post('config?action=get_ols_value', function(rdata) {
-                        loadT.close();
-                        var _mlist_data='',
+                    function switch_type(type) {
+                        switch (type) {
+                            case 'files':
+                                $('[name="ip"]').attr('disabled', 'disabled').val('');
+                                $('[name="port"]').attr('disabled', 'disabled').val('');
+                                $('[name="passwd"]').attr('disabled', 'disabled').val('');
+                                break;
+                            case 'redis':
+                                $('[name="ip"]').attr('disabled', false);
+                                $('[name="port"]').attr('disabled', false);
+                                $('[name="passwd"]').attr('disabled', false);
+                                break;
+                            case 'memcache':
+                                $('[name="ip"]').attr('disabled', false);
+                                $('[name="port"]').attr('disabled', false);
+                                $('[name="passwd"]').attr('disabled', 'disabled').val('');
+                                break;
+                            case 'memcached':
+                                $('[name="ip"]').attr('disabled', false);
+                                $('[name="port"]').attr('disabled', false);
+                                $('[name="passwd"]').attr('disabled', 'disabled').val('');
+                                break;
+                        }
+                    }
+                });
+                break
+            case 'get_fpm_logs':
+                bt.soft.php.get_fpm_logs(version, function (logs) {
+                    var phpCon = '<textarea readonly="" style="margin: 0px;width: 600px;height: 620px;background-color: #333;color:#fff; padding:0 5px" id="error_log">' + logs.msg + '</textarea>';
+                    $(".soft-man-con").html(phpCon);
+                    var ob = document.getElementById('error_log');
+                    ob.scrollTop = ob.scrollHeight;
+                })
+                break;
+            case 'get_slow_logs':
+                bt.soft.php.get_slow_logs(version, function (logs) {
+                    var phpCon = '<textarea readonly="" style="margin: 0px;width: 600px;height: 620px;background-color: #333;color:#fff; padding:0 5px" id="error_log">' + logs.msg + '</textarea>';
+                    $(".soft-man-con").html(phpCon);
+                    var ob = document.getElementById('error_log');
+                    ob.scrollTop = ob.scrollHeight;
+                })
+                break;
+            case 'get_redis_status':
+                bt.soft.redis.get_redis_status(function (rdata) {
+                    var hit = (parseInt(rdata.keyspace_hits) / (parseInt(rdata.keyspace_hits) + parseInt(rdata.keyspace_misses)) * 100).toFixed(2);
+                    var arrs = [];
+                    arrs['uptime_in_days'] = [rdata.uptime_in_days, lan.soft.run_days];
+                    arrs['tcp_port'] = [rdata.tcp_port, lan.soft.curr_listen_port];
+                    arrs['connected_clients'] = [rdata.connected_clients, lan.soft.connected_clients];
+                    arrs['used_memory_rss'] = [bt.format_size(rdata.used_memory_rss), lan.soft.used_memory_rss];
+                    arrs['used_memory'] = [bt.format_size(rdata.used_memory), lan.soft.used_memory];
+                    arrs['mem_fragmentation_ratio'] = [rdata.mem_fragmentation_ratio, lan.soft.mem_fragmentation_ratio];
+                    arrs['total_connections_received'] = [rdata.total_connections_received, lan.soft.total_connections_received];
+                    arrs['total_commands_processed'] = [rdata.total_commands_processed, lan.soft.total_commands_processed];
+                    arrs['instantaneous_ops_per_sec'] = [rdata.instantaneous_ops_per_sec, lan.soft.instantaneous_ops_per_sec];
+                    arrs['keyspace_hits'] = [rdata.keyspace_hits, lan.soft.keyspace_hits];
+                    arrs['keyspace_misses'] = [rdata.keyspace_misses, lan.soft.keyspace_misses];
+                    arrs['hit'] = [hit, lan.soft.db_his];
+                    arrs['latest_fork_usec'] = [rdata.latest_fork_usec, lan.soft.latest_fork_usec];
+
+                    var con = "<div class=\"divtable\"><table id='tab_get_redis_status' style=\"width: 490px;\" class='table table-hover table-bordered '><thead><th>" + lan.soft.field + "</th><th>" + lan.soft.curr_val + "</th><th>" + lan.soft.instructions + "</th></thead></table></div>";
+                    $(".soft-man-con").html(con);
+                    bt.render_table('tab_get_redis_status', arrs, true);
+                })
+                break;
+            case 'openliMa_set':
+                var loadT = bt.load();
+                $.post('config?action=get_ols_value', function (rdata) {
+                    loadT.close();
+                    var _mlist_data = '',
                         tips_i = 0,
-                        help_tips=['#Enables GZIP/Brotli compression for both static and dynamic responses.',
-                        '#Specifies the level of GZIP compression applied to dynamic content. Ranges from 1 (lowest) to 9 (highest).',
-                        '',
-                        '#Specifies the maximum number of concurrent connections that the server can accept.<br>\
+                        help_tips = ['#Enables GZIP/Brotli compression for both static and dynamic responses.',
+                            '#Specifies the level of GZIP compression applied to dynamic content. Ranges from 1 (lowest) to 9 (highest).',
+                            '',
+                            '#Specifies the maximum number of concurrent connections that the server can accept.<br>\
                         #This includes both plain TCP connections and SSL connections',
-                        '#Specifies the maximum number of concurrent SSL connections the server will accept<br>\
+                            '#Specifies the maximum number of concurrent SSL connections the server will accept<br>\
                         #Since total concurrent SSL and non-SSL connections cannot exceed the limit specified by “Max Connections”,<br>\
                         #the actual number of concurrent SSL connections allowed must be lower than this limit.',
-                        '#Specifies the maximum connection idle time (seconds) allowed during processing one request',
-                        '#Specifies the maximum number of requests that can be served through a keep-alive (persistent) session'];
-                        for (var i in rdata) {
-                            var mlist = {title: '',items: []},list = {};
-                            list.name = i;
-                            list.width = '130px';
-                            list.value = rdata[i];
-                            list.type = i=='enableGzipCompress'?'switch':'input';
-                            list.ps_help = help_tips[tips_i];
-                            mlist.items.push(list);
-                            mlist.title = i;
-                            _mlist_data += bt.render_form_line(mlist).html;
-                            tips_i++;
+                            '#Specifies the maximum connection idle time (seconds) allowed during processing one request',
+                            '#Specifies the maximum number of requests that can be served through a keep-alive (persistent) session'];
+                    for (var i in rdata) {
+                        var mlist = { title: '', items: [] }, list = {};
+                        list.name = i;
+                        list.width = '130px';
+                        list.value = rdata[i];
+                        list.type = i == 'enableGzipCompress' ? 'switch' : 'input';
+                        list.ps_help = help_tips[tips_i];
+                        mlist.items.push(list);
+                        mlist.title = i;
+                        _mlist_data += bt.render_form_line(mlist).html;
+                        tips_i++;
+                    }
+                    var tabCon = $(".soft-man-con").empty();
+                    tabCon.append('<div class="openlite_set">' + _mlist_data + '</div></div>');
+                    var datas = {
+                        title: ' ',
+                        class: 'openlite_button',
+                        items: [{
+                            name: 'btn_fresh',
+                            text: lan.public.fresh,
+                            type: 'button',
+                            callback: function (ldata) {
+                                soft.get_tab_contents(key, obj);
+                            }
+                        },
+                        {
+                            name: 'btn_save',
+                            text: lan.public.save,
+                            type: 'button',
+                            width: '62px',
+                            callback: function (ldata) {
+                                var datal = {},
+                                    loadP = bt.load();
+                                delete ldata.btn_fresh;
+                                delete ldata.btn_save;
+                                ldata['enableGzipCompress'] = $("#enableGzipCompress").prop('checked') ? 1 : 0;
+                                ldata = JSON.stringify(ldata);
+                                datal = { array: ldata };
+                                bt.send('set_ols_value', 'config/set_ols_value', datal, function (res) {
+                                    loadP.close();
+                                    soft.get_tab_contents(key, obj);
+                                    bt.msg(res);
+                                });
+                            }
                         }
-                        var tabCon = $(".soft-man-con").empty();
-                        tabCon.append('<div class="openlite_set">' + _mlist_data + '</div></div>');
-                        var datas = {
-                            title: ' ',
-                            class: 'openlite_button',
-                            items: [{
-                                    name: 'btn_fresh',
-                                    text: lan.public.fresh,
-                                    type: 'button',
-                                    callback: function(ldata) {
-                                        soft.get_tab_contents(key, obj);
-                                    }
-                                },
-                                {
-                                    name: 'btn_save',
-                                    text: lan.public.save,
-                                    type: 'button',
-                                    width: '62px',
-                                    callback: function(ldata) {
-                                        var datal = {},
-                                        loadP = bt.load();
-                                        delete ldata.btn_fresh;
-                                        delete ldata.btn_save;
-                                        ldata['enableGzipCompress']=$("#enableGzipCompress").prop('checked')?1:0;
-                                        ldata = JSON.stringify(ldata);
-                                        datal = { array: ldata };
-                                        bt.send('set_ols_value', 'config/set_ols_value', datal, function(res) {
-                                            loadP.close();
-                                            soft.get_tab_contents(key, obj);
-                                            bt.msg(res);
-                                        });
-                                    }
-                                }
-                            ]
-                        }
-                        var _form_data = bt.render_form_line(datas);
-                        $('.openlite_set').append(_form_data.html);
-                        bt.render_clicks(_form_data.clicks);
-                        $('.enableGzipCompress_help').css('margin-left','104px');
-                        $(".openlite_set").on("mouseenter", ".bt-ico-ask", function () {
-                            var idd = $(this).attr('class').split(" ")[1], tip = $(this).attr('tip');
-                            layer.tips(tip, '.' + idd + '', { tips: [1, '#d4d4d4'], time: 0, area: '300px'});
-                        });
-                        $(".openlite_set").on("mouseleave", ".bt-ico-ask", function () {
-                            layer.closeAll('tips');
-                        });
+                        ]
+                    }
+                    var _form_data = bt.render_form_line(datas);
+                    $('.openlite_set').append(_form_data.html);
+                    bt.render_clicks(_form_data.clicks);
+                    $('.enableGzipCompress_help').css('margin-left', '104px');
+                    $(".openlite_set").on("mouseenter", ".bt-ico-ask", function () {
+                        var idd = $(this).attr('class').split(" ")[1], tip = $(this).attr('tip');
+                        layer.tips(tip, '.' + idd + '', { tips: [1, '#d4d4d4'], time: 0, area: '300px' });
                     });
-                    break;
-            }
-        },
-    update_zip_open: function() {
-        $("#update_zip").on("change", function() {
+                    $(".openlite_set").on("mouseleave", ".bt-ico-ask", function () {
+                        layer.closeAll('tips');
+                    });
+                });
+                break;
+        }
+    },
+    update_zip_open: function () {
+        $("#update_zip").on("change", function () {
             var files = $("#update_zip")[0].files;
             if (files.length == 0) {
                 return;
@@ -2877,7 +2877,7 @@ var soft = {
 
         $("#update_zip").click();
     },
-    update_zip: function(file) {
+    update_zip: function (file) {
         var formData = new FormData();
         formData.append("plugin_zip", file);
         $.ajax({
@@ -2886,7 +2886,7 @@ var soft = {
             data: formData,
             processData: false,
             contentType: false,
-            success: function(data) {
+            success: function (data) {
                 if (data.status === false) {
                     layer.msg(data.msg, {
                         icon: 2
@@ -2924,7 +2924,7 @@ var soft = {
                     </div>'
                 });
             },
-            error: function(responseStr) {
+            error: function (responseStr) {
                 layer.msg(lan.soft.upload_fail2, {
                     icon: 2
                 });
@@ -2932,17 +2932,17 @@ var soft = {
         });
     },
 
-    input_zip: function(plugin_name, tmp_path) {
-        bt.soft.show_speed_window('Installing, this may take a few minutes...', function() {
+    input_zip: function (plugin_name, tmp_path) {
+        bt.soft.show_speed_window('Installing, this may take a few minutes...', function () {
             $.post('/plugin?action=input_zip', {
                 plugin_name: plugin_name,
                 tmp_path: tmp_path
-            }, function(rdata) {
+            }, function (rdata) {
                 layer.closeAll()
                 if (rdata.status) {
                     soft.get_list();
                 }
-                setTimeout(function() {
+                setTimeout(function () {
                     layer.msg(rdata.msg, {
                         icon: rdata.status ? 1 : 2
                     })
@@ -2971,7 +2971,7 @@ function soft_td_width_auto() {
 }
 
 function set_disable_functions(version, data) {
-    bt.soft.php.disable_functions(version, data, function(rdata) {
+    bt.soft.php.disable_functions(version, data, function (rdata) {
         if (rdata.status) {
             soft.get_tab_contents('set_dis_fun', $(".bgw"));
         }
@@ -2997,7 +2997,7 @@ function AddDeployment(maction) {
             time: 0,
             shade: [0.3, '#000']
         });
-        $.post('/deployment?action=AddPackage', pdata, function(rdata) {
+        $.post('/deployment?action=AddPackage', pdata, function (rdata) {
             layer.close(loadT);
             layer.msg(rdata.msg, {
                 icon: rdata.status ? 1 : 5
@@ -3032,7 +3032,7 @@ function AddDeployment(maction) {
 }
 
 
-$(".searchInput").keyup(function(e) {
+$(".searchInput").keyup(function (e) {
     if (e.keyCode == 13) {
         GetSrcList();
     }
@@ -3068,7 +3068,7 @@ function AddSite(codename, title) {
         shade: [0.3, "#000"]
     })
     var data = $("#addweb").serialize() + "&port=" + Webport + "&webname=" + domain + '&ftp=false&sql=true&address=localhost&codeing=utf8&version=' + php_version;
-    $.post('/site?action=AddSite', data, function(ret) {
+    $.post('/site?action=AddSite', data, function (ret) {
         layer.close(loadT)
         if (!ret.siteStatus) {
             layer.msg(ret.msg, {
@@ -3092,11 +3092,11 @@ function AddSite(codename, title) {
             shade: [0.3, "#000"]
         });
 
-        setTimeout(function() {
+        setTimeout(function () {
             GetSpeed();
         }, 2000);
 
-        $.post('/deployment?action=SetupPackage', pdata, function(rdata) {
+        $.post('/deployment?action=SetupPackage', pdata, function (rdata) {
             layer.close(loadT)
             if (!rdata.status) {
                 layer.msg(rdata.msg, {
@@ -3142,7 +3142,7 @@ function AddSite(codename, title) {
 
 function GetSpeed() {
     if (!$('.depSpeed')) return;
-    $.get('/deployment?action=GetSpeed', function(speed) {
+    $.get('/deployment?action=GetSpeed', function (speed) {
         if (speed.status === false) return;
         if (speed.name == 'Download file') {
             speed = '<p>正在' + speed.name + ' <img src="/static/img/ing.gif"></p>\
@@ -3166,14 +3166,14 @@ function GetSpeed() {
         }
 
         $('.depSpeed').html(speed);
-        setTimeout(function() {
+        setTimeout(function () {
             GetSpeed();
         }, 1000);
     });
 }
 
 function onekeyCodeSite(codename, versions, title, enable_functions) {
-    $.post('/site?action=GetPHPVersion', function(rdata) {
+    $.post('/site?action=GetPHPVersion', function (rdata) {
         var php_version = "";
         var n = 0;
         for (var i = rdata.length - 1; i >= 0; i--) {
@@ -3228,7 +3228,7 @@ function onekeyCodeSite(codename, versions, title, enable_functions) {
 				</from>';
         add = layer.open({
             type: 1,
-            title: "aaPanel One-Click [" + title + ']',
+            title: "aaipanel One-Click [" + title + ']',
             area: '560px',
             closeBtn: 2,
             shadeClose: false,
@@ -3242,25 +3242,25 @@ function onekeyCodeSite(codename, versions, title, enable_functions) {
             });
         }
         var placeholder = "<div class='placeholder c9' style='top:10px;left:10px'>Fill in a domain name per line, the default is 80 ports<br>Pan-analysis add method *.domain.com<br>If the additional port format is www.domain.com:88</div>";
-        $(".onekeycodeclose").click(function() {
+        $(".onekeycodeclose").click(function () {
             layer.close(add);
         });
         $('#mainDomain').after(placeholder);
-        $(".placeholder").click(function() {
+        $(".placeholder").click(function () {
             $(this).hide();
             $('#mainDomain').focus();
         })
-        $('#mainDomain').focus(function() {
+        $('#mainDomain').focus(function () {
             $(".placeholder").hide();
         });
 
-        $('#mainDomain').blur(function() {
+        $('#mainDomain').blur(function () {
             if ($(this).val().length == 0) {
                 $(".placeholder").show();
             }
         });
         //FTP账号数据绑定域名
-        $('#mainDomain').on('input', function() {
+        $('#mainDomain').on('input', function () {
             var defaultPath = bt.get_cookie('sites_path');
             if (!defaultPath) defaultPath = '/www/wwwroot';
             var array;
@@ -3277,18 +3277,18 @@ function onekeyCodeSite(codename, versions, title, enable_functions) {
             $("#Wbeizhu").val(ress);
             $("#datauser").val(res);
         })
-        $('#Wbeizhu').on('input', function() {
-                var str = $(this).val();
-                var len = str.replace(/[^\x00-\xff]/g, "**").length;
-                if (len > 20) {
-                    str = str.substring(0, 20);
-                    $(this).val(str);
-                    layer.msg('Do not exceed 20 characters', {
-                        icon: 0
-                    });
-                }
-            })
-            //获取当前时间时间戳，截取后6位
+        $('#Wbeizhu').on('input', function () {
+            var str = $(this).val();
+            var len = str.replace(/[^\x00-\xff]/g, "**").length;
+            if (len > 20) {
+                str = str.substring(0, 20);
+                $(this).val(str);
+                layer.msg('Do not exceed 20 characters', {
+                    icon: 0
+                });
+            }
+        })
+        //获取当前时间时间戳，截取后6位
         var timestamp = new Date().getTime().toString();
         var dtpw = timestamp.substring(7);
         $("#datauser").val("sql" + dtpw);
@@ -3312,7 +3312,7 @@ var score = {
     type: '',
     data: [],
     // 获取评论信息
-    get_score_info: function(obj, callback) {
+    get_score_info: function (obj, callback) {
         var loadT = layer.msg('<div class="depSpeed">Getting comment information <img src="/static/img/ing.gif"></div>', {
             icon: 16,
             time: 0,
@@ -3322,7 +3322,7 @@ var score = {
             pid: obj.pid,
             p: obj.p,
             limit_num: obj.limit_num
-        }, function(res) {
+        }, function (res) {
             layer.close(loadT);
             if (res.status === false) {
                 layer.msg(res.msg, {
@@ -3333,14 +3333,14 @@ var score = {
             if (callback) callback(res);
         });
     },
-    render_score_info: function(obj, callback) {
+    render_score_info: function (obj, callback) {
         var config = {
-                pid: obj.pid
-            },
+            pid: obj.pid
+        },
             _this = this;
         obj.p == undefined ? config.p = 1 : config.p = parseInt(obj.p)
         obj.limit_num == undefined ? config.limit_num = '' : config.limit_num = obj.limit_num
-        score.get_score_info(config, function(res) {
+        score.get_score_info(config, function (res) {
             var _split_score = res.split.reverse(),
                 _average_score = (_split_score[4] * 1 + _split_score[3] * 2 + _split_score[2] * 3 + _split_score[1] * 4 + _split_score[0] * 5) / res.total,
                 _data = res.data,
@@ -3372,7 +3372,7 @@ var score = {
                     </div>\
                     <div class="comment_box_content">' + (getLength(_data[j].ps) > 65 ? reBytesStr(_data[j].ps, 65) + '...&nbsp;<a href="javascript:;" class="btlink">Details</a>' : _data[j].ps) + '</div>\
                 </div>'
-                    // console.log(getLength(_data[j].ps)>70?reBytesStr(_data[j].ps,70)+'&nbsp;<a href="javascript:;" class="btlink">详情</a>':_data[j].ps);
+                // console.log(getLength(_data[j].ps)>70?reBytesStr(_data[j].ps,70)+'&nbsp;<a href="javascript:;" class="btlink">详情</a>':_data[j].ps);
             }
             _this.data = _this.data.concat(_data);
             if (res.total > 10 && _data.length === 10) {
@@ -3389,7 +3389,7 @@ var score = {
         });
     },
     // 设置评论信息
-    set_score_info: function(obj, callback) {
+    set_score_info: function (obj, callback) {
         var loadT = layer.msg('<div class="depSpeed">Submitting comment <img src="/static/img/ing.gif"></div>', {
             icon: 16,
             time: 0,
@@ -3399,7 +3399,7 @@ var score = {
             pid: obj.pid,
             num: obj.num,
             ps: obj.ps
-        }, function(res) {
+        }, function (res) {
             layer.close(loadT);
             if (res.status === false) {
                 layer.msg(res.msg, {
@@ -3410,7 +3410,7 @@ var score = {
             if (callback) callback(res);
         });
     },
-    open_score_view: function(_pid, _name, _count) {
+    open_score_view: function (_pid, _name, _count) {
         layer.open({
             type: 1,
             title: '[ ' + _name + '] Score',
@@ -3518,16 +3518,16 @@ var score = {
                     <span>Participate in the score</span>\
                 </div>\
             </div>',
-            success: function(index, layero) {
+            success: function (index, layero) {
                 score.data = [];
                 score.render_score_info({
                     pid: _pid,
                     count: _count
-                }, function() {
+                }, function () {
                     $('.score_info_view').show();
                 });
                 score.score_icon_time = null;
-                $('.score_icon_group span').hover(function() {
+                $('.score_icon_group span').hover(function () {
                     var _active = $(this).hasClass('active');
                     // if($(this).prevAll().length == 0 && $(this).nextAll('.active').length == 0 && _active){
                     //     $(this).removeClass('active').nextAll().removeClass('active')
@@ -3541,7 +3541,7 @@ var score = {
                     // $('.score_icon_group_tips').text(_title);
                     // }
                 });
-                $('.score_icon_group span').click(function() {
+                $('.score_icon_group span').click(function () {
                     var _active = $(this).hasClass('active');
                     if ($(this).prevAll().length == 0 && $(this).nextAll('.active').length == 0 && _active) {
                         $('.edit_view').addClass('active');
@@ -3557,7 +3557,7 @@ var score = {
                         $('.score_icon_group_tips').text(_title);
                     }
                 });
-                $('.comment_tab span').click(function(e) {
+                $('.comment_tab span').click(function (e) {
                     var _num = $(this).attr('data-num');
                     $('.comment_content').removeClass('box-shadow');
                     $(this).addClass('active').siblings().removeClass('active');
@@ -3571,7 +3571,7 @@ var score = {
                     });
 
                 });
-                $('.comment_content').on('click', '.get_next_page', function() {
+                $('.comment_content').on('click', '.get_next_page', function () {
                     var _next_page = ($('.comment_content .comment_box').length / 10) + 1;
                     score.render_score_info({
                         pid: _pid,
@@ -3580,7 +3580,7 @@ var score = {
                         count: _count
                     });
                 });
-                $('.comment_content').on('click', '.comment_box', function() {
+                $('.comment_content').on('click', '.comment_box', function () {
                     if (!$(this).hasClass('get_next_page')) {
                         var _index = $(this).attr('data-index');
                         layer.open({
@@ -3590,17 +3590,17 @@ var score = {
                             closeBtn: 2,
                             shadeClose: false,
                             content: '<div class="score_details" >' + $(this).html() + '</div>',
-                            success: function(index, layers) {
+                            success: function (index, layers) {
                                 $('.score_details .comment_box_content').html(score.data[_index]['ps']);
                             }
                         });
                     }
                 });
-                $('.edit_view').click(function() {
+                $('.edit_view').click(function () {
                     if ($('.edit_view').hasClass('active')) {
                         // layer.msg('请选择评分等级',{icon:2});
                         $('.score_icon_group_tips').css('color', 'red');
-                        setTimeout(function() {
+                        setTimeout(function () {
                             $('.score_icon_group_tips').removeAttr('style')
                         }, 1000);
                         return false
@@ -3623,7 +3623,7 @@ var score = {
                         pid: _pid,
                         num: _num,
                         ps: _ps == '' ? 'User did not make any evaluation' : _ps
-                    }, function(res) {
+                    }, function (res) {
                         layer.msg(res.msg, {
                             icon: 1
                         });
@@ -3655,8 +3655,8 @@ var score = {
                             <textarea class="score_input bt-input-text" placeholder="Please enter the evaluation content, the number of words is less than 60 words, can be empty." name="score_val"></textarea>\
                             <span class="score_input_tips pull-right">Can also enter&nbsp;<i>60</i>&nbsp;words</span>\
                         </div>',
-                        success: function() {
-                            $('.score_icon_group span').click(function() {
+                        success: function () {
+                            $('.score_icon_group span').click(function () {
                                 var _active = $(this).hasClass('active');
                                 if ($(this).prevAll().length == 0 && $(this).nextAll('.active').length == 0 && _active) {
                                     $(this).removeClass('active').nextAll().removeClass('active')
@@ -3670,7 +3670,7 @@ var score = {
                                     $('.score_icon_group_tips').text(_title);
                                 }
                             });
-                            $('.score_input').on('keydown keyup focus click', function() {
+                            $('.score_input').on('keydown keyup focus click', function () {
                                 var _val = $('.score_input').val(),
                                     _size = 120 - getLength(_val);
                                 if (_size > 0) {
@@ -3685,7 +3685,7 @@ var score = {
                                 }
                             });
                         },
-                        yes: function(index, layero) {
+                        yes: function (index, layero) {
                             var _num = parseInt($('.score_icon_group').attr('data-icon')),
                                 _ps = $('.score_input').val();
                             if (_num == 0) {
@@ -3704,7 +3704,7 @@ var score = {
                                 pid: _pid,
                                 num: _num,
                                 ps: _ps == '' ? 'User did not make any evaluation' : _ps
-                            }, function(res) {
+                            }, function (res) {
                                 layer.msg(res.msg, {
                                     icon: 1
                                 });
@@ -3790,7 +3790,7 @@ function getLength(val) {
 }
 
 function reBytesStr(str, len) {
-    if ((!str && typeof(str) != 'undefined')) {
+    if ((!str && typeof (str) != 'undefined')) {
         return '';
     }
     var num = 0;

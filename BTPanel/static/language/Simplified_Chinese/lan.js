@@ -1,40 +1,40 @@
 var lan = {
-	"get":function(key,args){
+	"get": function (key, args) {
 		var msgs = {
-			"diskinfo_span_1":"Available space on disk partition [{1}] is less than 1GB, it may make MySQL service automatically stop, or Panel not accessible, please clean it！",
-			"process_kill_confirm":"Ending Task progress name [{1}],PID [{2}] may affact server service, continue?",
-			"del":"Delete [{1}]",
-			"del_all_task":"Totally selected [{1}] task, it is unable to recover after deleted, continue?",
-			"del_all_task_ok":"Successfully deleted [{1}] task!",
-			"del_all_task_the":"Deleting [{1}], please wait...",
-			"add_all_task_ok":"Successfully added [{1}] task!",
-			"add":"Adding [{1}], please wait...",
-			"confirm_del":"Are your sure to delete [{1}]?",
-			"update_num":"Only be able to upload {1} file by once，residue cannot be processed!",
-			"service_confirm":"Are you need {1} {2} service?",
-			"service_the":"{1} {2} Service now, please wait...",
-			"service_ok":"{1} service already {2}",
-			"service_err":"{1} service {2} failed!",
-			"recycle_bin_confirm":"Are you sure to put this file [{1}] to trash?",
-			"recycle_bin_confirm_dir":"Are you sure to put this directory [{1}] to trash?",
-			"del_all_ftp":"Totally selected [{1}] FTP, and it is unable to recover after deleted, continue?",
-			"del_all_ftp_ok":"Successfully deleted {1} FTP account",
-			"del_all_database":"Totally selected [{1}] database(s), and it is unable to recover after deleted, continue?",
-			"del_all_database_ok":"Successfully deleted [{1}] database!",
-			"config_edit_ps":"This is {1} primary configuration file, if you do not understand it, do NOT modify it.",
-			"install_confirm":"Are you sure to install {1}-{2}?",
-			"del_all_site":"Totally selected [{1}] site,it is unable to recover after delete, continue?",
-			"del_all_site_ok":"Successfully deleted [{1}] site!",
-			"ssl_enable":"You have enabled [{1}] certificate，if need close，please click\"CloseSSL\"button",
-			"lack_param":"Missing required parameters[{1}]",
-			"del_ftp":'Are you sure to delete [{1}] the FTP account?',
+			"diskinfo_span_1": "Available space on disk partition [{1}] is less than 1GB, it may make MySQL service automatically stop, or Panel not accessible, please clean it！",
+			"process_kill_confirm": "Ending Task progress name [{1}],PID [{2}] may affact server service, continue?",
+			"del": "Delete [{1}]",
+			"del_all_task": "Totally selected [{1}] task, it is unable to recover after deleted, continue?",
+			"del_all_task_ok": "Successfully deleted [{1}] task!",
+			"del_all_task_the": "Deleting [{1}], please wait...",
+			"add_all_task_ok": "Successfully added [{1}] task!",
+			"add": "Adding [{1}], please wait...",
+			"confirm_del": "Are your sure to delete [{1}]?",
+			"update_num": "Only be able to upload {1} file by once，residue cannot be processed!",
+			"service_confirm": "Are you need {1} {2} service?",
+			"service_the": "{1} {2} Service now, please wait...",
+			"service_ok": "{1} service already {2}",
+			"service_err": "{1} service {2} failed!",
+			"recycle_bin_confirm": "Are you sure to put this file [{1}] to trash?",
+			"recycle_bin_confirm_dir": "Are you sure to put this directory [{1}] to trash?",
+			"del_all_ftp": "Totally selected [{1}] FTP, and it is unable to recover after deleted, continue?",
+			"del_all_ftp_ok": "Successfully deleted {1} FTP account",
+			"del_all_database": "Totally selected [{1}] database(s), and it is unable to recover after deleted, continue?",
+			"del_all_database_ok": "Successfully deleted [{1}] database!",
+			"config_edit_ps": "This is {1} primary configuration file, if you do not understand it, do NOT modify it.",
+			"install_confirm": "Are you sure to install {1}-{2}?",
+			"del_all_site": "Totally selected [{1}] site,it is unable to recover after delete, continue?",
+			"del_all_site_ok": "Successfully deleted [{1}] site!",
+			"ssl_enable": "You have enabled [{1}] certificate，if need close，please click\"CloseSSL\"button",
+			"lack_param": "Missing required parameters[{1}]",
+			"del_ftp": 'Are you sure to delete [{1}] the FTP account?',
 		}
 
-		if(!msgs[key]) return '';
+		if (!msgs[key]) return '';
 		msg = msgs[key];
-		for(var i=0;i<args.length;i++){
-			console.log('test',args[i])
-			msg = msg.replace('{'+(i+1)+'}',args[i]+'');
+		for (var i = 0; i < args.length; i++) {
+			console.log('test', args[i])
+			msg = msg.replace('{' + (i + 1) + '}', args[i] + '');
 		}
 
 		return msg;
@@ -365,7 +365,7 @@ var lan = {
 		"ftp2_default_port": "FTP passive mode port range",
 		"mem_default_port": "Memcached service port",
 		"rsync_default_port": "Rsync data synchronization service",
-		"bt_default_port": "aaPanel Linux panel default port",
+		"bt_default_port": "aaipanel panel default port",
 		"del": "Del",
 		"number": "Numbering",
 		"behavior": "behavior",
@@ -635,7 +635,7 @@ var lan = {
 		"general_format": "General format",
 		"compatibility_better_chinese": "WinRAR is compatible with Chinese",
 		"calc_now": "Calculating, please wait",
-		"apply_to_subd":"Apply to subdir"
+		"apply_to_subd": "Apply to subdir"
 	},
 	"ftp": {
 		"empty": "Currently no FTP data",
@@ -1853,8 +1853,8 @@ var lan = {
 		"requery_err": "The request process found an error!",
 		"visit_path": "Access path",
 		"tomcat_status_tips1": "Service, please wait",
-		"del_confirm_p": "Do you want to delete this"?
-		"del_project_now": "Deleting project, please wait...",
+		"del_confirm_p": "Do you want to delete this" ?
+			"del_project_now" : "Deleting project, please wait...",
 		"open": "on",
 		"stop": "stop",
 		"startup": "start"
@@ -2183,7 +2183,7 @@ var lan = {
 		"save_now": "Saving configuration...",
 		"testting_dns": "Testing if DNS is valid..."
 	},
-	"redis":{
+	"redis": {
 		"service": "Service",
 		"switch_ver": "Version switching",
 		"conf_set": "Performance tuning",
@@ -2233,7 +2233,7 @@ var lan = {
 		"redis_status_tips13": "The number of microseconds spent on the last fork() operation",
 		"redis_save_tips1": "Meeting any one condition will trigger RDB persistence"
 	},
-	"mongodb":{
+	"mongodb": {
 		"service_status": "Service status",
 		"database": "Database",
 		"conf": "Configuration Item",
