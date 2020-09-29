@@ -48,7 +48,7 @@ _convenient and efficient file manager integration , Support uploading, download
 
 
 
-**Over 2,100,000 servers have installed aaPanel in Asia**
+**Over 2,100,000 servers have installed aaiPanel in Asia**
 
 **HomePage:**
 
@@ -92,24 +92,24 @@ _convenient and efficient file manager integration , Support uploading, download
 
 **Share files with your friends**
 
-![blockchain](https://www.aaimaa.in/assets/files/2020-05-29/1590749878-802908-tmp.png?v=1 "Onlineeditor")
+![blockchain](https://www.aapanel.com/assets/files/2020-05-29/1590749878-802908-tmp.png?v=1 "Onlineeditor")
 
 **Send link password or QR code to your friends**
 
-![blockchain](https://www.aaimaa.in/assets/files/2020-05-29/1590750125-428227-tmp.png?v=1 "Onlineeditor")
+![blockchain](https://www.aapanel.com/assets/files/2020-05-29/1590750125-428227-tmp.png?v=1 "Onlineeditor")
 
 **Your friend opens the link effect you shared**
 
-![blockchain](https://www.aaimaa.in/assets/files/2020-05-29/1590750281-633474-tmp.png?v=1 "Onlineeditor")
+![blockchain](https://www.aapanel.com/assets/files/2020-05-29/1590750281-633474-tmp.png?v=1 "Onlineeditor")
 
 
 [User Manual](https://doc.aapanel.com/web/#/3?page_id=117 "User Manual")
 
 
-##### Home Page：https://www.aapanel.com/
-##### Forum Page：https://forum.aapanel.com/
+##### Home Page：https://www.aaimaa.in/
+##### Forum Page：https://www.aaimaa.in/
 ##### Feedback： https://www.aaimaa.in/
-##### Bug submission：https://forum.aapanel.com/
+##### Bug submission：https://www.aaimaa.in/
 
 #### Installation command：
 ##### Centos

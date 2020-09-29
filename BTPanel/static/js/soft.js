@@ -28,7 +28,7 @@ var soft = {
             }
 
             if (type == 10) {
-                $("#updata_pro_info").html('<div class="alert alert-danger" style="margin-bottom:15px"><strong>' + lan.soft.bt_developer + '</strong><a class="btn btn-success btn-xs va0" href="https://www.aapanel.com" title="' + lan.soft.get_third_party_apps + '" style="margin-left: 8px" target="_blank">' + lan.soft.get_third_party_apps + '</a><input type="file" style="display:none;" accept=".zip,.tar.gz" id="update_zip" multiple="multiple"><button class="btn btn-success btn-xs" onclick="soft.update_zip_open()" style="margin-left:8px">' + lan.soft.import_plug + '</button></div>')
+                $("#updata_pro_info").html('<div class="alert alert-danger" style="margin-bottom:15px"><strong>' + lan.soft.bt_developer + '</strong><a class="btn btn-success btn-xs va0" href="https://www.aaimaa.in" title="' + lan.soft.get_third_party_apps + '" style="margin-left: 8px" target="_blank">' + lan.soft.get_third_party_apps + '</a><input type="file" style="display:none;" accept=".zip,.tar.gz" id="update_zip" multiple="multiple"><button class="btn btn-success btn-xs" onclick="soft.update_zip_open()" style="margin-left:8px">' + lan.soft.import_plug + '</button></div>')
             } else if (type == 11) {
                 $("#updata_pro_info").html('<div class="alert alert-info" style="margin-bottom:15px"><strong>' + lan.soft.comingsoon + '</strong></div>')
             }
@@ -468,7 +468,7 @@ var soft = {
 
                 tbody = '<div class="alert alert-info" style="margin-bottom: 10px;">\
                         <strong class="mr5">aaipanel one-click deployment has been launched, and we invite global outstanding projects to settle in (limited to project officials)</strong>\
-                        <a class="btn btn-success btn-xs mr5" href="https://www.bt.cn/bbs/thread-33063-1-1.html" target="_blank">Free entry</a>\
+                        <a class="btn btn-success btn-xs mr5" href="https://www.google.com" target="_blank">Free entry</a>\
                         <a class="btn btn-success btn-xs" onclick="soft.input_package()">Import project</a>\
                         </div><div class="onekey-menu-sub onekey-type" style="margin-bottom:15px">';
 

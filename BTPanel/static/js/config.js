@@ -545,7 +545,7 @@ function GetPanelSSL() {
 				</div>\
 			</div>\
 			<ul class="help-info-text c7 pull-left">\
-				<li>'+ lan.config.ps + '<a href="http://www.bt.cn/bbs/thread-704-1-1.html" class="btlink" target="_blank">[' + lan.config.help + ']</a>。</li>\
+				<li>'+ lan.config.ps + '<a href="https://www.google.com" class="btlink" target="_blank">[' + lan.config.help + ']</a>。</li>\
 				<li>'+ lan.config.ps1 + '</li><li>' + lan.config.ps2 + '</li>\
 			</ul>\
 		</div>'
@@ -937,7 +937,7 @@ function modify_basic_auth() {
 				+ '</ul></div>'
 				+ '<div class="details">'
 				+ '<input type="checkbox" id="check_basic"><label style="font-weight: 400;margin: 3px 10px 0px;font-size:12px;" for="check_basic">I already know the details and are willing to take risks</label>'
-				+ '<a target="_blank" style="font-size:12px;" class="btlink" href="https://www.bt.cn/bbs/thread-34374-1-1.html">What is BasicAuth authentication?</a><p></p></div>'
+				+ '<a target="_blank" style="font-size:12px;" class="btlink" href="https://www.google.com">What is BasicAuth authentication?</a><p></p></div>'
 			var loadT = layer.confirm(m_html, { title: "Risk reminder", area: "600px", closeBtn: 2 }, function () {
 				if (!$("#check_basic").prop("checked")) {
 					layer.msg("Please read the precautions carefully and check to agree to take risks!");

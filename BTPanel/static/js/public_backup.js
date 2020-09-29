@@ -1,40 +1,40 @@
 var bt = {
     os: 'Linux',
-    check_ip: function(ip) //验证ip
-        {
-            var reg = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
-            return reg.test(ip);
-        },
-    check_ips: function(ips) //验证ip段
-        {
-            var reg = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(\/\d{1,2})?$/;
-            return reg.test(ip);
-        },
-    check_url: function(url) //验证url
-        {
-            var reg = /^((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+/;
-            return reg.test(url);
-        },
-    check_port: function(port) {
+    check_ip: function (ip) //验证ip
+    {
+        var reg = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+        return reg.test(ip);
+    },
+    check_ips: function (ips) //验证ip段
+    {
+        var reg = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(\/\d{1,2})?$/;
+        return reg.test(ip);
+    },
+    check_url: function (url) //验证url
+    {
+        var reg = /^((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+/;
+        return reg.test(url);
+    },
+    check_port: function (port) {
         var reg = /^([1-9]|[1-9]\d|[1-9]\d{2}|[1-9]\d{3}|[1-5]\d{4}|6[0-4]\d{3}|65[0-4]\d{2}|655[0-2]\d|6553[0-5])$/;
         return reg.test(port);
     },
-    check_chinese: function(str) {
+    check_chinese: function (str) {
         var reg = /[\u4e00-\u9fa5]/;
         return reg.test(str);
     },
-    check_domain: function(domain) //验证域名
-        {
-            var reg = /^([\w\u4e00-\u9fa5\-\*]{1,100}\.){1,4}([\w\u4e00-\u9fa5\-]{1,24}|[\w\u4e00-\u9fa5\-]{1,24}\.[\w\u4e00-\u9fa5\-]{1,24})$/;
-            return reg.test(bt.strim(domain));
-        },
-    check_img: function(fileName) //验证是否图片
-        {
-            var exts = ['jpg', 'jpeg', 'png', 'bmp', 'gif', 'tiff', 'ico'];
-            var check = bt.check_exts(fileName, exts);
-            return check;
-        },
-    check_zip: function(fileName) {
+    check_domain: function (domain) //验证域名
+    {
+        var reg = /^([\w\u4e00-\u9fa5\-\*]{1,100}\.){1,4}([\w\u4e00-\u9fa5\-]{1,24}|[\w\u4e00-\u9fa5\-]{1,24}\.[\w\u4e00-\u9fa5\-]{1,24})$/;
+        return reg.test(bt.strim(domain));
+    },
+    check_img: function (fileName) //验证是否图片
+    {
+        var exts = ['jpg', 'jpeg', 'png', 'bmp', 'gif', 'tiff', 'ico'];
+        var check = bt.check_exts(fileName, exts);
+        return check;
+    },
+    check_zip: function (fileName) {
         var ext = fileName.split('.');
         var extName = ext[ext.length - 1].toLowerCase();
         if (extName == 'zip') return 0;
@@ -42,11 +42,11 @@ var bt = {
         if (extName == 'gz' || extName == 'tgz') return 1;
         return -1;
     },
-    check_text: function(fileName) {
+    check_text: function (fileName) {
         var exts = ['rar', 'zip', 'tar.gz', 'gz', 'iso', 'xsl', 'doc', 'xdoc', 'jpeg', 'jpg', 'png', 'gif', 'bmp', 'tiff', 'exe', 'so', '7z', 'bz'];
         return bt.check_exts(fileName, exts) ? false : true;
     },
-    check_exts: function(fileName, exts) {
+    check_exts: function (fileName, exts) {
         var ext = fileName.split('.');
         if (ext.length < 2) return false;
         var extName = ext[ext.length - 1].toLowerCase();
@@ -55,7 +55,7 @@ var bt = {
         }
         return false;
     },
-    check_version: function(version, cloud_version) {
+    check_version: function (version, cloud_version) {
         var arr1 = version.split('.'); //
         var arr2 = cloud_version.split('.');
         var leng = arr1.length > arr2.length ? arr1.length : arr2.length;
@@ -74,23 +74,23 @@ var bt = {
         }
         return 1; //版本正常
     },
-    replace_all: function(str, old_data, new_data) {
+    replace_all: function (str, old_data, new_data) {
         var reg_str = "/(" + old_data + "+)/g"
         var reg = eval(reg_str);
         return str.replace(reg, new_data);
     },
-    get_file_ext: function(fileName) {
+    get_file_ext: function (fileName) {
         var text = fileName.split(".");
         var n = text.length - 1;
         text = text[n];
         return text;
     },
-    get_file_path: function(filename) {
+    get_file_path: function (filename) {
         var arr = filename.split('/');
         path = filename.replace('/' + arr[arr.length - 1], "");
         return path;
     },
-    get_date: function(a) {
+    get_date: function (a) {
         var dd = new Date();
         dd.setTime(dd.getTime() + (a == undefined || isNaN(parseInt(a)) ? 0 : parseInt(a)) * 86400000);
         var y = dd.getFullYear();
@@ -98,7 +98,7 @@ var bt = {
         var d = dd.getDate();
         return y + "-" + (m < 10 ? ('0' + m) : m) + "-" + (d < 10 ? ('0' + d) : d);
     },
-    get_form: function(select) {
+    get_form: function (select) {
         var sarr = $(select).serializeArray();
         var iarr = {}
         for (var i = 0; i < sarr.length; i++) {
@@ -106,69 +106,69 @@ var bt = {
         }
         return iarr;
     },
-    ltrim: function(str, r) {
+    ltrim: function (str, r) {
         var reg_str = "/(^\\" + r + "+)/g"
         var reg = eval(reg_str);
         str = str.replace(reg, "");
         return str;
     },
-    rtrim: function(str, r) {
+    rtrim: function (str, r) {
         var reg_str = "/(\\" + r + "+$)/g"
         var reg = eval(reg_str);
         str = str.replace(reg, "");
         return str;
     },
-    strim: function(str) {
+    strim: function (str) {
         var reg_str = "/ /g"
         var reg = eval(reg_str);
         str = str.replace(reg, "");
         return str;
     },
-    contains: function(str, substr) {
+    contains: function (str, substr) {
         if (str) {
             return str.indexOf(substr) >= 0;
         }
         return false;
     },
-    format_size: function(bytes, is_unit, fixed, end_unit) //字节转换，到指定单位结束 is_unit：是否显示单位  fixed：小数点位置 end_unit：结束单位
-        {
-            if (bytes == undefined) return 0;
+    format_size: function (bytes, is_unit, fixed, end_unit) //字节转换，到指定单位结束 is_unit：是否显示单位  fixed：小数点位置 end_unit：结束单位
+    {
+        if (bytes == undefined) return 0;
 
-            if (is_unit == undefined) is_unit = true;
-            if (fixed == undefined) fixed = 2;
-            if (end_unit == undefined) end_unit = '';
+        if (is_unit == undefined) is_unit = true;
+        if (fixed == undefined) fixed = 2;
+        if (end_unit == undefined) end_unit = '';
 
-            if (typeof bytes == 'string') bytes = parseInt(bytes);
-            var unit = [' B', ' KB', ' MB', ' GB', 'TB'];
-            var c = 1024;
-            for (var i = 0; i < unit.length; i++) {
-                var cUnit = unit[i];
-                if (end_unit) {
-                    if (cUnit.trim() == end_unit.trim()) {
-                        var val = i == 0 ? bytes : fixed == 0 ? bytes : bytes.toFixed(fixed)
-                        if (is_unit) {
-                            return val + cUnit;
-                        } else {
-                            val = parseFloat(val);
-                            return val;
-                        }
-                    }
-                } else {
-                    if (bytes < c) {
-                        var val = i == 0 ? bytes : fixed == 0 ? bytes : bytes.toFixed(fixed)
-                        if (is_unit) {
-                            return val + cUnit;
-                        } else {
-                            val = parseFloat(val);
-                            return val;
-                        }
+        if (typeof bytes == 'string') bytes = parseInt(bytes);
+        var unit = [' B', ' KB', ' MB', ' GB', 'TB'];
+        var c = 1024;
+        for (var i = 0; i < unit.length; i++) {
+            var cUnit = unit[i];
+            if (end_unit) {
+                if (cUnit.trim() == end_unit.trim()) {
+                    var val = i == 0 ? bytes : fixed == 0 ? bytes : bytes.toFixed(fixed)
+                    if (is_unit) {
+                        return val + cUnit;
+                    } else {
+                        val = parseFloat(val);
+                        return val;
                     }
                 }
-
-                bytes /= c;
+            } else {
+                if (bytes < c) {
+                    var val = i == 0 ? bytes : fixed == 0 ? bytes : bytes.toFixed(fixed)
+                    if (is_unit) {
+                        return val + cUnit;
+                    } else {
+                        val = parseFloat(val);
+                        return val;
+                    }
+                }
             }
-        },
-    format_data: function(tm, format) {
+
+            bytes /= c;
+        }
+    },
+    format_data: function (tm, format) {
         if (format == undefined) format = "yyyy/MM/dd hh:mm:ss";
         tm = tm.toString();
         if (tm.length > 10) {
@@ -193,12 +193,12 @@ var bt = {
 
         return format;
     },
-    format_path: function(path) {
+    format_path: function (path) {
         var reg = /(\\)/g;
         path = path.replace(reg, '/');
         return path;
     },
-    get_random: function(len) {
+    get_random: function (len) {
         len = len || 32;
         var $chars = 'AaBbCcDdEeFfGHhiJjKkLMmNnPpRSrTsWtXwYxZyz2345678'; // 默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1  
         var maxPos = $chars.length;
@@ -208,7 +208,7 @@ var bt = {
         }
         return pwd;
     },
-    refresh_pwd: function(length, obj) {
+    refresh_pwd: function (length, obj) {
         if (obj == undefined) obj = 'MyPassword';
         var _input = $("#" + obj);
         if (_input.length > 0) {
@@ -217,28 +217,27 @@ var bt = {
             $("." + obj).val(bt.get_random(length))
         }
     },
-    get_random_num: function(min, max) //生成随机数
-        {
-            var range = max - min;
-            var rand = Math.random();
-            var num = min + Math.round(rand * range); //四舍五入
-            return num;
-        },
-	set_cookie : function(key,val,time)
-	{
-		if(time != undefined){
-			var exp = new Date();
-			exp.setTime(exp.getTime() + time);
-			time = exp.toGMTString();
-		}else{
-			var Days = 30;
-			var exp = new Date();
-			exp.setTime(exp.getTime() + Days*24*60*60*1000);
-			time = exp.toGMTString();
-		}
-		document.cookie = key + "="+ escape (val) + ";expires=" + time;
-	},
-    get_cookie: function(key) {
+    get_random_num: function (min, max) //生成随机数
+    {
+        var range = max - min;
+        var rand = Math.random();
+        var num = min + Math.round(rand * range); //四舍五入
+        return num;
+    },
+    set_cookie: function (key, val, time) {
+        if (time != undefined) {
+            var exp = new Date();
+            exp.setTime(exp.getTime() + time);
+            time = exp.toGMTString();
+        } else {
+            var Days = 30;
+            var exp = new Date();
+            exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
+            time = exp.toGMTString();
+        }
+        document.cookie = key + "=" + escape(val) + ";expires=" + time;
+    },
+    get_cookie: function (key) {
         var arr, reg = new RegExp("(^| )" + key + "=([^;]*)(;|$)");
         if (arr = document.cookie.match(reg)) {
             var val = unescape(arr[2]);
@@ -247,7 +246,7 @@ var bt = {
             return null;
         }
     },
-    select_path: function(id) {
+    select_path: function (id) {
         _this = this;
         _this.set_cookie("SetName", "");
 
@@ -257,19 +256,19 @@ var bt = {
             title: lan.bt.dir,
             closeBtn: 2,
             shift: 5,
-            content: "<div class='changepath'><div class='path-top'><button type='button' id='btn_back' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-share-alt'></span> " + lan.public.return+"</button><div class='place' id='PathPlace'>" + lan.bt.path + "：<span></span></div></div><div class='path-con'><div class='path-con-left'><dl><dt id='changecomlist' >" + lan.bt.comp + "</dt></dl></div><div class='path-con-right'><ul class='default' id='computerDefautl'></ul><div class='file-list divtable'><table class='table table-hover' style='border:0 none'><thead><tr class='file-list-head'><th width='40%'>" + lan.bt.filename + "</th><th width='20%'>" + lan.bt.etime + "</th><th width='10%'>" + lan.bt.access + "</th><th width='10%'>" + lan.bt.own + "</th><th width='10%'></th></tr></thead><tbody id='tbody' class='list-list'></tbody></table></div></div></div></div><div class='getfile-btn' style='margin-top:0'><button type='button' class='btn btn-default btn-sm pull-left' onclick='CreateFolder()'>" + lan.bt.adddir + "</button><button type='button' class='btn btn-danger btn-sm mr5' onclick=\"layer.close(getCookie('ChangePath'))\">" + lan.public.close + "</button> <button type='button' id='bt_select' class='btn btn-success btn-sm' >" + lan.bt.path_ok + "</button></div>"
+            content: "<div class='changepath'><div class='path-top'><button type='button' id='btn_back' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-share-alt'></span> " + lan.public.return + "</button><div class='place' id='PathPlace'>" + lan.bt.path + "：<span></span></div></div><div class='path-con'><div class='path-con-left'><dl><dt id='changecomlist' >" + lan.bt.comp + "</dt></dl></div><div class='path-con-right'><ul class='default' id='computerDefautl'></ul><div class='file-list divtable'><table class='table table-hover' style='border:0 none'><thead><tr class='file-list-head'><th width='40%'>" + lan.bt.filename + "</th><th width='20%'>" + lan.bt.etime + "</th><th width='10%'>" + lan.bt.access + "</th><th width='10%'>" + lan.bt.own + "</th><th width='10%'></th></tr></thead><tbody id='tbody' class='list-list'></tbody></table></div></div></div></div><div class='getfile-btn' style='margin-top:0'><button type='button' class='btn btn-default btn-sm pull-left' onclick='CreateFolder()'>" + lan.bt.adddir + "</button><button type='button' class='btn btn-danger btn-sm mr5' onclick=\"layer.close(getCookie('ChangePath'))\">" + lan.public.close + "</button> <button type='button' id='bt_select' class='btn btn-success btn-sm' >" + lan.bt.path_ok + "</button></div>"
         });
         _this.set_cookie('ChangePath', loadT.form);
-        setTimeout(function() {
-            $('#btn_back').click(function() {
-                    var path = $("#PathPlace").find("span").text();
-                    path = bt.rtrim(bt.format_path(path), '/');
-                    var back_path = bt.get_file_path(path);
+        setTimeout(function () {
+            $('#btn_back').click(function () {
+                var path = $("#PathPlace").find("span").text();
+                path = bt.rtrim(bt.format_path(path), '/');
+                var back_path = bt.get_file_path(path);
 
-                    get_file_list(back_path);
-                })
-                //选择
-            $('#bt_select').click(function() {
+                get_file_list(back_path);
+            })
+            //选择
+            $('#bt_select').click(function () {
                 var path = bt.format_path($("#PathPlace").find("span").text());
                 path = bt.rtrim(path, '/');
                 $("#" + id).val(path);
@@ -280,7 +279,7 @@ var bt = {
         get_file_list($("#" + id).val())
 
         function get_file_list(path) {
-            bt.send('GetDir', 'files/GetDir', { path: path, disk: true }, function(rdata) {
+            bt.send('GetDir', 'files/GetDir', { path: path, disk: true }, function (rdata) {
                 var d = '',
                     a = '';
                 if (rdata.DISK != undefined) {
@@ -327,7 +326,7 @@ var bt = {
                 }
                 $("#PathPlace").find("span").html(rdata.PATH);
 
-                $('.bt_open_dir').click(function() {
+                $('.bt_open_dir').click(function () {
                     get_file_list($(this).attr('path'));
                 })
             })
@@ -360,7 +359,7 @@ var bt = {
             }
         }
     },
-    show_confirm: function(title, msg, fun, error) {
+    show_confirm: function (title, msg, fun, error) {
         if (error == undefined) {
             error = ""
         }
@@ -378,15 +377,15 @@ var bt = {
             shadeClose: true,
             content: "<div class='bt-form webDelete pd20 pb70'><p>" + msg + "</p>" + error + "<div class='vcode'>" + lan.bt.cal_msg + "<span class='text'>" + sumtext + "</span>=<input type='number' id='vcodeResult' value=''></div><div class='bt-form-submit-btn'><button type='button' class='btn btn-danger btn-sm bt-cancel'>" + lan.public.cancel + "</button> <button type='button' id='toSubmit' class='btn btn-success btn-sm' >" + lan.public.ok + "</button></div></div>"
         });
-        $("#vcodeResult").focus().keyup(function(a) {
+        $("#vcodeResult").focus().keyup(function (a) {
             if (a.keyCode == 13) {
                 $("#toSubmit").click()
             }
         });
-        $(".bt-cancel").click(function() {
+        $(".bt-cancel").click(function () {
             layer.close(mess);
         });
-        $("#toSubmit").click(function() {
+        $("#toSubmit").click(function () {
             var a = $("#vcodeResult").val().replace(/ /g, "");
             if (a == undefined || a == "") {
                 layer.msg(lan.bt.cal_err);
@@ -400,17 +399,17 @@ var bt = {
             fun();
         })
     },
-    to_login: function() {
-        layer.confirm(lan.public_backup.login_expire, { title: lan.public_backup.session_expire, icon: 2, closeBtn: 1, shift: 5 }, function() {
+    to_login: function () {
+        layer.confirm(lan.public_backup.login_expire, { title: lan.public_backup.session_expire, icon: 2, closeBtn: 1, shift: 5 }, function () {
             location.reload();
         });
     },
-    do_login: function() {
-        bt.confirm({ msg: lan.bt.loginout }, function() {
+    do_login: function () {
+        bt.confirm({ msg: lan.bt.loginout }, function () {
             window.location.href = "/login?dologin=True"
         })
     },
-    send: function(response, module, data, callback, sType) {
+    send: function (response, module, data, callback, sType) {
         if (sType == undefined) sType = 1;
 
         module = module.replace('panel_data', 'data');
@@ -421,7 +420,7 @@ var bt = {
         modelTmp = module.split('/')
         if (modelTmp.length < 2) alert(lan.get('lack_param', ['s_module', 'action']));
         if (bt.os == 'Linux' && sType === 0) {
-            socket.on(response, function(rdata) {
+            socket.on(response, function (rdata) {
                 socket.removeAllListeners(response);
                 var rRet = rdata.data;
                 if (rRet.status === -1) {
@@ -440,10 +439,10 @@ var bt = {
         } else {
             data = bt.win_format_param(data);
             var url = '/' + modelTmp[0] + '?action=' + modelTmp[1];
-            $.post(url, data, function(rdata) {
+            $.post(url, data, function (rdata) {
 
                 //会话失效时自动跳转到登录页面
-                if (typeof(rdata) == 'string') {
+                if (typeof (rdata) == 'string') {
                     if ((rdata.indexOf('/static/favicon.ico') != -1 && rdata.indexOf('/static/img/qrCode.png') != -1) || rdata.indexOf('<!DOCTYPE html>') === 0) {
                         window.location.href = "/login"
                         return
@@ -451,13 +450,13 @@ var bt = {
                 }
 
                 if (callback) callback(rdata);
-            }).error(function(e, f) {
+            }).error(function (e, f) {
                 // console.log(e,f)
                 if (callback) callback('error');
             });
         }
     },
-    linux_format_param: function(param) {
+    linux_format_param: function (param) {
         if (typeof param == 'string') {
             var data = {};
             arr = param.split('&');
@@ -470,7 +469,7 @@ var bt = {
         }
         return param;
     },
-    win_format_param: function(param) {
+    win_format_param: function (param) {
         if (typeof data == 'object') {
             var data = '';
             for (var key in param) {
@@ -481,7 +480,7 @@ var bt = {
         }
         return param;
     },
-    msg: function(config) {
+    msg: function (config) {
         var btns = new Array();
         var btnObj = {
             title: config.title ? config.title : false,
@@ -510,7 +509,7 @@ var bt = {
 
         layer.msg(msg, btnObj);
     },
-    confirm: function(config, callback, callback1) {
+    confirm: function (config, callback, callback1) {
         var btnObj = {
             title: config.title ? config.title : false,
             time: config.time ? config.time : 0,
@@ -519,41 +518,41 @@ var bt = {
             scrollbar: true,
             shade: 0.3,
             icon: 3,
-            cancel: (config.cancel ? config.cancel : function() {})
+            cancel: (config.cancel ? config.cancel : function () { })
         };
-        layer.confirm(config.msg, btnObj, function(index) {
+        layer.confirm(config.msg, btnObj, function (index) {
             if (callback) callback(index);
-        }, function(index) {
+        }, function (index) {
             if (callback1) callback1(index);
         });
     },
-    load: function(msg) {
+    load: function (msg) {
         if (!msg) msg = lan.public.the;
         var loadT = layer.msg(msg, { icon: 16, time: 0, shade: [0.3, '#000'] });
         var load = {
             form: loadT,
-            close: function() {
+            close: function () {
                 layer.close(load.form);
             }
         }
         return load;
     },
-    open: function(config) {
+    open: function (config) {
         config.closeBtn = 2;
         var loadT = layer.open(config);
         var load = {
             form: loadT,
-            close: function() {
+            close: function () {
                 layer.close(load.form);
             }
         }
         return load;
     },
-    closeAll: function() {
+    closeAll: function () {
         layer.closeAll();
     },
-    check_select: function() {
-        setTimeout(function() {
+    check_select: function () {
+        setTimeout(function () {
             var num = $('input[type="checkbox"].check:checked').length;
             if (num == 1) {
                 $('button[batch="true"]').hide();
@@ -567,7 +566,7 @@ var bt = {
             }
         }, 5)
     },
-    render_help: function(arr) {
+    render_help: function (arr) {
         var html = '<ul class="help-info-text c7">';
         for (var i = 0; i < arr.length; i++) {
             html += '<li>' + arr[i] + '</li>';
@@ -575,7 +574,7 @@ var bt = {
         html += '</ul>';
         return html;
     },
-    render_ps: function(item) {
+    render_ps: function (item) {
         var html = '<p class=\'p1\'>' + item.title + '</p>';
         for (var i = 0; i < item.list.length; i++) {
             html += '<p><span>' + item.list[i].title + '：</span><strong>' + item.list[i].val + '</strong></p>';
@@ -583,7 +582,7 @@ var bt = {
         html += '<p style="margin-bottom: 19px; margin-top: 11px; color: #666"></p>';
         return html;
     },
-    render_table: function(obj, arr, append) { //渲染表单表格
+    render_table: function (obj, arr, append) { //渲染表单表格
         var html = '';
         for (var key in arr) {
             html += '<tr><th>' + key + '</th>'
@@ -603,21 +602,21 @@ var bt = {
         }
     },
 
-    fixed_table: function(name) {
+    fixed_table: function (name) {
 
-        $('#' + name).parent().bind('scroll', function() {
+        $('#' + name).parent().bind('scroll', function () {
             var scrollTop = this.scrollTop;
             $(this).find("thead").css({ "transform": "translateY(" + scrollTop + "px)", "position": "relative", "z-index": "1" });
         });
     },
-    render_tab: function(obj, arr) {
+    render_tab: function (obj, arr) {
         var _obj = $('#' + obj).addClass("tab-nav");
         for (var i = 0; i < arr.length; i++) {
             var item = arr[i];
             var _tab = $('<span ' + (item.on ? 'class="on"' : '') + '>' + item.title + '</span>')
             if (item.callback) {
                 _tab.data('callback', item.callback);
-                _tab.click(function() {
+                _tab.click(function () {
                     $('#' + obj).find('span').removeClass('on');
                     $(this).addClass('on');
                     var _contents = $('.tab-con');
@@ -628,7 +627,7 @@ var bt = {
             _obj.append(_tab);
         }
     },
-    render_form_line: function(item, bs, form) {
+    render_form_line: function (item, bs, form) {
         var clicks = [],
             _html = '',
             _hide = '',
@@ -653,11 +652,11 @@ var bt = {
                 if (_obj.name) _name = _obj.name;
                 if (_obj.placeholder) _placeholder = _obj.placeholder;
                 if (_obj.title) _html += '<span class=" mr5">' + _obj.title + "  ";
-                var _add_class = _obj.add_class ? (' '+_obj.add_class) : "";
+                var _add_class = _obj.add_class ? (' ' + _obj.add_class) : "";
                 switch (_obj.type) {
                     case 'select':
                         var _width = _obj.width ? _obj.width : '100px';
-                        _html += '<select ' + (_obj.disabled ? 'disabled' : '') + ' class="bt-input-text mr5 ' + _name + bs + _add_class +'" name="' + _name + '" style="width:' + _width + '">';
+                        _html += '<select ' + (_obj.disabled ? 'disabled' : '') + ' class="bt-input-text mr5 ' + _name + bs + _add_class + '" name="' + _name + '" style="width:' + _width + '">';
                         for (var j = 0; j < _obj.items.length; j++) {
                             _html += '<option ' + (_obj.value == _obj.items[j].value ? 'selected' : '') + ' value="' + _obj.items[j].value + '">' + _obj.items[j].title + '</option>';
                         }
@@ -666,12 +665,12 @@ var bt = {
                     case 'textarea':
                         var _width = _obj.width ? _obj.width : '330px';
                         var _height = _obj.height ? _obj.height : '100px';
-                        _html += '<textarea class="bt-input-text mr20 ' + _name + bs + _add_class +'" name="' + _name + '" style="width:' + _width + ';height:' + _height + ';line-height:22px">' + (_obj.value ? _obj.value : '') + '</textarea>';
+                        _html += '<textarea class="bt-input-text mr20 ' + _name + bs + _add_class + '" name="' + _name + '" style="width:' + _width + ';height:' + _height + ';line-height:22px">' + (_obj.value ? _obj.value : '') + '</textarea>';
                         if (_placeholder) _html += '<div class="placeholder c9" style="top: 15px; left: 15px; display: block;">' + _placeholder + '</div>';
                         break;
                     case 'button':
                         var _width = _obj.width ? _obj.width : '330px';
-                        _html += '<button name=\'' + _name + '\' class="btn btn-success btn-sm mr5 ml5 ' + _name + bs + _add_class +'">' + _obj.text + '</button>';
+                        _html += '<button name=\'' + _name + '\' class="btn btn-success btn-sm mr5 ml5 ' + _name + bs + _add_class + '">' + _obj.text + '</button>';
                         break;
                     case 'radio':
                         var _v = _obj.value === true ? 'checked' : ''
@@ -683,7 +682,7 @@ var bt = {
                         break;
                     case 'number':
                         var _width = _obj.width ? _obj.width : '330px';
-                        _html += "<input name='" + _name + "' " + (_obj.disabled ? 'disabled' : '') + " class='bt-input-text mr5 " + _name + bs + _add_class +"' " + (_placeholder ? ' placeholder="' + _placeholder + '"' : "") + " type='number' style='width:" + _width + "' value='" + (_obj.value ? _obj.value : '0') + "' />";
+                        _html += "<input name='" + _name + "' " + (_obj.disabled ? 'disabled' : '') + " class='bt-input-text mr5 " + _name + bs + _add_class + "' " + (_placeholder ? ' placeholder="' + _placeholder + '"' : "") + " type='number' style='width:" + _width + "' value='" + (_obj.value ? _obj.value : '0') + "' />";
                         _html += _obj.unit ? _obj.unit : '';
                         break;
                     case 'password':
@@ -691,21 +690,21 @@ var bt = {
                         _html += "<input name='" + _name + "' " + (_obj.disabled ? 'disabled' : '') + " class='bt-input-text mr5 " + _name + bs + "' " + (_placeholder ? ' placeholder="' + _placeholder + '"' : "") + " type='password' style='width:" + _width + "' value='" + (_obj.value ? _obj.value : '') + "' />";
                         break;
                     case 'div':
-                    	var _width = _obj.width ? _obj.width : '330px';
+                        var _width = _obj.width ? _obj.width : '330px';
                         var _height = _obj.height ? _obj.height : '100px';
-                        _html += '<div class="bt-input-text ace_config_editor_scroll mr20 ' + _name + bs + _add_class +'" name="' + _name + '" style="width:' + _width + ';height:' + _height + ';line-height:22px">' + (_obj.value ? _obj.value : '') + '</div>';
+                        _html += '<div class="bt-input-text ace_config_editor_scroll mr20 ' + _name + bs + _add_class + '" name="' + _name + '" style="width:' + _width + ';height:' + _height + ';line-height:22px">' + (_obj.value ? _obj.value : '') + '</div>';
                         if (_placeholder) _html += '<div class="placeholder c9" style="top: 15px; left: 15px; display: block;">' + _placeholder + '</div>';
                         break;
                     case 'switch':
                         _html += '<div style="display: inline-block;vertical-align: middle;">\
-                            <input type="checkbox" id="' + _name + '" ' + (_obj.value==true?'checked':'') + ' class="btswitch btswitch-ios">\
+                            <input type="checkbox" id="' + _name + '" ' + (_obj.value == true ? 'checked' : '') + ' class="btswitch btswitch-ios">\
                             <label class="btswitch-btn" for="' + _name + '" style="margin-top:5px;"></label>\
                         </div>';
                         break;
                     default:
                         var _width = _obj.width ? _obj.width : '330px';
 
-                        _html += "<input name='" + _name + "' " + (_obj.disabled ? 'disabled' : '') + " class='bt-input-text mr5 " + _name + bs + _add_class +"' " + (_placeholder ? ' placeholder="' + _placeholder + '"' : "") + " type='text' style='width:" + _width + "' value='" + (_obj.value ? _obj.value : '') + "' />";
+                        _html += "<input name='" + _name + "' " + (_obj.disabled ? 'disabled' : '') + " class='bt-input-text mr5 " + _name + bs + _add_class + "' " + (_placeholder ? ' placeholder="' + _placeholder + '"' : "") + " type='text' style='width:" + _width + "' value='" + (_obj.value ? _obj.value : '') + "' />";
                         break;
                 }
                 if (_obj.title) _html += '</span>';
@@ -715,7 +714,7 @@ var bt = {
                     if (_obj.event.callback) clicks.push({ bind: 'icon_' + _name + bs, callback: _obj.event.callback });
                 }
                 if (_obj.ps) _html += " <span class='c9 mt10'>" + _obj.ps + "</span>";
-                if (_obj.ps_help) _html += "<span class='bt-ico-ask "+_obj.name+"_help' tip='"+_obj.ps_help+"'>?</span>";
+                if (_obj.ps_help) _html += "<span class='bt-ico-ask " + _obj.name + "_help' tip='" + _obj.ps_help + "'>?</span>";
             }
             if (item.ps) _html += " <span class='c9 mt10'>" + item.ps + "</span>";
         } else {
@@ -764,7 +763,7 @@ var bt = {
         }
         return { html: _html, clicks: clicks, data: item };
     },
-    render_form: function(data, callback) {
+    render_form: function (data, callback) {
         if (data) {
             var bs = '_' + bt.get_random(6);
             var _form = $("<div data-id='form" + bs + "' class='bt-form bt-form pd20 pb70 " + (data.class ? data.class : '') + "'></div>");
@@ -798,13 +797,13 @@ var bt = {
                 content: _form.prop("outerHTML"),
                 end: data.end ? data.end : false
             })
-            setTimeout(function() {
+            setTimeout(function () {
                 bt.render_clicks(clicks, loadOpen, callback);
             }, 100)
         }
         return bs;
     },
-    render_clicks: function(clicks, loadOpen, callback) {
+    render_clicks: function (clicks, loadOpen, callback) {
         for (var i = 0; i < clicks.length; i++) {
             var obj = clicks[i];
 
@@ -815,13 +814,13 @@ var bt = {
 
             switch (btn.prop("tagName")) {
                 case 'SPAN':
-                    btn.click(function() {
+                    btn.click(function () {
                         var _obj = $(this).data('item');
                         _obj.callback($(this).attr('data-id'));
                     })
                     break;
                 case 'SELECT':
-                    btn.change(function() {
+                    btn.change(function () {
                         var _obj = $(this).data('item');
                         _obj.callback($(this));
                     })
@@ -831,7 +830,7 @@ var bt = {
                 case 'BUTTON':
 
                     if (btn.prop("tagName") == 'BUTTON' || btn.attr("type") == 'checkbox') {
-                        btn.click(function() {
+                        btn.click(function () {
                             var _obj = $(this).data('item');
                             var load = $(this).data('load');
                             var _callback = $(this).data('callback');
@@ -840,7 +839,7 @@ var bt = {
                             if (_obj.callback) {
 
                                 var data = {};
-                                parent.find('*').each(function(index, _this) {
+                                parent.find('*').each(function (index, _this) {
                                     var _name = $(_this).attr('name');
 
                                     if (_name) {
@@ -851,7 +850,7 @@ var bt = {
                                         }
                                     }
                                 })
-                                _obj.callback(data, load, function(rdata) {
+                                _obj.callback(data, load, function (rdata) {
                                     if (_callback) _callback(rdata);
                                 });
                             } else {
@@ -860,12 +859,12 @@ var bt = {
                         })
                     } else {
                         if (btn.attr("type") == 'radio') {
-                            btn.click(function() {
+                            btn.click(function () {
                                 var _obj = $(this).data('item');
                                 _obj.callback($(this))
                             })
                         } else {
-                            btn.on('input', function() {
+                            btn.on('input', function () {
                                 var _obj = $(this).data('item');
                                 _obj.callback($(this));
                             })
@@ -875,141 +874,141 @@ var bt = {
             }
         }
     },
-    render: function(obj) //columns 行
-        {
-            if (obj.columns) {
-                var checks = {};
-                $(obj.table).html('');
-                var thead = '<thead><tr>';
-                for (var h = 0; h < obj.columns.length; h++) {
-                    var item = obj.columns[h];
-                    if (item) {
-                        thead += '<th';
-                        if (item.width) thead += ' width="' + item.width + '" ';
-                        if (item.align || item.sort) {
-                            thead += ' style="';
-                            if (item.align) thead += 'text-align:' + item.align + ';';
-                            if (item.sort) thead += item.sort ? 'cursor: pointer;' : '';
-                            thead += '"';
-                        }
-                        if (item.type == 'checkbox') {
-                            thead += '><input  class="check"  onclick="bt.check_select();" type="checkbox">';
-                        } else {
-                            thead += '>' + item.title;
-                        }
-                        if (item.sort) {
-                            checks[item.field] = item.sort;
-                            thead += ' <span data-id="' + item.field + '" class="glyphicon glyphicon-triangle-top" style="margin-left:5px;color:#bbb"></span>';
-                        }
-                        if (item.help) thead += '<a href="' + item.help + '" class="bt-ico-ask" target="_blank" title="' + lan.public_backup.click_detail + '">?</a>';
-
-                        thead += '</th>';
+    render: function (obj) //columns 行
+    {
+        if (obj.columns) {
+            var checks = {};
+            $(obj.table).html('');
+            var thead = '<thead><tr>';
+            for (var h = 0; h < obj.columns.length; h++) {
+                var item = obj.columns[h];
+                if (item) {
+                    thead += '<th';
+                    if (item.width) thead += ' width="' + item.width + '" ';
+                    if (item.align || item.sort) {
+                        thead += ' style="';
+                        if (item.align) thead += 'text-align:' + item.align + ';';
+                        if (item.sort) thead += item.sort ? 'cursor: pointer;' : '';
+                        thead += '"';
                     }
+                    if (item.type == 'checkbox') {
+                        thead += '><input  class="check"  onclick="bt.check_select();" type="checkbox">';
+                    } else {
+                        thead += '>' + item.title;
+                    }
+                    if (item.sort) {
+                        checks[item.field] = item.sort;
+                        thead += ' <span data-id="' + item.field + '" class="glyphicon glyphicon-triangle-top" style="margin-left:5px;color:#bbb"></span>';
+                    }
+                    if (item.help) thead += '<a href="' + item.help + '" class="bt-ico-ask" target="_blank" title="' + lan.public_backup.click_detail + '">?</a>';
+
+                    thead += '</th>';
                 }
-                thead += '</tr></thead>';
-                var _tab = $(obj.table).append(thead);
-                if (obj.data.length > 0) {
-                    for (var i = 0; i < obj.data.length; i++) {
-                        var val = obj.data[i];
-                        var tr = $('<tr></tr>');
-                        for (var h = 0; h < obj.columns.length; h++) {
-                            var item = obj.columns[h];
-                            if (item) {
-                                var _val = val[item.field];
-                                if (typeof _val == 'string') _val = _val.replace(/\\/g, '');
-                                if (item.hasOwnProperty('templet')) _val = item.templet(val);
-                                if (item.type == 'checkbox') _val = '<input value=' + val[item.field] + '  class="check" onclick="bt.check_select();" type="checkbox">';
-                                var td = '<td ';
-                                if (item.align) {
-                                    td += 'style="';
-                                    if (item.align) td += 'text-align:' + item.align;
-                                    td += '"';
-                                }
-                                if (item.index) td += 'data-index="' + i + '" '
-                                td += '>';
-                                tr.append(td + _val + '</td>');
-                                tr.data('item', val);
-                                _tab.append(tr);
-                            }
-                        }
-                    }
-                } else {
-                    _tab.append("<tr><td colspan='" + obj.columns.length + "'>" + lan.bt.no_data + "</td></tr>");
-                }
-                $(obj.table).find('.check').click(function() {
-                    var checked = $(this).prop('checked');
-                    if ($(this).parent().prop('tagName') == 'TH') {
-                        $('.check').prop('checked', checked ? 'checked' : '');
-                    }
-                })
-                var asc = 'glyphicon-triangle-top';
-                var desc = 'glyphicon-triangle-bottom';
-
-                var orderby = bt.get_cookie('order');
-                if (orderby != undefined) {
-                    var arrys = orderby.split(' ')
-                    if (arrys.length == 2) {
-                        if (arrys[1] == 'asc') {
-                            $(obj.table).find('th span[data-id="' + arrys[0] + '"]').removeClass(desc).addClass(asc);
-                        } else {
-                            $(obj.table).find('th span[data-id="' + arrys[0] + '"]').removeClass(asc).addClass(desc);
-                        }
-                    }
-                }
-
-                $(obj.table).find('th').data('checks', checks).click(function() {
-                    var _th = $(this);
-                    var _checks = _th.data('checks');
-                    var _span = _th.find('span');
-                    if (_span.length > 0) {
-                        var or = _span.attr('data-id');
-                        if (_span.hasClass(asc)) {
-                            bt.set_cookie('order', or + ' desc');
-                            $(obj.table).find('th span[data-id="' + or + '"]').removeClass(asc).addClass(desc);
-                            _checks[or]();
-
-                        } else if (_span.hasClass(desc)) {
-                            bt.set_cookie('order', or + ' asc');
-                            $(obj.table).find('th span[data-id="' + arrys[0] + '"]').removeClass(desc).addClass(asc);
-                            _checks[or]();
-                        }
-                    }
-                })
             }
-            return _tab;
-        },
+            thead += '</tr></thead>';
+            var _tab = $(obj.table).append(thead);
+            if (obj.data.length > 0) {
+                for (var i = 0; i < obj.data.length; i++) {
+                    var val = obj.data[i];
+                    var tr = $('<tr></tr>');
+                    for (var h = 0; h < obj.columns.length; h++) {
+                        var item = obj.columns[h];
+                        if (item) {
+                            var _val = val[item.field];
+                            if (typeof _val == 'string') _val = _val.replace(/\\/g, '');
+                            if (item.hasOwnProperty('templet')) _val = item.templet(val);
+                            if (item.type == 'checkbox') _val = '<input value=' + val[item.field] + '  class="check" onclick="bt.check_select();" type="checkbox">';
+                            var td = '<td ';
+                            if (item.align) {
+                                td += 'style="';
+                                if (item.align) td += 'text-align:' + item.align;
+                                td += '"';
+                            }
+                            if (item.index) td += 'data-index="' + i + '" '
+                            td += '>';
+                            tr.append(td + _val + '</td>');
+                            tr.data('item', val);
+                            _tab.append(tr);
+                        }
+                    }
+                }
+            } else {
+                _tab.append("<tr><td colspan='" + obj.columns.length + "'>" + lan.bt.no_data + "</td></tr>");
+            }
+            $(obj.table).find('.check').click(function () {
+                var checked = $(this).prop('checked');
+                if ($(this).parent().prop('tagName') == 'TH') {
+                    $('.check').prop('checked', checked ? 'checked' : '');
+                }
+            })
+            var asc = 'glyphicon-triangle-top';
+            var desc = 'glyphicon-triangle-bottom';
+
+            var orderby = bt.get_cookie('order');
+            if (orderby != undefined) {
+                var arrys = orderby.split(' ')
+                if (arrys.length == 2) {
+                    if (arrys[1] == 'asc') {
+                        $(obj.table).find('th span[data-id="' + arrys[0] + '"]').removeClass(desc).addClass(asc);
+                    } else {
+                        $(obj.table).find('th span[data-id="' + arrys[0] + '"]').removeClass(asc).addClass(desc);
+                    }
+                }
+            }
+
+            $(obj.table).find('th').data('checks', checks).click(function () {
+                var _th = $(this);
+                var _checks = _th.data('checks');
+                var _span = _th.find('span');
+                if (_span.length > 0) {
+                    var or = _span.attr('data-id');
+                    if (_span.hasClass(asc)) {
+                        bt.set_cookie('order', or + ' desc');
+                        $(obj.table).find('th span[data-id="' + or + '"]').removeClass(asc).addClass(desc);
+                        _checks[or]();
+
+                    } else if (_span.hasClass(desc)) {
+                        bt.set_cookie('order', or + ' asc');
+                        $(obj.table).find('th span[data-id="' + arrys[0] + '"]').removeClass(desc).addClass(asc);
+                        _checks[or]();
+                    }
+                }
+            })
+        }
+        return _tab;
+    },
     // ACE编辑配置文件
-    aceEditor: function(obj) {
+    aceEditor: function (obj) {
         var aEditor = {
-                ACE: ace.edit(obj.el, {
-                    theme: "ace/theme/chrome", //主题
-                    mode: "ace/mode/" + (obj.mode || 'nginx'), // 语言类型
-                    wrap: true,
-                    showInvisibles: false,
-                    showPrintMargin: false,
-                    showFoldWidgets: false,
-                    useSoftTabs: true,
-                    tabSize: 2,
-                    showPrintMargin: false,
-                    readOnly: false
-                }),
-                path: obj.path,
-                content: '',
-                saveCallback: obj.saveCallback
-            },
+            ACE: ace.edit(obj.el, {
+                theme: "ace/theme/chrome", //主题
+                mode: "ace/mode/" + (obj.mode || 'nginx'), // 语言类型
+                wrap: true,
+                showInvisibles: false,
+                showPrintMargin: false,
+                showFoldWidgets: false,
+                useSoftTabs: true,
+                tabSize: 2,
+                showPrintMargin: false,
+                readOnly: false
+            }),
+            path: obj.path,
+            content: '',
+            saveCallback: obj.saveCallback
+        },
             _this = this;
         $('#' + obj.el).css('fontSize', '12px');
         aEditor.ACE.commands.addCommand({
             name: '保存文件',
             bindKey: { win: 'Ctrl-S', mac: 'Command-S' },
-            exec: function(editor) {
+            exec: function (editor) {
                 _this.saveEditor(aEditor, aEditor.saveCallback);
             },
             readOnly: false // 如果不需要使用只读模式，这里设置false
         });
         if (obj.path != undefined) {
             var loadT = layer.msg(lan.soft.get_config, { icon: 16, time: 0, shade: [0.3, '#000'] })
-            bt.send('GetFileBody', 'files/GetFileBody', { path: obj.path }, function(res) {
+            bt.send('GetFileBody', 'files/GetFileBody', { path: obj.path }, function (res) {
                 layer.close(loadT);
                 if (!res.status) {
                     bt.msg(res);
@@ -1027,10 +1026,10 @@ var bt = {
         return aEditor;
     },
     // 保存编辑器文件
-    saveEditor: function(ace) {
+    saveEditor: function (ace) {
         if (!ace.saveCallback) {
             var loadT = bt.load(lan.soft.the_save);
-            bt.send('SaveFileBody', 'files/SaveFileBody', { data: ace.ACE.getValue(), path: ace.path, encoding: 'utf-8' }, function(rdata) {
+            bt.send('SaveFileBody', 'files/SaveFileBody', { data: ace.ACE.getValue(), path: ace.path, encoding: 'utf-8' }, function (rdata) {
                 loadT.close();
                 bt.msg(rdata);
             });
@@ -1064,24 +1063,24 @@ var bt = {
 
 
 bt.pub = {
-    get_data: function(data, callback, hide) {
+    get_data: function (data, callback, hide) {
         if (!hide) var loading = bt.load(lan.public.the);
-        bt.send('getData', 'data/getData', data, function(rdata) {
+        bt.send('getData', 'data/getData', data, function (rdata) {
             if (loading) loading.close();
             if (callback) callback(rdata);
         })
     },
-    set_data_by_key: function(tab, key, obj) {
+    set_data_by_key: function (tab, key, obj) {
         var _span = $(obj);
         var _input = $("<input class='baktext' value='" + _span.text() + "' type='text' placeholder='" + lan.ftp.ps + "' />");
         _span.hide().after(_input);
         _input.focus();
-        _input.blur(function() {
+        _input.blur(function () {
             var item = $(this).parents('tr').data('item');
             var _txt = $(this);
             var data = { table: tab, id: item.id };
             data[key] = _txt.val()
-            bt.pub.set_data_ps(data, function(rdata) {
+            bt.pub.set_data_ps(data, function (rdata) {
                 if (rdata.status) {
                     _span.text(_txt.val());
                     _span.show();
@@ -1089,18 +1088,18 @@ bt.pub = {
                 }
             })
         })
-        _input.keyup(function() {
+        _input.keyup(function () {
             if (event.keyCode == 13) {
                 _input.trigger("blur");
             }
         })
     },
-    set_data_ps: function(data, callback) {
-        bt.send('setPs', 'data/setPs', data, function(rdata) {
+    set_data_ps: function (data, callback) {
+        bt.send('setPs', 'data/setPs', data, function (rdata) {
             if (callback) callback(rdata);
         })
     },
-    set_server_status: function(serverName, type) {
+    set_server_status: function (serverName, type) {
         if (bt.contains(serverName, 'php-')) {
             serverName = "php-fpm-" + serverName.replace('php-', '').replace('.', '');
         }
@@ -1121,15 +1120,15 @@ bt.pub = {
                 typeName = lan.public_backup.reload;
                 break;
         }
-        bt.confirm({ msg: lan.get('service_confirm', [msg, serverName]), title: typeName + serverName + lan.public_backup.server }, function() {
+        bt.confirm({ msg: lan.get('service_confirm', [msg, serverName]), title: typeName + serverName + lan.public_backup.server }, function () {
             var load = bt.load(lan.get('service_the', [msg, serverName]))
-            bt.send('system', 'system/ServiceAdmin', data, function(rdata) {
+            bt.send('system', 'system/ServiceAdmin', data, function (rdata) {
                 load.close();
                 var f = rdata.status ? lan.get('service_ok', [serverName, msg]) : lan.get('service_err', [serverName, msg]);
                 bt.msg({ msg: f, icon: rdata.status })
 
                 if (type != "reload" && rdata.status) {
-                    setTimeout(function() {
+                    setTimeout(function () {
                         window.location.reload()
                     }, 1000)
                 }
@@ -1139,29 +1138,29 @@ bt.pub = {
             })
         })
     },
-    set_server_status_by: function(data, callback) {
-        bt.send('system', 'system/ServiceAdmin', data, function(rdata) {
+    set_server_status_by: function (data, callback) {
+        bt.send('system', 'system/ServiceAdmin', data, function (rdata) {
             if (callback) callback(rdata)
         })
     },
-    get_task_count: function() {
-        bt.send('GetTaskCount', 'ajax/GetTaskCount', {}, function(rdata) {
+    get_task_count: function () {
+        bt.send('GetTaskCount', 'ajax/GetTaskCount', {}, function (rdata) {
             $(".task").text(rdata)
         })
     },
-    check_install: function(callback) {
-        bt.send('CheckInstalled', 'ajax/CheckInstalled', {}, function(rdata) {
+    check_install: function (callback) {
+        bt.send('CheckInstalled', 'ajax/CheckInstalled', {}, function (rdata) {
             if (callback) callback(rdata);
         })
     },
-    get_user_info: function(callback) {
+    get_user_info: function (callback) {
         var loading = bt.load();
-        bt.send('GetUserInfo', 'ssl/GetUserInfo', {}, function(rdata) {
+        bt.send('GetUserInfo', 'ssl/GetUserInfo', {}, function (rdata) {
             loading.close();
             if (callback) callback(rdata);
         })
     },
-    show_hide_pass: function(obj) {
+    show_hide_pass: function (obj) {
         var a = "glyphicon-eye-open";
         var b = "glyphicon-eye-close";
 
@@ -1173,21 +1172,21 @@ bt.pub = {
             $(obj).prev().text('**********');
         }
     },
-    copy_pass: function(password) {
+    copy_pass: function (password) {
         var clipboard = new ClipboardJS('#bt_copys');
-        clipboard.on('success', function(e) {
+        clipboard.on('success', function (e) {
             bt.msg({ msg: lan.public_backup.cp_success, icon: 1 });
         });
 
-        clipboard.on('error', function(e) {
+        clipboard.on('error', function (e) {
             bt.msg({ msg: lan.public_backup.cp_fail, icon: 2 });
         });
         $("#bt_copys").attr('data-clipboard-text', password);
         $("#bt_copys").click();
     },
-    login_btname: function(username, password, callback) {
+    login_btname: function (username, password, callback) {
         var loadT = bt.load(lan.config.token_get);
-        bt.send('GetToken', 'ssl/GetToken', "username=" + username + "&password=" + password, function(rdata) {
+        bt.send('GetToken', 'ssl/GetToken', "username=" + username + "&password=" + password, function (rdata) {
             loadT.close();
             bt.msg(rdata);
             if (rdata.status) {
@@ -1195,21 +1194,21 @@ bt.pub = {
             }
         })
     },
-    bind_btname: function(callback) {
+    bind_btname: function (callback) {
         layer.open({
             type: 1,
             title: lan.public_backup.bind_bt_account,
             area: ['420px', '360px'],
             closeBtn: 2,
             shadeClose: false,
-            content: '<div class="libLogin pd20" ><div class="bt-form text-center"><div class="line mb15"><h3 class="c2 f16 text-center mtb20">' + lan.public_backup.bind_bt_account + '</h3></div><div class="line"><input class="bt-input-text" name="username2" type="text" placeholder="' + lan.public_backup.mobile_phone + '" id="p1"></div><div class="line"><input autocomplete="new-password" class="bt-input-text" type="password" name="password2"  placeholder="' + lan.public_backup.pass + '" id="p2"></div><div class="line"><input class="login-button" value="' + lan.public_backup.login + '" type="button" ></div><p class="text-right"><a class="btlink" href="https://www.bt.cn/register.html" target="_blank">' + lan.public_backup.no_account + '</a></p></div></div>'
+            content: '<div class="libLogin pd20" ><div class="bt-form text-center"><div class="line mb15"><h3 class="c2 f16 text-center mtb20">' + lan.public_backup.bind_bt_account + '</h3></div><div class="line"><input class="bt-input-text" name="username2" type="text" placeholder="' + lan.public_backup.mobile_phone + '" id="p1"></div><div class="line"><input autocomplete="new-password" class="bt-input-text" type="password" name="password2"  placeholder="' + lan.public_backup.pass + '" id="p2"></div><div class="line"><input class="login-button" value="' + lan.public_backup.login + '" type="button" ></div><p class="text-right"><a class="btlink" href="https://www.google.com" target="_blank">' + lan.public_backup.no_account + '</a></p></div></div>'
         });
-        setTimeout(function() {
-            $('.login-button').click(function() {
+        setTimeout(function () {
+            $('.login-button').click(function () {
                 p1 = $("#p1").val();
                 p2 = $("#p2").val();
                 var loadT = bt.load(lan.config.token_get);
-                bt.send('GetToken', 'ssl/GetToken', "username=" + p1 + "&password=" + p2, function(rdata) {
+                bt.send('GetToken', 'ssl/GetToken', "username=" + p1 + "&password=" + p2, function (rdata) {
                     loadT.close();
                     bt.msg(rdata);
                     if (rdata.status) {
@@ -1225,29 +1224,29 @@ bt.pub = {
             })
         }, 100)
     },
-    unbind_bt: function() {
+    unbind_bt: function () {
         var name = $("input[name='btusername']").val();
-        bt.confirm({ msg: lan.config.binding_un_msg, title: lan.config.binding_un_title }, function() {
-            bt.send('DelToken', 'ssl/DelToken', {}, function(rdata) {
+        bt.confirm({ msg: lan.config.binding_un_msg, title: lan.config.binding_un_title }, function () {
+            bt.send('DelToken', 'ssl/DelToken', {}, function (rdata) {
                 bt.msg(rdata);
                 $("input[name='btusername']").val('');
             })
         })
     },
-    get_menm: function(callback) {
+    get_menm: function (callback) {
         var loading = bt.load();
-        bt.send('GetMemInfo', 'system/GetMemInfo', {}, function(rdata) {
+        bt.send('GetMemInfo', 'system/GetMemInfo', {}, function (rdata) {
             loading.close();
             if (callback) callback(rdata);
         })
     },
-    on_edit_file: function(type, fileName) {
+    on_edit_file: function (type, fileName) {
         if (type != 0) {
             var l = $("#PathPlace input").val();
             var body = encodeURIComponent($("#textBody").val());
             var encoding = $("select[name=encoding]").val();
             var loadT = bt.load(lan.bt.save_file);
-            bt.send('SaveFileBody', 'files/SaveFileBody', "data=" + body + "&path=" + fileName + "&encoding=" + encoding, function(rdata) {
+            bt.send('SaveFileBody', 'files/SaveFileBody', "data=" + body + "&path=" + fileName + "&encoding=" + encoding, function (rdata) {
                 if (type == 1) loadT.close();
                 bt.msg(rdata);
             })
@@ -1294,7 +1293,7 @@ bt.pub = {
                 doctype = mixedMode;
                 break;
         }
-        bt.send('GetFileBody', 'files/GetFileBody', 'path=' + fileName, function(rdata) {
+        bt.send('GetFileBody', 'files/GetFileBody', 'path=' + fileName, function (rdata) {
             if (!rdata.status) {
                 bt.msg({ msg: rdata.msg, icon: 5 });
                 return;
@@ -1327,7 +1326,7 @@ bt.pub = {
                 extraKeys: {
                     "Ctrl-F": "findPersistent",
                     "Ctrl-H": "replaceAll",
-                    "Ctrl-S": function() {
+                    "Ctrl-S": function () {
                         $("#textBody").text(t.getValue());
                         bt.pub.on_edit_file(2, fileName)
                     }
@@ -1340,11 +1339,11 @@ bt.pub = {
             });
             t.focus();
             t.setSize("auto", q - 150);
-            $("#OnlineEditFileBtn").click(function() {
+            $("#OnlineEditFileBtn").click(function () {
                 $("#textBody").text(t.getValue());
                 bt.pub.on_edit_file(1, fileName);
             });
-            $(".btn-editor-close").click(function() {
+            $(".btn-editor-close").click(function () {
                 r.close();
             });
         })
@@ -1352,8 +1351,8 @@ bt.pub = {
 };
 
 bt.index = {
-    rec_install: function() {
-        bt.send('GetSoftList', 'ajax/GetSoftList', {}, function(l) {
+    rec_install: function () {
+        bt.send('GetSoftList', 'ajax/GetSoftList', {}, function (l) {
 
             var c = "";
             var g = "";
@@ -1398,21 +1397,21 @@ bt.index = {
 
             $('.layui-layer-content').css("heigth", "425px");
 
-            $(".fangshi input").click(function() {
+            $(".fangshi input").click(function () {
                 $(this).attr("checked", "checked").parent().siblings().find("input").removeAttr("checked")
             });
 
-            $(".sl-s-info").change(function() {
+            $(".sl-s-info").change(function () {
                 var p = $(this).find("option:selected").text();
                 var n = $(this).attr("id");
                 p = p.toLowerCase();
                 $(this).parents("li").find("input").attr("data-info", p)
             });
-            $("#apache_select_PHP").change(function() {
+            $("#apache_select_PHP").change(function () {
                 var n = $(this).val();
                 j(n, "apache_select_", "apache_")
             });
-            $("#select_PHP").change(function() {
+            $("#select_PHP").change(function () {
                 var n = $(this).val();
                 j(n, "select_", "data_")
             });
@@ -1438,12 +1437,12 @@ bt.index = {
                 $("#" + r + "phpMyAdmin option[value='" + n + "']").attr("selected", "selected").siblings().removeAttr("selected");
                 $("#" + q + "phpMyAdmin").attr("data-info", "phpmyadmin " + n)
             }
-            $("#select_MySQL,#apache_select_MySQL").change(function() {
+            $("#select_MySQL,#apache_select_MySQL").change(function () {
                 var n = $(this).val();
                 a(n)
             });
 
-            $("#apache_select_Apache").change(function() {
+            $("#apache_select_Apache").change(function () {
                 var apacheVersion = $(this).val();
                 if (apacheVersion == '2.2') {
                     layer.msg(lan.bt.install_apache22);
@@ -1452,7 +1451,7 @@ bt.index = {
                 }
             });
 
-            $("#apache_select_PHP").change(function() {
+            $("#apache_select_PHP").change(function () {
                 var apacheVersion = $("#apache_select_Apache").val();
                 var phpVersion = $(this).val();
                 if (apacheVersion == '2.2') {
@@ -1513,7 +1512,7 @@ bt.index = {
                 }
             }
             var de = null;
-            $(".onekey").click(function() {
+            $(".onekey").click(function () {
                 if (de) return;
                 var v = $(this).prev().find("input").eq(0).prop("checked") ? "1" : "0";
                 var r = $(this).parents(".rec-box-con").find(".rec-list li").length;
@@ -1547,7 +1546,7 @@ bt.index = {
                     if (p == 'php') p = 'php-' + x;
 
                     s = "sName=" + p + "&version=" + x + "&type=" + v + "&id=" + (t + 1);
-                    bt.send('install_plugin', 'plugin/install_plugin', s, function() {
+                    bt.send('install_plugin', 'plugin/install_plugin', s, function () {
                         q.splice(0, 1);
                         install_plugin(q);
                     });
@@ -1555,13 +1554,13 @@ bt.index = {
 
                 layer.close(loadT);
                 layer.close(k);
-                setTimeout(function() {
+                setTimeout(function () {
                     GetTaskCount()
                 }, 2000);
                 layer.msg(lan.bt.install_ok, {
                     icon: 1
                 });
-                setTimeout(function() {
+                setTimeout(function () {
                     task()
                 }, 1000)
             });
@@ -1576,12 +1575,12 @@ bt.weixin = {
     relHeight: 500,
     relWidth: 500,
     userLength: '',
-    get_user_info: function(callback) {
-        bt.send('get_user_info', 'panel_wxapp/get_user_info', {}, function(rdata) {
+    get_user_info: function (callback) {
+        bt.send('get_user_info', 'panel_wxapp/get_user_info', {}, function (rdata) {
             if (callback) callback(rdata);
         }, 1)
     },
-    init: function() {
+    init: function () {
         var _this = this;
         $('.layui-layer-page').css('display', 'none');
         $('.layui-layer-page').width(_this.relWidth);
@@ -1596,7 +1595,7 @@ bt.weixin = {
             'top': boxheight + 'px'
         });
         $('.boxConter,.layui-layer-page').css('display', 'block');
-        $('.layui-layer-close').click(function(event) {
+        $('.layui-layer-close').click(function (event) {
             window.clearInterval(_this.settiming);
         });
         this.get_user_details();
@@ -1604,11 +1603,11 @@ bt.weixin = {
         $('.personalDetails').show();
     },
     // 获取二维码
-    get_qrcode: function() {
+    get_qrcode: function () {
         var _this = this;
         var qrLoading = bt.load(lan.config.config_qrcode);
 
-        bt.send('blind_qrcode', 'panel_wxapp/blind_qrcode', {}, function(res) {
+        bt.send('blind_qrcode', 'panel_wxapp/blind_qrcode', {}, function (res) {
             qrLoading.close();
             if (res.status) {
                 $('#QRcode').empty();
@@ -1618,7 +1617,7 @@ bt.weixin = {
                     height: 200,
                     text: res.msg
                 });
-                _this.settiming = setInterval(function() {
+                _this.settiming = setInterval(function () {
                     _this.verify_binding();
                 }, 2000);
             } else {
@@ -1627,10 +1626,10 @@ bt.weixin = {
         })
     },
     // 获取用户信息
-    get_user_details: function(type) {
+    get_user_details: function (type) {
         var _this = this;
         var conter = '';
-        _this.get_user_info(function(res) {
+        _this.get_user_info(function (res) {
             clearInterval(_this.settiming);
             if (!res.status) {
                 res.time = 3000;
@@ -1666,31 +1665,31 @@ bt.weixin = {
         })
     },
     // 添加绑定视图
-    add_wx_view: function() {
+    add_wx_view: function () {
         $('.iconCode').show();
         $('.personalDetails').hide();
         this.get_qrcode();
     },
     // 取消当前绑定
-    cancel_bind: function(uid) {
+    cancel_bind: function (uid) {
         var _this = this;
         var bdinding = layer.confirm(lan.public_backup.unbind_account, {
             btn: [lan.public_backup.confirm, lan.public_backup.cancel],
             icon: 3,
             title: lan.public_backup.unbind
-        }, function() {
-            bt.send("blind_del", "panel_wxapp/blind_del", { uid: uid }, function(res) {
+        }, function () {
+            bt.send("blind_del", "panel_wxapp/blind_del", { uid: uid }, function (res) {
                 bt.msg(res);
                 _this.get_user_details();
             })
-        }, function() {
+        }, function () {
             layer.close(bdinding);
         });
     },
     // 监听是否绑定
-    verify_binding: function() {
+    verify_binding: function () {
         var _this = this;
-        bt.send('blind_result', 'panel_wxapp/blind_result', {}, function(res) {
+        bt.send('blind_result', 'panel_wxapp/blind_result', {}, function (res) {
             if (res) {
                 bt.msg({ status: true, msg: lan.public_backup.bind_success });
                 clearInterval(_this.settiming);
@@ -1698,7 +1697,7 @@ bt.weixin = {
             }
         })
     },
-    open_wxapp: function() {
+    open_wxapp: function () {
         var rhtml = '<div class="boxConter" style="display: none">\
 								<div class="iconCode" >\
 									<div class="box-conter">\
@@ -1731,47 +1730,47 @@ bt.weixin = {
 
 
 bt.ftp = {
-    get_list: function(page, search, callback) {
+    get_list: function (page, search, callback) {
         if (page == undefined) page = 1
         search = search == undefined ? '' : search;
         var order = bt.get_cookie('order') ? '&order=' + bt.get_cookie('order') : '';
 
         var data = 'tojs=ftp.get_list&table=ftps&limit=15&p=' + page + '&search=' + search + order;
-        bt.pub.get_data(data, function(rdata) {
+        bt.pub.get_data(data, function (rdata) {
             if (callback) callback(rdata);
         })
     },
-    add: function(callback) {
+    add: function (callback) {
         bt.data.ftp.add.list[1].items[0].value = bt.get_random(16);
-        var bs = bt.render_form(bt.data.ftp.add, function(rdata) {
+        var bs = bt.render_form(bt.data.ftp.add, function (rdata) {
             if (callback) callback(rdata);
         });
         $('.path' + bs).val($("#defaultPath").text());
     },
-    set_password: function(callback) {
-        var bs = bt.render_form(bt.data.ftp.set_password, function(rdata) {
+    set_password: function (callback) {
+        var bs = bt.render_form(bt.data.ftp.set_password, function (rdata) {
             if (callback) callback(rdata);
         });
         return bs;
     },
-    del: function(id, username, callback) {
+    del: function (id, username, callback) {
         var loading = bt.load(lan.get('del_all_task_the', [username]));
-        bt.send('DeleteUser', 'ftp/DeleteUser', { id: id, username: username }, function(rdata) {
+        bt.send('DeleteUser', 'ftp/DeleteUser', { id: id, username: username }, function (rdata) {
             loading.close();
             if (callback) callback(rdata);
         })
     },
-    set_status: function(id, username, status, callback) {
+    set_status: function (id, username, status, callback) {
         var loadT = bt.load(lan.public.the);
         var data = 'id=' + id + '&username=' + username + '&status=' + status;
-        bt.send('SetStatus', 'ftp/SetStatus', data, function(rdata) {
+        bt.send('SetStatus', 'ftp/SetStatus', data, function (rdata) {
             loadT.close();
             if (callback) callback(rdata);
             bt.msg(rdata);
         })
     },
-    set_port: function(callback) {
-        var bs = bt.render_form(bt.data.ftp.set_port, function(rdata) {
+    set_port: function (callback) {
+        var bs = bt.render_form(bt.data.ftp.set_port, function (rdata) {
             if (callback) callback(rdata);
         });
         return bs;
@@ -1779,9 +1778,9 @@ bt.ftp = {
 }
 
 bt.recycle_bin = {
-    open_recycle_bin: function(type) {
+    open_recycle_bin: function (type) {
         if (type == undefined) type = 1;
-        bt.files.get_recycle_bin(type, function(rdata) {
+        bt.files.get_recycle_bin(type, function (rdata) {
             var data = [];
             switch (type) {
                 case 2:
@@ -1843,7 +1842,7 @@ bt.recycle_bin = {
                 });
             }
 
-            setTimeout(function() {
+            setTimeout(function () {
                 var menus = [
                     { title: lan.files.recycle_bin_type1, click: 'bt.recycle_bin.open_recycle_bin(1)' },
                     { title: lan.files.recycle_bin_type2, click: 'bt.recycle_bin.open_recycle_bin(2)' },
@@ -1866,14 +1865,14 @@ bt.recycle_bin = {
                         {
                             field: 'size',
                             title: lan.files.recycle_bin_th3,
-                            templet: function(item) {
+                            templet: function (item) {
                                 return bt.format_size(item.size)
                             }
                         },
                         {
                             field: 'time',
                             title: lan.files.recycle_bin_th4,
-                            templet: function(item) {
+                            templet: function (item) {
                                 return bt.format_data(item.time);
                             }
                         },
@@ -1881,7 +1880,7 @@ bt.recycle_bin = {
                             field: 'opt',
                             title: lan.files.recycle_bin_th5,
                             align: 'right',
-                            templet: function(item) {
+                            templet: function (item) {
                                 var opt = '<a class="btlink" href="javascript:;" onclick="bt.recycle_bin.re_recycle_bin(\'' + item.rname + '\',' + type + ')">' + lan.public_backup.recover + '</a> | ';
                                 opt += '<a class="btlink" href="javascript:;" onclick="bt.recycle_bin.del_recycle_bin(\'' + item.rname + '\',' + type + ')">' + lan.public_backup.permanent_delete + '</a>';
                                 return opt;
@@ -1893,23 +1892,23 @@ bt.recycle_bin = {
             }, 100)
         })
     },
-    clear_recycle_bin: function() {
+    clear_recycle_bin: function () {
         var _this = this;
-        bt.files.clear_recycle_bin(function(rdata) {
+        bt.files.clear_recycle_bin(function (rdata) {
             _this.open_recycle_bin(1);
             bt.msg(rdata);
         })
     },
-    del_recycle_bin: function(path, type) {
+    del_recycle_bin: function (path, type) {
         var _this = this;
-        bt.files.del_recycle_bin(path, function(rdata) {
+        bt.files.del_recycle_bin(path, function (rdata) {
             if (rdata.status) _this.open_recycle_bin(type);
             bt.msg(rdata);
         })
     },
-    re_recycle_bin: function(path, type) {
+    re_recycle_bin: function (path, type) {
         var _this = this;
-        bt.files.re_recycle_bin(path, function(rdata) {
+        bt.files.re_recycle_bin(path, function (rdata) {
             if (rdata.status) _this.open_recycle_bin(type);
             bt.msg(rdata);
         })
@@ -1919,103 +1918,103 @@ bt.recycle_bin = {
 
 
 bt.files = {
-        get_path: function() {
-            path = path = bt.get_cookie('Path');
-            if (!path) {
-                bt.msg({ msg: lan.get('lack_param', ['response']) });
-                return;
-            }
-        },
-        get_files: function(Path, searchV, callback) {
-            var searchtype = Path;
-            if (isNaN(Path)) {
-                var p = '1';
-            } else {
-                var p = Path;
-                Path = bt.get_cookie('Path');
-            }
-            var search = '';
-            if (searchV.length > 1 && searchtype == "1") {
-                search = "&search=" + searchV;
-            }
-            var showRow = bt.get_cookie('showRow');
-            if (!showRow) showRow = '500';
-            var totalSize = 0;
-            var loadT = bt.load(lan.public.the);
-            bt.send('get_files', 'files/GetDir', 'tojs=GetFiles&p=' + p + '&showRow=' + showRow + search + '&path=' + Path, function(rdata) {
-                loadT.close();
-                //bt.set_cookie('Path',rdata.PATH);
-                if (callback) callback(rdata);
-            })
-        },
-        get_recycle_bin: function(type, callback) {
-            loading = bt.load(lan.public.the);
-            bt.send('Get_Recycle_bin', 'files/Get_Recycle_bin', {}, function(rdata) {
-                loading.close();
-                if (callback) callback(rdata);
-            })
-        },
-        re_recycle_bin: function(path, callback) {
-            bt.confirm({ msg: lan.files.recycle_bin_re_msg, title: lan.files.recycle_bin_re_title }, function() {
-                var loadT = bt.load(lan.files.recycle_bin_re_the);
-                bt.send('Re_Recycle_bin', 'files/Re_Recycle_bin', 'path=' + path, function(rdata) {
-                    loadT.close();
-                    bt.msg(rdata);
-                    if (callback) callback(rdata);
-                })
-            });
-        },
-        del_recycle_bin: function(path, callback) {
-            bt.confirm({ msg: lan.files.recycle_bin_del_msg, title: lan.files.recycle_bin_del_title }, function() {
-                var loadT = bt.load(lan.files.recycle_bin_del_the);
-                bt.send('Re_Recycle_bin', 'files/Del_Recycle_bin', 'path=' + path, function(rdata) {
-                    loadT.close();
-                    bt.msg(rdata);
-                    if (callback) callback(rdata);
-                })
-            });
-        },
-        clear_recycle_bin: function(callback) {
-            bt.confirm({ msg: lan.files.recycle_bin_close_msg, title: lan.files.recycle_bin_close }, function() {
-                var loadT = bt.load("<div class='myspeed'>" + lan.files.recycle_bin_close_the + "</div>");
-                bt.send('Re_Recycle_bin', 'files/Close_Recycle_bin', {}, function(rdata) {
-                    loadT.close();
-                    bt.msg(rdata);
-                    if (callback) callback(rdata);
-                })
-            });
-        },
-        set_recycle_bin: function(db) {
-            var loadT = bt.load(lan.public.the);
-            var data = {};
-            if (db) data = { db: db }
-            bt.send('Recycle_bin', 'files/Recycle_bin', data, function(rdata) {
+    get_path: function () {
+        path = path = bt.get_cookie('Path');
+        if (!path) {
+            bt.msg({ msg: lan.get('lack_param', ['response']) });
+            return;
+        }
+    },
+    get_files: function (Path, searchV, callback) {
+        var searchtype = Path;
+        if (isNaN(Path)) {
+            var p = '1';
+        } else {
+            var p = Path;
+            Path = bt.get_cookie('Path');
+        }
+        var search = '';
+        if (searchV.length > 1 && searchtype == "1") {
+            search = "&search=" + searchV;
+        }
+        var showRow = bt.get_cookie('showRow');
+        if (!showRow) showRow = '500';
+        var totalSize = 0;
+        var loadT = bt.load(lan.public.the);
+        bt.send('get_files', 'files/GetDir', 'tojs=GetFiles&p=' + p + '&showRow=' + showRow + search + '&path=' + Path, function (rdata) {
+            loadT.close();
+            //bt.set_cookie('Path',rdata.PATH);
+            if (callback) callback(rdata);
+        })
+    },
+    get_recycle_bin: function (type, callback) {
+        loading = bt.load(lan.public.the);
+        bt.send('Get_Recycle_bin', 'files/Get_Recycle_bin', {}, function (rdata) {
+            loading.close();
+            if (callback) callback(rdata);
+        })
+    },
+    re_recycle_bin: function (path, callback) {
+        bt.confirm({ msg: lan.files.recycle_bin_re_msg, title: lan.files.recycle_bin_re_title }, function () {
+            var loadT = bt.load(lan.files.recycle_bin_re_the);
+            bt.send('Re_Recycle_bin', 'files/Re_Recycle_bin', 'path=' + path, function (rdata) {
                 loadT.close();
                 bt.msg(rdata);
+                if (callback) callback(rdata);
             })
-        },
-        rename: function(fileName, type, callback) {
-            if (type == undefined) type = 0;
-            _this = this;
-            path = _this.get_path();
-            if (type) {
-                var newFileName = path + '/' + $("#newFileName").val();
-                var oldFileName = path + '/' + fileName;
-                var loading = bt.load(lan.public.the);
-                bt.send('MvFile', 'files/MvFile', 'sfile=' + oldFileName + '&dfile=' + newFileName, function(rdata) {
-                    loading.close();
-                    bt.msg(rdata);
-                    if (callback) callback(rdata);
-                });
-                return;
-            }
-            bt.open({
-                type: 1,
-                shift: 5,
-                closeBtn: 2,
-                area: '320px',
-                title: lan.files.file_menu_rename,
-                content: '<div class="bt-form pd20 pb70">\
+        });
+    },
+    del_recycle_bin: function (path, callback) {
+        bt.confirm({ msg: lan.files.recycle_bin_del_msg, title: lan.files.recycle_bin_del_title }, function () {
+            var loadT = bt.load(lan.files.recycle_bin_del_the);
+            bt.send('Re_Recycle_bin', 'files/Del_Recycle_bin', 'path=' + path, function (rdata) {
+                loadT.close();
+                bt.msg(rdata);
+                if (callback) callback(rdata);
+            })
+        });
+    },
+    clear_recycle_bin: function (callback) {
+        bt.confirm({ msg: lan.files.recycle_bin_close_msg, title: lan.files.recycle_bin_close }, function () {
+            var loadT = bt.load("<div class='myspeed'>" + lan.files.recycle_bin_close_the + "</div>");
+            bt.send('Re_Recycle_bin', 'files/Close_Recycle_bin', {}, function (rdata) {
+                loadT.close();
+                bt.msg(rdata);
+                if (callback) callback(rdata);
+            })
+        });
+    },
+    set_recycle_bin: function (db) {
+        var loadT = bt.load(lan.public.the);
+        var data = {};
+        if (db) data = { db: db }
+        bt.send('Recycle_bin', 'files/Recycle_bin', data, function (rdata) {
+            loadT.close();
+            bt.msg(rdata);
+        })
+    },
+    rename: function (fileName, type, callback) {
+        if (type == undefined) type = 0;
+        _this = this;
+        path = _this.get_path();
+        if (type) {
+            var newFileName = path + '/' + $("#newFileName").val();
+            var oldFileName = path + '/' + fileName;
+            var loading = bt.load(lan.public.the);
+            bt.send('MvFile', 'files/MvFile', 'sfile=' + oldFileName + '&dfile=' + newFileName, function (rdata) {
+                loading.close();
+                bt.msg(rdata);
+                if (callback) callback(rdata);
+            });
+            return;
+        }
+        bt.open({
+            type: 1,
+            shift: 5,
+            closeBtn: 2,
+            area: '320px',
+            title: lan.files.file_menu_rename,
+            content: '<div class="bt-form pd20 pb70">\
 						<div class="line">\
 						<input type="text" class="bt-input-text" name="Name" id="newFileName" value="' + fileName + '" placeholder="' + lan.files.file_name + '" style="width:100%" />\
 						</div>\
@@ -2024,253 +2023,253 @@ bt.files = {
 						<button type="button" id="ReNameBtn" class="btn btn-success btn-sm btn-title">' + lan.public.save + '</button>\
 						</div>\
 					</div>'
+        });
+        setTimeout(function () {
+            $("#ReNameBtn").click(function () {
+                _this.rename(fileName, 1, callback);
+            })
+            $("#newFileName").focus().keyup(function (e) {
+                if (e.keyCode == 13) $("#ReNameBtn").click();
             });
-            setTimeout(function() {
-                $("#ReNameBtn").click(function() {
-                    _this.rename(fileName, 1, callback);
-                })
-                $("#newFileName").focus().keyup(function(e) {
-                    if (e.keyCode == 13) $("#ReNameBtn").click();
-                });
-            }, 100)
+        }, 100)
 
-        },
-        get_file_body: function(path, callback) {
-            bt.send('GetFileBody', 'files/GetFileBody', 'path=' + path, function(rdata) {
-                if (callback) callback(rdata);
-            })
-        },
-        set_file_body: function(path, data, encoding, callback) {
-            var loading = bt.load(lan.site.saving_txt);
-            bt.send('SaveFileBody', 'files/SaveFileBody', { path: path, data: data, encoding: encoding }, function(rdata) {
-                loading.close();
-                if (callback) callback(rdata);
-            })
-        },
-        del_file: function(path, callback) {
-            bt.confirm({ msg: lan.get('recycle_bin_confirm', [fileName]), title: lan.files.del_file }, function() {
-                loading = bt.load(lan.public.the);
-                bt.send('del_file', 'files/DeleteFile', 'path=' + path, function(rdata) {
-                    loading.close();
-                    bt.msg(rdata);
-                    if (callback) callback(rdata);
-                })
-            })
-        },
-        del_dir: function(path, callback) {
-            bt.confirm({ msg: lan.get('recycle_bin_confirm_dir', [fileName]), title: lan.files.del_file }, function() {
-                loading = bt.load(lan.public.the);
-                bt.send('DeleteDir', 'files/DeleteDir', 'path=' + path, function(rdata) {
-                    loading.close();
-                    bt.msg(rdata);
-                    if (callback) callback(rdata);
-                })
-            })
-        },
-        cut_file: function(fileName, callback) //裁剪
-            {
-                bt.set_cookie('cutFileName', fileName);
-                bt.set_cookie('copyFileName', null);
-                bt.msg({ msg: lan.files.mv_ok, icon: 1, time: 1 })
-                if (callback) callback(rdata);
-            },
-        copy_file: function(fileName, callback) {
-            bt.set_cookie('cutFileName', null);
-            bt.set_cookie('copyFileName', fileName);
-            bt.msg({ msg: lan.files.copy_ok, icon: 1, time: 1 })
+    },
+    get_file_body: function (path, callback) {
+        bt.send('GetFileBody', 'files/GetFileBody', 'path=' + path, function (rdata) {
             if (callback) callback(rdata);
-        },
-        paste_file: function(fileName, callback) //粘贴
-            {
-                _this = this;
-                path = _this.get_path();
-                var copyName = bt.get_cookie('copyFileName');
-                var cutName = bt.get_cookie('cutFileName');
-                var filename = copyName;
-                if (cutName != 'null' && cutName != undefined) filename = cutName;
-                filename = filename.split('/').pop();
+        })
+    },
+    set_file_body: function (path, data, encoding, callback) {
+        var loading = bt.load(lan.site.saving_txt);
+        bt.send('SaveFileBody', 'files/SaveFileBody', { path: path, data: data, encoding: encoding }, function (rdata) {
+            loading.close();
+            if (callback) callback(rdata);
+        })
+    },
+    del_file: function (path, callback) {
+        bt.confirm({ msg: lan.get('recycle_bin_confirm', [fileName]), title: lan.files.del_file }, function () {
+            loading = bt.load(lan.public.the);
+            bt.send('del_file', 'files/DeleteFile', 'path=' + path, function (rdata) {
+                loading.close();
+                bt.msg(rdata);
+                if (callback) callback(rdata);
+            })
+        })
+    },
+    del_dir: function (path, callback) {
+        bt.confirm({ msg: lan.get('recycle_bin_confirm_dir', [fileName]), title: lan.files.del_file }, function () {
+            loading = bt.load(lan.public.the);
+            bt.send('DeleteDir', 'files/DeleteDir', 'path=' + path, function (rdata) {
+                loading.close();
+                bt.msg(rdata);
+                if (callback) callback(rdata);
+            })
+        })
+    },
+    cut_file: function (fileName, callback) //裁剪
+    {
+        bt.set_cookie('cutFileName', fileName);
+        bt.set_cookie('copyFileName', null);
+        bt.msg({ msg: lan.files.mv_ok, icon: 1, time: 1 })
+        if (callback) callback(rdata);
+    },
+    copy_file: function (fileName, callback) {
+        bt.set_cookie('cutFileName', null);
+        bt.set_cookie('copyFileName', fileName);
+        bt.msg({ msg: lan.files.copy_ok, icon: 1, time: 1 })
+        if (callback) callback(rdata);
+    },
+    paste_file: function (fileName, callback) //粘贴
+    {
+        _this = this;
+        path = _this.get_path();
+        var copyName = bt.get_cookie('copyFileName');
+        var cutName = bt.get_cookie('cutFileName');
+        var filename = copyName;
+        if (cutName != 'null' && cutName != undefined) filename = cutName;
+        filename = filename.split('/').pop();
 
-                bt.send('CheckExistsFiles', 'files/CheckExistsFiles', { dfile: path, filename: filename }, function(rdata) {
-                    if (rdata.length > 0) {
-                        var tbody = '';
-                        for (var i = 0; i < rdata.length; i++) {
-                            tbody += '<tr><td>' + rdata[i].filename + '</td><td>' + bt.format_size(rdata[i].size) + '</td><td>' + bt.format_data(rdata[i].mtime) + '</td></tr>';
-                        }
-                        var mbody = '<div class="divtable"><table class="table table-hover" width="100%" border="0" cellpadding="0" cellspacing="0"><thead><th>' + lan.bt.filename + '</th><th>' + lan.bt.file_size + '</th><th>' + lan.bt.etime + '</th></thead>\
+        bt.send('CheckExistsFiles', 'files/CheckExistsFiles', { dfile: path, filename: filename }, function (rdata) {
+            if (rdata.length > 0) {
+                var tbody = '';
+                for (var i = 0; i < rdata.length; i++) {
+                    tbody += '<tr><td>' + rdata[i].filename + '</td><td>' + bt.format_size(rdata[i].size) + '</td><td>' + bt.format_data(rdata[i].mtime) + '</td></tr>';
+                }
+                var mbody = '<div class="divtable"><table class="table table-hover" width="100%" border="0" cellpadding="0" cellspacing="0"><thead><th>' + lan.bt.filename + '</th><th>' + lan.bt.file_size + '</th><th>' + lan.bt.etime + '</th></thead>\
 							<tbody>' + tbody + '</tbody>\
 							</table></div>';
-                        bt.show_confirm(bt.files.file_conver_msg, mbody, function() {
-                            _this.paste_to(path, copyName, cutName, fileName, callback);
-                        })
-                    } else {
-                        _this.paste_to(path, copyName, cutName, fileName, callback);
-                    }
+                bt.show_confirm(bt.files.file_conver_msg, mbody, function () {
+                    _this.paste_to(path, copyName, cutName, fileName, callback);
                 })
-            },
-        paste_to: function(path, copyName, cutName, fileName, callback) {
-            if (copyName != 'null' && copyName != undefined) {
-                var loading = bt.msg({ msg: lan.files.copy_the, icon: 16 });
-                bt.send('CopyFile', 'files/CopyFile', 'sfile=' + copyName + '&dfile=' + path + '/' + fileName, function(rdata) {
-                    loading.close();
-                    bt.msg(rdata);
-                    if (callback) callback(rdata);
-                })
-                bt.set_cookie('copyFileName', null);
-                bt.set_cookie('cutFileName', null);
-                return;
+            } else {
+                _this.paste_to(path, copyName, cutName, fileName, callback);
             }
+        })
+    },
+    paste_to: function (path, copyName, cutName, fileName, callback) {
+        if (copyName != 'null' && copyName != undefined) {
+            var loading = bt.msg({ msg: lan.files.copy_the, icon: 16 });
+            bt.send('CopyFile', 'files/CopyFile', 'sfile=' + copyName + '&dfile=' + path + '/' + fileName, function (rdata) {
+                loading.close();
+                bt.msg(rdata);
+                if (callback) callback(rdata);
+            })
+            bt.set_cookie('copyFileName', null);
+            bt.set_cookie('cutFileName', null);
+            return;
+        }
 
-            if (cutName != 'null' && cutName != undefined) {
-                var loading = bt.msg({ msg: lan.files.copy_the, icon: 16 });
-                bt.send('MvFile', 'files/MvFile', 'sfile=' + copyName + '&dfile=' + path + '/' + fileName, function(rdata) {
-                    loading.close();
-                    bt.msg(rdata);
-                    if (callback) callback(rdata);
-                });
-                bt.set_cookie('copyFileName', null);
-                bt.set_cookie('cutFileName', null);
-                return;
-            }
-        },
-        zip: function(dirName, submits, callback) {
-            _this = this;
-            if (submits != undefined) {
-                if (dirName.indexOf(',') == -1) {
-                    tmp = $("#sfile").val().split('/');
-                    sfile = tmp[tmp.length - 1];
-                } else {
-                    sfile = dirName;
-                }
-                dfile = $("#dfile").val();
-                layer.closeAll();
-                var loading = bt.load(lan.files.zip_the);
-                bt.send('Zip', 'files/Zip', 'sfile=' + sfile + '&dfile=' + dfile + '&type=tar&path=' + path, function(rdata) {
-                    loading.close();
-                    if (rdata == null || rdata == undefined) {
-                        bt.msg({ msg: lan.files.zip_ok, icon: 1 })
-                        if (callback) callback(rdata);
-                        return;
-                    }
-                    bt.msg(rdata);
-                    if (rdata.status)
-                        if (callback) callback(rdata);;
-                });
-                return;
-            }
-            var ext = '.zip';
-            if (bt.os == 'Linux') ext = '.tar.gz';
-
-            param = dirName;
-            if (dirName.indexOf(',') != -1) {
-                tmp = path.split('/')
-                dirName = path + '/' + tmp[tmp.length - 1]
-            }
-            bt.open({
-                type: 1,
-                shift: 5,
-                closeBtn: 2,
-                area: '650px',
-                title: lan.files.zip_title,
-                content: '<div class="bt-form pd20 pb70">' +
-                    '<div class="line noborder">' +
-                    '<input type="text" class="form-control" id="sfile" value="' + param + '" placeholder="" style="display:none" />' +
-                    '<span>' + lan.files.zip_to + '</span><input type="text" class="bt-input-text" id="dfile" value="' + dirName + ext + '" placeholder="' + lan.files.zip_to + '" style="width: 75%; display: inline-block; margin: 0px 10px 0px 20px;" /><span class="glyphicon glyphicon-folder-open cursor" onclick="ChangePath(\'dfile\')"></span>' +
-                    '</div>' +
-                    '<div class="bt-form-submit-btn">' +
-                    '<button type="button" class="btn btn-danger btn-sm btn-title" onclick="layer.closeAll()">' + lan.public.close + '</button>' +
-                    '<button type="button" id="ReNameBtn" class="btn btn-success btn-sm btn-title"' + lan.files.file_menu_zip + '</button>' +
-                    '</div>' +
-                    '</div>'
+        if (cutName != 'null' && cutName != undefined) {
+            var loading = bt.msg({ msg: lan.files.copy_the, icon: 16 });
+            bt.send('MvFile', 'files/MvFile', 'sfile=' + copyName + '&dfile=' + path + '/' + fileName, function (rdata) {
+                loading.close();
+                bt.msg(rdata);
+                if (callback) callback(rdata);
             });
-
-            setTimeout(function() {
-                $("#dfile").change(function() {
-                    var dfile = bt.rtrim($(this).val(), '/');
-                    if (bt.check_zip(dfile) === -1) {
-                        dfile += ext;
-                        $(this).val(dfile)
-                    }
-                });
-                $("#ReNameBtn").click(function() {
-                    _this.zip(param, 1, callback);
-                })
-            }, 100);
-        },
-        un_zip: function(fileName, type, callback) // type: zip|tar
-            {
-                _this = this;
-                if (type.length == 3) {
-                    var sfile = encodeURIComponent($("#sfile").val());
-                    var dfile = encodeURIComponent($("#dfile").val());
-                    var password = encodeURIComponent($("#unpass").val());
-                    coding = $("select[name='coding']").val();
-                    layer.closeAll();
-                    var loading = bt.load(lan.files.unzip_the);
-                    bt.send('UnZip', 'files/UnZip', 'sfile=' + sfile + '&dfile=' + dfile + '&type=' + type + '&coding=' + coding + '&password=' + password, function(rdata) {
-                        loading.close();
-                        bt.msg(rdata);
-                        if (callback) callback(rdata);
-                    });
-                    return
+            bt.set_cookie('copyFileName', null);
+            bt.set_cookie('cutFileName', null);
+            return;
+        }
+    },
+    zip: function (dirName, submits, callback) {
+        _this = this;
+        if (submits != undefined) {
+            if (dirName.indexOf(',') == -1) {
+                tmp = $("#sfile").val().split('/');
+                sfile = tmp[tmp.length - 1];
+            } else {
+                sfile = dirName;
+            }
+            dfile = $("#dfile").val();
+            layer.closeAll();
+            var loading = bt.load(lan.files.zip_the);
+            bt.send('Zip', 'files/Zip', 'sfile=' + sfile + '&dfile=' + dfile + '&type=tar&path=' + path, function (rdata) {
+                loading.close();
+                if (rdata == null || rdata == undefined) {
+                    bt.msg({ msg: lan.files.zip_ok, icon: 1 })
+                    if (callback) callback(rdata);
+                    return;
                 }
-                var path = bt.get_file_path(fileName);
-                type = (type == 1) ? 'tar' : 'zip'
-                var umpass = '';
-                if (type == 'zip') {
-                    umpass = '<div class="line"><span class="tname">' + lan.files.zip_pass_title + '</span><input type="text" class="bt-input-text" id="unpass" value="" placeholder="' + lan.files.zip_pass_msg + '" style="width:330px" /></div>'
-                }
-                bt.open({
-                    type: 1,
-                    shift: 5,
-                    closeBtn: 2,
-                    area: '490px',
-                    title: lan.files.unzip_title,
-                    content: '<div class="bt-form pd20 pb70">' +
-                        '<div class="line unzipdiv">' +
-                        '<span class="tname">' + lan.files.unzip_name + '</span><input type="text" class="bt-input-text" id="sfile" value="' + fileName + '" placeholder="' + lan.files.unzip_name_title + '" style="width:330px" /></div>' +
-                        '<div class="line"><span class="tname">' + lan.files.unzip_to + '</span><input type="text" class="bt-input-text" id="dfile" value="' + path + '" placeholder="' + lan.files.unzip_to + '" style="width:330px" /></div>' + umpass +
-                        '<div class="line"><span class="tname">' + lan.files.unzip_coding + '</span><select class="bt-input-text" name="coding">' +
-                        '<option value="UTF-8">UTF-8</option>' +
-                        '<option value="gb18030">GBK</option>' +
-                        '</select>' +
-                        '</div>' +
-                        '<div class="bt-form-submit-btn">' +
-                        '<button type="button" class="btn btn-danger btn-sm btn-title" onclick="layer.closeAll()">' + lan.public.close + '</button>' +
-                        '<button type="button" id="ReNameBtn" class="btn btn-success btn-sm btn-title" >' + lan.files.file_menu_unzip + '</button>' +
-                        '</div>' +
-                        '</div>'
-                });
-                setTimeout(function() {
-
-                    $("#ReNameBtn").click(function() {
-                        _this.un_zip(fileName, type, callback);
-                    })
-                }, 100);
-            },
-        show_img: function(fileName) {
-            var imgUrl = '/download?filename=' + fileName;
-            bt.open({
-                type: 1,
-                closeBtn: 2,
-                title: false,
-                area: '500px',
-                shadeClose: true,
-                content: '<div class="showpicdiv"><img width="100%" src="' + imgUrl + '"></div>'
+                bt.msg(rdata);
+                if (rdata.status)
+                    if (callback) callback(rdata);;
             });
-            $(".layui-layer").css("top", "30%");
-        },
-        get_files_bytes: function(fileName, fileSize) {
-            window.open('/download?filename=' + encodeURIComponent(fileName));
-        },
-        upload_files: function() {
-            path = this.get_path();
-            bt.open({
-                type: 1,
-                closeBtn: 2,
-                title: lan.files.up_title,
-                area: ['500px', '500px'],
-                shadeClose: false,
-                content: '<div class="fileUploadDiv"><input type="hidden" id="input-val" value="' + path + '" />\
+            return;
+        }
+        var ext = '.zip';
+        if (bt.os == 'Linux') ext = '.tar.gz';
+
+        param = dirName;
+        if (dirName.indexOf(',') != -1) {
+            tmp = path.split('/')
+            dirName = path + '/' + tmp[tmp.length - 1]
+        }
+        bt.open({
+            type: 1,
+            shift: 5,
+            closeBtn: 2,
+            area: '650px',
+            title: lan.files.zip_title,
+            content: '<div class="bt-form pd20 pb70">' +
+                '<div class="line noborder">' +
+                '<input type="text" class="form-control" id="sfile" value="' + param + '" placeholder="" style="display:none" />' +
+                '<span>' + lan.files.zip_to + '</span><input type="text" class="bt-input-text" id="dfile" value="' + dirName + ext + '" placeholder="' + lan.files.zip_to + '" style="width: 75%; display: inline-block; margin: 0px 10px 0px 20px;" /><span class="glyphicon glyphicon-folder-open cursor" onclick="ChangePath(\'dfile\')"></span>' +
+                '</div>' +
+                '<div class="bt-form-submit-btn">' +
+                '<button type="button" class="btn btn-danger btn-sm btn-title" onclick="layer.closeAll()">' + lan.public.close + '</button>' +
+                '<button type="button" id="ReNameBtn" class="btn btn-success btn-sm btn-title"' + lan.files.file_menu_zip + '</button>' +
+                '</div>' +
+                '</div>'
+        });
+
+        setTimeout(function () {
+            $("#dfile").change(function () {
+                var dfile = bt.rtrim($(this).val(), '/');
+                if (bt.check_zip(dfile) === -1) {
+                    dfile += ext;
+                    $(this).val(dfile)
+                }
+            });
+            $("#ReNameBtn").click(function () {
+                _this.zip(param, 1, callback);
+            })
+        }, 100);
+    },
+    un_zip: function (fileName, type, callback) // type: zip|tar
+    {
+        _this = this;
+        if (type.length == 3) {
+            var sfile = encodeURIComponent($("#sfile").val());
+            var dfile = encodeURIComponent($("#dfile").val());
+            var password = encodeURIComponent($("#unpass").val());
+            coding = $("select[name='coding']").val();
+            layer.closeAll();
+            var loading = bt.load(lan.files.unzip_the);
+            bt.send('UnZip', 'files/UnZip', 'sfile=' + sfile + '&dfile=' + dfile + '&type=' + type + '&coding=' + coding + '&password=' + password, function (rdata) {
+                loading.close();
+                bt.msg(rdata);
+                if (callback) callback(rdata);
+            });
+            return
+        }
+        var path = bt.get_file_path(fileName);
+        type = (type == 1) ? 'tar' : 'zip'
+        var umpass = '';
+        if (type == 'zip') {
+            umpass = '<div class="line"><span class="tname">' + lan.files.zip_pass_title + '</span><input type="text" class="bt-input-text" id="unpass" value="" placeholder="' + lan.files.zip_pass_msg + '" style="width:330px" /></div>'
+        }
+        bt.open({
+            type: 1,
+            shift: 5,
+            closeBtn: 2,
+            area: '490px',
+            title: lan.files.unzip_title,
+            content: '<div class="bt-form pd20 pb70">' +
+                '<div class="line unzipdiv">' +
+                '<span class="tname">' + lan.files.unzip_name + '</span><input type="text" class="bt-input-text" id="sfile" value="' + fileName + '" placeholder="' + lan.files.unzip_name_title + '" style="width:330px" /></div>' +
+                '<div class="line"><span class="tname">' + lan.files.unzip_to + '</span><input type="text" class="bt-input-text" id="dfile" value="' + path + '" placeholder="' + lan.files.unzip_to + '" style="width:330px" /></div>' + umpass +
+                '<div class="line"><span class="tname">' + lan.files.unzip_coding + '</span><select class="bt-input-text" name="coding">' +
+                '<option value="UTF-8">UTF-8</option>' +
+                '<option value="gb18030">GBK</option>' +
+                '</select>' +
+                '</div>' +
+                '<div class="bt-form-submit-btn">' +
+                '<button type="button" class="btn btn-danger btn-sm btn-title" onclick="layer.closeAll()">' + lan.public.close + '</button>' +
+                '<button type="button" id="ReNameBtn" class="btn btn-success btn-sm btn-title" >' + lan.files.file_menu_unzip + '</button>' +
+                '</div>' +
+                '</div>'
+        });
+        setTimeout(function () {
+
+            $("#ReNameBtn").click(function () {
+                _this.un_zip(fileName, type, callback);
+            })
+        }, 100);
+    },
+    show_img: function (fileName) {
+        var imgUrl = '/download?filename=' + fileName;
+        bt.open({
+            type: 1,
+            closeBtn: 2,
+            title: false,
+            area: '500px',
+            shadeClose: true,
+            content: '<div class="showpicdiv"><img width="100%" src="' + imgUrl + '"></div>'
+        });
+        $(".layui-layer").css("top", "30%");
+    },
+    get_files_bytes: function (fileName, fileSize) {
+        window.open('/download?filename=' + encodeURIComponent(fileName));
+    },
+    upload_files: function () {
+        path = this.get_path();
+        bt.open({
+            type: 1,
+            closeBtn: 2,
+            title: lan.files.up_title,
+            area: ['500px', '500px'],
+            shadeClose: false,
+            content: '<div class="fileUploadDiv"><input type="hidden" id="input-val" value="' + path + '" />\
 					<input type="file" id="file_input"  multiple="true" autocomplete="off" />\
 					<button type="button"  id="opt" autocomplete="off">' + lan.files.up_add + '</button>\
 					<button type="button" id="up" autocomplete="off" >' + lan.files.up_start + '</button>\
@@ -2285,35 +2284,35 @@ bt.files = {
 					</span>\
 					<button type="button" id="filesClose" autocomplete="off" onClick="layer.closeAll()" >' + lan.public.close + '</button>\
 					<ul id="up_box"></ul></div>'
+        });
+        UploadStart();
+    },
+    set_chmod: function (action, fileName, callback) {
+        _this = this;
+        if (action == 1) {
+            var chmod = $("#access").val();
+            var chown = $("#chown").val();
+            var data = 'filename=' + fileName + '&user=' + chown + '&access=' + chmod;
+            var loadT = bt.load(lan.public.config);
+            bt.send('SetFileAccess', 'files/SetFileAccess', data, function (rdata) {
+                loadT.close();
+                if (rdata.status) layer.closeAll();
+                bt.msg(rdata);
+                if (callback) callback(rdata);
             });
-            UploadStart();
-        },
-        set_chmod: function(action, fileName, callback) {
-            _this = this;
-            if (action == 1) {
-                var chmod = $("#access").val();
-                var chown = $("#chown").val();
-                var data = 'filename=' + fileName + '&user=' + chown + '&access=' + chmod;
-                var loadT = bt.load(lan.public.config);
-                bt.send('SetFileAccess', 'files/SetFileAccess', data, function(rdata) {
-                    loadT.close();
-                    if (rdata.status) layer.closeAll();
-                    bt.msg(rdata);
-                    if (callback) callback(rdata);
-                });
-                return;
-            }
+            return;
+        }
 
-            var toExec = fileName == lan.files.all ? 'Batch(3,1)' : '_this.set_chmod(1,\'' + fileName + '\',callback)';
+        var toExec = fileName == lan.files.all ? 'Batch(3,1)' : '_this.set_chmod(1,\'' + fileName + '\',callback)';
 
-            bt.send('GetFileAccess', 'files/GetFileAccess', 'filename=' + fileName, function(rdata) {
-                if (bt.os == 'Linux') {
-                    bt.open({
-                        type: 1,
-                        title: lan.files.set_auth + '[' + fileName + ']',
-                        area: '400px',
-                        shadeClose: false,
-                        content: '<div class="setchmod bt-form ptb15 pb70">\
+        bt.send('GetFileAccess', 'files/GetFileAccess', 'filename=' + fileName, function (rdata) {
+            if (bt.os == 'Linux') {
+                bt.open({
+                    type: 1,
+                    title: lan.files.set_auth + '[' + fileName + ']',
+                    area: '400px',
+                    shadeClose: false,
+                    content: '<div class="setchmod bt-form ptb15 pb70">\
 								<fieldset>\
 									<legend>' + lan.files.file_own + '</legend>\
 									<p><input type="checkbox" id="owner_r" />' + lan.files.file_read + '</p>\
@@ -2344,187 +2343,187 @@ bt.files = {
 							        <button type="button" class="btn btn-success btn-sm btn-title" onclick="' + toExec + '" >' + lan.public.ok + '</button>\
 						        </div>\
 							</div>'
+                });
+
+                settimeout(function () {
+                    _this.on_linux_access();
+                    $("#access").keyup(function () {
+                        _this.on_linux_access();
                     });
 
-                    settimeout(function() {
-                        _this.on_linux_access();
-                        $("#access").keyup(function() {
-                            _this.on_linux_access();
-                        });
+                    $("input[type=checkbox]").change(function () {
+                        var idName = ['owner', 'group', 'public'];
+                        var onacc = '';
+                        for (var n = 0; n < idName.length; n++) {
+                            var access = 0;
+                            access += $("#" + idName[n] + "_x").prop('checked') ? 1 : 0;
+                            access += $("#" + idName[n] + "_w").prop('checked') ? 2 : 0;
+                            access += $("#" + idName[n] + "_r").prop('checked') ? 4 : 0;
+                            onacc += access;
+                        }
+                        $("#access").val(onacc);
+                    });
+                }, 100)
+            }
+        })
+    },
+    on_linux_access: function () {
+        var access = $("#access").val();
+        var idName = ['owner', 'group', 'public'];
+        for (var n = 0; n < idName.length; n++) {
+            $("#" + idName[n] + "_x").prop('checked', false);
+            $("#" + idName[n] + "_w").prop('checked', false);
+            $("#" + idName[n] + "_r").prop('checked', false);
+        }
+        for (var i = 0; i < access.length; i++) {
+            var onacc = access.substr(i, 1);
+            if (i > idName.length) continue;
+            if (onacc > 7) $("#access").val(access.substr(0, access.length - 1));
+            switch (onacc) {
+                case '1':
+                    $("#" + idName[i] + "_x").prop('checked', true);
+                    break;
+                case '2':
+                    $("#" + idName[i] + "_w").prop('checked', true);
+                    break;
+                case '3':
+                    $("#" + idName[i] + "_x").prop('checked', true);
+                    $("#" + idName[i] + "_w").prop('checked', true);
+                    break;
+                case '4':
+                    $("#" + idName[i] + "_r").prop('checked', true);
+                    break;
+                case '5':
+                    $("#" + idName[i] + "_r").prop('checked', true);
+                    $("#" + idName[i] + "_x").prop('checked', true);
+                    break;
+                case '6':
+                    $("#" + idName[i] + "_r").prop('checked', true);
+                    $("#" + idName[i] + "_w").prop('checked', true);
+                    break;
+                case '7':
+                    $("#" + idName[i] + "_r").prop('checked', true);
+                    $("#" + idName[i] + "_w").prop('checked', true);
+                    $("#" + idName[i] + "_x").prop('checked', true);
+                    break;
+            }
+        }
+    },
+    on_win_access: function () {
 
-                        $("input[type=checkbox]").change(function() {
-                            var idName = ['owner', 'group', 'public'];
-                            var onacc = '';
-                            for (var n = 0; n < idName.length; n++) {
-                                var access = 0;
-                                access += $("#" + idName[n] + "_x").prop('checked') ? 1 : 0;
-                                access += $("#" + idName[n] + "_w").prop('checked') ? 2 : 0;
-                                access += $("#" + idName[n] + "_r").prop('checked') ? 4 : 0;
-                                onacc += access;
-                            }
-                            $("#access").val(onacc);
-                        });
-                    }, 100)
-                }
-            })
-        },
-        on_linux_access: function() {
+    },
+    get_right_click: function (type, path, name) {
+        _this = this;
+        var displayZip = bt.check_zip(type);
+        var options = {
+            items: [
+                { text: lan.files.file_menu_copy, onclick: function () { _this.copy_file(path) } },
+                { text: lan.files.file_menu_mv, onclick: function () { _this.cut_file(path) } },
+                { text: lan.files.file_menu_rename, onclick: function () { _this.rename(path, name) } },
+                { text: lan.files.file_menu_auth, onclick: function () { _this.set_chmod(0, path) } },
+                { text: lan.files.file_menu_zip, onclick: function () { _this.zip(path) } }
+
+            ]
+        };
+        if (type == "dir") {
+            options.items.push({ text: lan.files.file_menu_del, onclick: function () { _this.del_dir(path) } });
+        } else if (isText(type)) {
+            options.items.push({ text: lan.files.file_menu_edit, onclick: function () { bt.on_edit_file(0, path) } }, { text: lan.files.file_menu_down, onclick: function () { _this.get_files_bytes(path) } }, { text: lan.files.file_menu_del, onclick: function () { _this.del_file(path) } });
+        } else if (displayZip != -1) {
+            options.items.push({ text: lan.files.file_menu_unzip, onclick: function () { _this.un_zip(path, displayZip) } }, { text: lan.files.file_menu_down, onclick: function () { _this.get_files_bytes(path) } }, { text: lan.files.file_menu_del, onclick: function () { _this.del_file(path) } });
+        } else if (isImage(type)) {
+            options.items.push({ text: lan.files.file_menu_img, onclick: function () { _this.show_img(path) } }, { text: lan.files.file_menu_down, onclick: function () { _this.get_files_bytes(path) } }, { text: lan.files.file_menu_del, onclick: function () { _this.del_file(path) } });
+        } else {
+            options.items.push({ text: lan.files.file_menu_down, onclick: function () { _this.get_files_bytes(path) } }, { text: lan.files.file_menu_del, onclick: function () { _this.del_file(path) } });
+        }
+        return options;
+    },
+    get_dir_size: function (path, callback) {
+        if (!path) path = this.get_path();
+        var loading = bt.load(lan.public.the);
+        bt.send('GetDirSize', 'files/GetDirSize', { path: path }, function (rdata) {
+            loading.close();
+            if (callback) callback(rdata);
+        })
+    },
+    batch: function (type, access, callback) {
+        _this = this;
+
+        var el = document.getElementsByTagName('input');
+        var len = el.length;
+        var data = 'path=' + path + '&type=' + type;
+        var name = 'data';
+
+        var oldType = bt.get_cookie('BatchPaste');
+
+        for (var i = 0; i < len; i++) {
+            if (el[i].checked == true && el[i].value != 'on') {
+                data += '&' + name + '=' + el[i].value;
+            }
+        }
+
+        if (type == 3 && access == undefined) {
+            _this.set_chmod(0, lan.files.all);
+            return;
+        }
+
+        if (type < 3) bt.set_cookie('BatchSelected', '1');
+        bt.set_cookie('BatchPaste', type);
+
+        if (access == 1) {
             var access = $("#access").val();
-            var idName = ['owner', 'group', 'public'];
-            for (var n = 0; n < idName.length; n++) {
-                $("#" + idName[n] + "_x").prop('checked', false);
-                $("#" + idName[n] + "_w").prop('checked', false);
-                $("#" + idName[n] + "_r").prop('checked', false);
-            }
-            for (var i = 0; i < access.length; i++) {
-                var onacc = access.substr(i, 1);
-                if (i > idName.length) continue;
-                if (onacc > 7) $("#access").val(access.substr(0, access.length - 1));
-                switch (onacc) {
-                    case '1':
-                        $("#" + idName[i] + "_x").prop('checked', true);
-                        break;
-                    case '2':
-                        $("#" + idName[i] + "_w").prop('checked', true);
-                        break;
-                    case '3':
-                        $("#" + idName[i] + "_x").prop('checked', true);
-                        $("#" + idName[i] + "_w").prop('checked', true);
-                        break;
-                    case '4':
-                        $("#" + idName[i] + "_r").prop('checked', true);
-                        break;
-                    case '5':
-                        $("#" + idName[i] + "_r").prop('checked', true);
-                        $("#" + idName[i] + "_x").prop('checked', true);
-                        break;
-                    case '6':
-                        $("#" + idName[i] + "_r").prop('checked', true);
-                        $("#" + idName[i] + "_w").prop('checked', true);
-                        break;
-                    case '7':
-                        $("#" + idName[i] + "_r").prop('checked', true);
-                        $("#" + idName[i] + "_w").prop('checked', true);
-                        $("#" + idName[i] + "_x").prop('checked', true);
-                        break;
-                }
-            }
-        },
-        on_win_access: function() {
+            var chown = $("#chown").val();
+            data += '&access=' + access + '&user=' + chown;
+            layer.closeAll();
+        }
+        if (type == 4) {
+            AllDeleteFileSub(data, path);
+            bt.set_cookie('BatchPaste', oldType);
+            return;
+        }
 
-        },
-        get_right_click: function(type, path, name) {
-            _this = this;
-            var displayZip = bt.check_zip(type);
-            var options = {
-                items: [
-                    { text: lan.files.file_menu_copy, onclick: function() { _this.copy_file(path) } },
-                    { text: lan.files.file_menu_mv, onclick: function() { _this.cut_file(path) } },
-                    { text: lan.files.file_menu_rename, onclick: function() { _this.rename(path, name) } },
-                    { text: lan.files.file_menu_auth, onclick: function() { _this.set_chmod(0, path) } },
-                    { text: lan.files.file_menu_zip, onclick: function() { _this.zip(path) } }
-
-                ]
-            };
-            if (type == "dir") {
-                options.items.push({ text: lan.files.file_menu_del, onclick: function() { _this.del_dir(path) } });
-            } else if (isText(type)) {
-                options.items.push({ text: lan.files.file_menu_edit, onclick: function() { bt.on_edit_file(0, path) } }, { text: lan.files.file_menu_down, onclick: function() { _this.get_files_bytes(path) } }, { text: lan.files.file_menu_del, onclick: function() { _this.del_file(path) } });
-            } else if (displayZip != -1) {
-                options.items.push({ text: lan.files.file_menu_unzip, onclick: function() { _this.un_zip(path, displayZip) } }, { text: lan.files.file_menu_down, onclick: function() { _this.get_files_bytes(path) } }, { text: lan.files.file_menu_del, onclick: function() { _this.del_file(path) } });
-            } else if (isImage(type)) {
-                options.items.push({ text: lan.files.file_menu_img, onclick: function() { _this.show_img(path) } }, { text: lan.files.file_menu_down, onclick: function() { _this.get_files_bytes(path) } }, { text: lan.files.file_menu_del, onclick: function() { _this.del_file(path) } });
-            } else {
-                options.items.push({ text: lan.files.file_menu_down, onclick: function() { _this.get_files_bytes(path) } }, { text: lan.files.file_menu_del, onclick: function() { _this.del_file(path) } });
-            }
-            return options;
-        },
-        get_dir_size: function(path, callback) {
-            if (!path) path = this.get_path();
-            var loading = bt.load(lan.public.the);
-            bt.send('GetDirSize', 'files/GetDirSize', { path: path }, function(rdata) {
-                loading.close();
-                if (callback) callback(rdata);
-            })
-        },
-        batch: function(type, access, callback) {
-            _this = this;
-
-            var el = document.getElementsByTagName('input');
-            var len = el.length;
-            var data = 'path=' + path + '&type=' + type;
-            var name = 'data';
-
-            var oldType = bt.get_cookie('BatchPaste');
-
+        if (type == 5) {
+            var names = '';
             for (var i = 0; i < len; i++) {
                 if (el[i].checked == true && el[i].value != 'on') {
-                    data += '&' + name + '=' + el[i].value;
+                    names += el[i].value + ',';
                 }
             }
+            _this.zip(names);
+            return;
+        }
 
-            if (type == 3 && access == undefined) {
-                _this.set_chmod(0, lan.files.all);
-                return;
-            }
-
-            if (type < 3) bt.set_cookie('BatchSelected', '1');
-            bt.set_cookie('BatchPaste', type);
-
-            if (access == 1) {
-                var access = $("#access").val();
-                var chown = $("#chown").val();
-                data += '&access=' + access + '&user=' + chown;
-                layer.closeAll();
-            }
-            if (type == 4) {
-                AllDeleteFileSub(data, path);
-                bt.set_cookie('BatchPaste', oldType);
-                return;
-            }
-
-            if (type == 5) {
-                var names = '';
-                for (var i = 0; i < len; i++) {
-                    if (el[i].checked == true && el[i].value != 'on') {
-                        names += el[i].value + ',';
-                    }
-                }
-                _this.zip(names);
-                return;
-            }
-
-            myloadT = bt.load("<div class='myspeed'>" + lan.public.the + "</div>");
-            setTimeout(function() { getSpeed('.myspeed'); }, 1000);
-            bt.send('SetBatchData', 'files/SetBatchData', data, function(rdata) {
-                myloadT.close();
+        myloadT = bt.load("<div class='myspeed'>" + lan.public.the + "</div>");
+        setTimeout(function () { getSpeed('.myspeed'); }, 1000);
+        bt.send('SetBatchData', 'files/SetBatchData', data, function (rdata) {
+            myloadT.close();
+            bt.msg(rdata);
+            if (callback) callback(rdata);
+        })
+    },
+    download_file: function (action, callback) {
+        path = bt.get_cookie('Path');
+        if (action == 1) {
+            var fUrl = $("#mUrl").val();
+            fUrl = fUrl;
+            fpath = $("#dpath").val();
+            fname = $("#dfilename").val();
+            layer.closeAll();
+            loading = bt.load(lan.files.down_task);
+            bt.send('DownloadFile', 'files/DownloadFile', 'path=' + fpath + '&url=' + fUrl + '&filename=' + fname, function (rdata) {
+                loading.close();
                 bt.msg(rdata);
                 if (callback) callback(rdata);
-            })
-        },
-        download_file: function(action, callback) {
-            path = bt.get_cookie('Path');
-            if (action == 1) {
-                var fUrl = $("#mUrl").val();
-                fUrl = fUrl;
-                fpath = $("#dpath").val();
-                fname = $("#dfilename").val();
-                layer.closeAll();
-                loading = bt.load(lan.files.down_task);
-                bt.send('DownloadFile', 'files/DownloadFile', 'path=' + fpath + '&url=' + fUrl + '&filename=' + fname, function(rdata) {
-                    loading.close();
-                    bt.msg(rdata);
-                    if (callback) callback(rdata);
-                });
-                return;
-            }
-            layer.open({
-                type: 1,
-                shift: 5,
-                closeBtn: 2,
-                area: '500px',
-                title: lan.files.down_title,
-                content: '<form class="bt-form pd20 pb70">\
+            });
+            return;
+        }
+        layer.open({
+            type: 1,
+            shift: 5,
+            closeBtn: 2,
+            area: '500px',
+            title: lan.files.down_title,
+            content: '<form class="bt-form pd20 pb70">\
 						<div class="line">\
 						<span class="tname">' + lan.files.down_url + ':</span><input type="text" class="bt-input-text" name="url" id="mUrl" value="" placeholder="' + lan.files.down_url + '" style="width:330px" />\
 						</div>\
@@ -2539,22 +2538,22 @@ bt.files = {
 						<button type="button" id="dlok" class="btn btn-success btn-sm dlok" onclick="DownloadFile(1)">' + lan.public.ok + '</button>\
 						</div>\
 					</form>'
-            });
-            fly("dlok");
-            $("#mUrl").keyup(function() {
-                durl = $(this).val()
-                tmp = durl.split('/')
-                $("#dfilename").val(tmp[tmp.length - 1])
-            });
-        }
+        });
+        fly("dlok");
+        $("#mUrl").keyup(function () {
+            durl = $(this).val()
+            tmp = durl.split('/')
+            $("#dfilename").val(tmp[tmp.length - 1])
+        });
     }
-    // 任务管理器
+}
+// 任务管理器
 bt.crontab = {
     // 执行计划任务请求
-    start_task_send: function(id, name) {
+    start_task_send: function (id, name) {
         var that = this,
             loading = bt.load();
-        bt.send('start_task_send', 'crontab/StartTask', { id: id }, function(rdata) {
+        bt.send('start_task_send', 'crontab/StartTask', { id: id }, function (rdata) {
             loading.close();
             rdata.time = 2000;
             bt.msg(rdata);
@@ -2562,9 +2561,9 @@ bt.crontab = {
     },
 
     // 删除计划任务
-    del_task_send: function(id, name) {
-        bt.show_confirm(lan.public_backup.del + '[' + name + ']', lan.public_backup.del_task, function() {
-            bt.send('del_task_send', 'crontab/DelCrontab', { id: id }, function(rdata) {
+    del_task_send: function (id, name) {
+        bt.show_confirm(lan.public_backup.del + '[' + name + ']', lan.public_backup.del_task, function () {
+            bt.send('del_task_send', 'crontab/DelCrontab', { id: id }, function (rdata) {
                 loading.close();
                 rdata.time = 2000;
                 bt.msg(rdata);
@@ -2574,11 +2573,11 @@ bt.crontab = {
     },
 
     // 设置计划任务状态
-    set_crontab_status: function(id, status, callback) {
+    set_crontab_status: function (id, status, callback) {
         var that = this,
             loading = bt.load();
-        bt.confirm({ title: lan.public_backup.tips, msg: status ? lan.public_backup.stop_crontab : lan.public_backup.start_crontab }, function() {
-            bt.send('set_crontab_status', 'crontab/set_cron_status', { id: id }, function(rdata) {
+        bt.confirm({ title: lan.public_backup.tips, msg: status ? lan.public_backup.stop_crontab : lan.public_backup.start_crontab }, function () {
+            bt.send('set_crontab_status', 'crontab/set_cron_status', { id: id }, function (rdata) {
                 loading.close();
                 if (callback) callback(rdata)
             });
@@ -2586,15 +2585,15 @@ bt.crontab = {
     },
 
     // 编辑计划任务脚本
-    edit_crontab_file: function(echo) {
+    edit_crontab_file: function (echo) {
         bt.pub.on_edit_file(0, '/www/server/cron/' + echo);
     },
 
     // 编辑计划任务
-    edit_crontab: function(id, data) {
+    edit_crontab: function (id, data) {
         var that = this,
             loading = bt.load(lan.public_backup.submit_data);
-        bt.send('edit_crontab', 'crontab/modify_crond', data, function(rdata) {
+        bt.send('edit_crontab', 'crontab/modify_crond', data, function (rdata) {
             loading.close();
             if (rdata.status) {
                 // that.get_crontab_list();
@@ -2606,9 +2605,9 @@ bt.crontab = {
     },
 
     // 获取计划任务日志
-    get_logs_crontab: function(id, name) {
+    get_logs_crontab: function (id, name) {
         var that = this;
-        bt.send('get_logs_crontab', 'crontab/GetLogs', { id: id }, function(rdata) {
+        bt.send('get_logs_crontab', 'crontab/GetLogs', { id: id }, function (rdata) {
             if (!rdata.status) {
                 rdata.time = 1000;
                 bt.msg(rdata);
@@ -2627,7 +2626,7 @@ bt.crontab = {
                         '</div>' +
                         '</div>'
                 })
-                setTimeout(function() {
+                setTimeout(function () {
                     var div = document.getElementsByClassName('crontab-log')[0]
                     div.scrollTop = div.scrollHeight;
                 }, 200);
@@ -2636,10 +2635,10 @@ bt.crontab = {
     },
 
     // 删除计划任务日志
-    del_logs_crontab: function(id, name) {
+    del_logs_crontab: function (id, name) {
         var that = this,
             loading = bt.load();
-        bt.send('del_logs_crontab', 'crontab/DelLogs', { id: id }, function(rdata) {
+        bt.send('del_logs_crontab', 'crontab/DelLogs', { id: id }, function (rdata) {
             loading.close();
             layer.closeAll();
             rdata.time = 2000;
@@ -2648,19 +2647,19 @@ bt.crontab = {
     },
 
     // 获取计划任务列表
-    get_crontab_list: function(status, callback) {
+    get_crontab_list: function (status, callback) {
         var that = this;
         var loading = bt.load();
-        bt.send('get_crontab_list', 'crontab/GetCrontab', {}, function(rdata) {
+        bt.send('get_crontab_list', 'crontab/GetCrontab', {}, function (rdata) {
             loading.close();
             if (callback) callback(rdata);
         });
     },
 
     // 获取站点和备份位置信息
-    get_data_list: function(type, name) {
+    get_data_list: function (type, name) {
         var that = this;
-        bt.send('get_data_list', 'crontab/GetDataList', { type: type }, function(rdata) {
+        bt.send('get_data_list', 'crontab/GetDataList', { type: type }, function (rdata) {
             that.backupsList.siteList = [{ 'name': 'ALL', 'ps': lan.public_backup.all }]
             that.backupsList.optList = [{ 'name': lan.public_backup.server_disk, 'value': 'localhost' }]
             that.backupsList.siteList = that.backupsList.siteList.concat(rdata.data);
@@ -2671,10 +2670,10 @@ bt.crontab = {
     },
 
     // 添加计划任务请求
-    add_control_send: function(data) {
+    add_control_send: function (data) {
         var that = this,
             loading = bt.load(lan.public_backup.submit_data);
-        bt.send('addCrontab', 'crontab/AddCrontab', data, function(rdata) {
+        bt.send('addCrontab', 'crontab/AddCrontab', data, function (rdata) {
             loading.close();
             if (rdata.status) {
                 that.insert_control_from(true, true);
@@ -2685,8 +2684,8 @@ bt.crontab = {
             }
         });
     },
-    get_crontab_find: function(id, callback) {
-        bt.send('get_crontab_find', 'crontab/get_crontab_find', { id: id }, function(rdata) {
+    get_crontab_find: function (id, callback) {
+        bt.send('get_crontab_find', 'crontab/get_crontab_find', { id: id }, function (rdata) {
             if (callback) callback(rdata);
         })
     }
@@ -2695,64 +2694,64 @@ bt.crontab = {
 
 
 bt.config = {
-    close_panel: function(callback) {
+    close_panel: function (callback) {
         layer.confirm(lan.config.close_panel_msg, {
             title: lan.config.close_panel_title,
             closeBtn: 2,
             icon: 13,
-            cancel: function() {
+            cancel: function () {
                 if (callback) callback(false);
             }
-        }, function() {
+        }, function () {
             loading = bt.load(lan.public.the);
-            bt.send('ClosePanel', 'config/ClosePanel', {}, function(rdata) {
+            bt.send('ClosePanel', 'config/ClosePanel', {}, function (rdata) {
                 loading.close();
                 if (callback) callback(rdata);
             })
-        }, function() {
+        }, function () {
             if (callback) callback(false);
         });
     },
-    set_auto_update: function(callback) {
+    set_auto_update: function (callback) {
         loading = bt.load(lan.public.the);
-        bt.send('AutoUpdatePanel', 'config/AutoUpdatePanel', {}, function(rdata) {
+        bt.send('AutoUpdatePanel', 'config/AutoUpdatePanel', {}, function (rdata) {
             loading.close();
             bt.msg(rdata);
             if (callback) callback(rdata);
         })
     },
-    sync_data: function(callback) {
+    sync_data: function (callback) {
         var loadT = bt.load(lan.config.config_sync);
-        bt.send('syncDate', 'config/syncDate', {}, function(rdata) {
+        bt.send('syncDate', 'config/syncDate', {}, function (rdata) {
             loadT.close();
             bt.msg(rdata);
             if (callback) callback(rdata);
         });
     },
-    save_config: function(data, callback) {
+    save_config: function (data, callback) {
         loading = bt.load(lan.config.config_save);
-        bt.send('setPanel', 'config/setPanel', data, function(rdata) {
+        bt.send('setPanel', 'config/setPanel', data, function (rdata) {
             loading.close();
             bt.msg(rdata);
             if (callback) callback(rdata);
         });
     },
-    set_template: function(template, callback) {
+    set_template: function (template, callback) {
         var loadT = bt.load(lan.public.the);
-        bt.send('SetTemplates', 'config/SetTemplates', { templates: template }, function(rdata) {
+        bt.send('SetTemplates', 'config/SetTemplates', { templates: template }, function (rdata) {
             loadT.close();
             bt.msg(rdata);
             if (callback) callback(rdata);
         });
     },
-    set_panel_ssl: function(status, callback) {
-        var msg = status ? lan.config.ssl_close_msg : '<a style="font-weight: bolder;font-size: 16px;">' + lan.config.ssl_open_ps + '</a><li style="margin-top: 12px;color:red;">' + lan.config.ssl_open_ps_1 + '</li><li>' + lan.config.ssl_open_ps_2 + '</li><li>' + lan.config.ssl_open_ps_3 + '</li><p style="margin-top: 10px;"><input type="checkbox" id="checkSSL" /><label style="font-weight: 400;margin: 3px 5px 0px;" for="checkSSL">' + lan.config.ssl_open_ps_4 + '</label><a target="_blank" class="btlink" href="https://www.bt.cn/bbs/thread-4689-1-1.html" style="float: right;">' + lan.config.ssl_open_ps_5 + '</a></p>';
+    set_panel_ssl: function (status, callback) {
+        var msg = status ? lan.config.ssl_close_msg : '<a style="font-weight: bolder;font-size: 16px;">' + lan.config.ssl_open_ps + '</a><li style="margin-top: 12px;color:red;">' + lan.config.ssl_open_ps_1 + '</li><li>' + lan.config.ssl_open_ps_2 + '</li><li>' + lan.config.ssl_open_ps_3 + '</li><p style="margin-top: 10px;"><input type="checkbox" id="checkSSL" /><label style="font-weight: 400;margin: 3px 5px 0px;" for="checkSSL">' + lan.config.ssl_open_ps_4 + '</label><a target="_blank" class="btlink" href="https://www.google.com" style="float: right;">' + lan.config.ssl_open_ps_5 + '</a></p>';
         layer.confirm(msg, {
             title: lan.config.ssl_title,
             closeBtn: 2,
             icon: 3,
             area: '550px',
-            cancel: function() {
+            cancel: function () {
                 if (callback) {
                     if (status == 0) {
                         callback(false);
@@ -2761,7 +2760,7 @@ bt.config = {
                     }
                 }
             }
-        }, function() {
+        }, function () {
             if (window.location.protocol.indexOf('https') == -1) {
                 if (!$("#checkSSL").prop('checked')) {
                     bt.msg({ msg: lan.config.ssl_ps, icon: 2 });
@@ -2769,12 +2768,12 @@ bt.config = {
                 }
             }
             var loadT = bt.load(lan.config.ssl_msg);
-            bt.send('SetPanelSSL', 'config/SetPanelSSL', {}, function(rdata) {
+            bt.send('SetPanelSSL', 'config/SetPanelSSL', {}, function (rdata) {
                 loadT.close();
                 bt.msg(rdata);
                 if (callback) callback(rdata);
             })
-        }, function() {
+        }, function () {
             if (callback) {
                 if (status == 0) {
                     callback(false);
@@ -2784,10 +2783,10 @@ bt.config = {
             }
         });
     },
-    get_panel_ssl: function() {
+    get_panel_ssl: function () {
         _this = this;
         loading = bt.load(lan.public_backup.get_cert);
-        bt.send('GetPanelSSL', 'config/GetPanelSSL', {}, function(cert) {
+        bt.send('GetPanelSSL', 'config/GetPanelSSL', {}, function (cert) {
             loading.close();
             var certBody = '<div class="tab-con">\
 				<div class="myKeyCon ptb15">\
@@ -2802,7 +2801,7 @@ bt.config = {
 					</div>\
 				</div>\
 				<ul class="help-info-text c7 pull-left">\
-					<li>' + lan.public_backup.cret_help + '<a href="http://www.bt.cn/bbs/thread-704-1-1.html" class="btlink" target="_blank">[' + lan.public_backup.help + ']</a>。</li>\
+					<li>' + lan.public_backup.cret_help + '<a href="http://www.google.com" class="btlink" target="_blank">[' + lan.public_backup.help + ']</a>。</li>\
 					<li>' + lan.public_backup.cret_err + '</li><li>' + lan.public_backup.pem_format + '</li>\
 				</ul>\
 			</div>'
@@ -2816,22 +2815,22 @@ bt.config = {
                 content: certBody
             });
 
-            $("#btn_submit").click(function() {
+            $("#btn_submit").click(function () {
                 key = $('#key').val();
                 csr = $('#csr').val();
                 _this.set_panel_ssl({ privateKey: key, certPem: csr });
             })
         })
     },
-    set_panel_ssl: function(data, callback) {
+    set_panel_ssl: function (data, callback) {
         var loadT = bt.load(lan.config.ssl_msg);
-        bt.send('SavePanelSSL', 'config/SavePanelSSL', data, function(rdata) {
+        bt.send('SavePanelSSL', 'config/SavePanelSSL', data, function (rdata) {
             loadT.close();
             bt.msg(rdata);
             if (callback) callback(rdata);
         })
     },
-    set_username: function(type) {
+    set_username: function (type) {
         if (type == 1) {
             if (p1 == "" || p1.length < 3) {
                 bt.msg({ msg: lan.bt.user_len, icon: 2 })
@@ -2846,7 +2845,7 @@ bt.config = {
                 bt.msg({ msg: lan.public_backup.usually_user_ban, icon: 2 })
                 return;
             }
-            bt.send('setUsername', 'config/setUsername', { username1: p1, username2: p2 }, function(rdata) {
+            bt.send('setUsername', 'config/setUsername', { username1: p1, username2: p2 }, function (rdata) {
                 if (rdata.status) {
                     layer.closeAll();
                     $("input[name='username_']").val(p1)
@@ -2865,7 +2864,7 @@ bt.config = {
             content: "<div class='bt-form pd20 pb70'><div class='line'><span class='tname'>" + lan.bt.user + "</span><div class='info-r'><input class='bt-input-text' type='text' name='password1' id='p1' value='' placeholder='" + lan.bt.user_new + "' style='width:100%'/></div></div><div class='line'><span class='tname'>" + lan.bt.pass_re + "</span><div class='info-r'><input class='bt-input-text' type='text' name='password2' id='p2' value='' placeholder='" + lan.bt.pass_re_title + "' style='width:100%'/></div></div><div class='bt-form-submit-btn'><button type='button' class='btn btn-danger btn-sm' onclick=\"layer.closeAll()\">" + lan.public.close + "</button> <button type='button' class='btn btn-success btn-sm' onclick=\"bt.config.set_username(1)\">" + lan.public.edit + "</button></div></div>"
         })
     },
-    set_password: function(type) {
+    set_password: function (type) {
         if (type == 1) {
             p1 = $("#p1").val();
             p2 = $("#p2").val();
@@ -2898,7 +2897,7 @@ bt.config = {
                 bt.msg({ msg: lan.bt.pass_err_re, icon: 2 })
                 return
             }
-            bt.send('setPassword', 'config/setPassword', { password1: p1, password2: p2 }, function(rdata) {
+            bt.send('setPassword', 'config/setPassword', { password1: p1, password2: p2 }, function (rdata) {
                 layer.closeAll();
                 bt.msg(rdata);
             })
@@ -2917,51 +2916,51 @@ bt.config = {
 }
 
 bt.system = {
-    get_total: function(callback) {
-        bt.send('GetSystemTotal', 'system/GetSystemTotal', {}, function(rdata) {
+    get_total: function (callback) {
+        bt.send('GetSystemTotal', 'system/GetSystemTotal', {}, function (rdata) {
             if (callback) callback(rdata);
         })
     },
-    get_net: function(callback) {
-        bt.send('GetNetWork', 'system/GetNetWork', {}, function(rdata) {
+    get_net: function (callback) {
+        bt.send('GetNetWork', 'system/GetNetWork', {}, function (rdata) {
             if (callback) callback(rdata);
         })
     },
-    get_disk_list: function(callback) {
-        bt.send('GetDiskInfo', 'system/GetDiskInfo', {}, function(rdata) {
+    get_disk_list: function (callback) {
+        bt.send('GetDiskInfo', 'system/GetDiskInfo', {}, function (rdata) {
             if (callback) callback(rdata);
         })
     },
-    re_memory: function(callback) {
-        bt.send('ReMemory', 'system/ReMemory', {}, function(rdata) {
+    re_memory: function (callback) {
+        bt.send('ReMemory', 'system/ReMemory', {}, function (rdata) {
             if (callback) callback(rdata);
         })
     },
-    check_update: function(callback, check) {
+    check_update: function (callback, check) {
         var data = {};
         if (check == undefined) data = { check: true };
         if (check === false) data = {}
         if (check) var load = bt.load(lan.index.update_get);
-        bt.send('UpdatePanel', 'ajax/UpdatePanel', data, function(rdata) {
+        bt.send('UpdatePanel', 'ajax/UpdatePanel', data, function (rdata) {
             if (check) load.close();
             if (callback) callback(rdata);
         })
     },
-    to_update: function(callback) {
+    to_update: function (callback) {
         var load = bt.load(lan.index.update_the);
-        bt.send('UpdatePanel', 'ajax/UpdatePanel', { toUpdate: 'yes' }, function(rdata) {
+        bt.send('UpdatePanel', 'ajax/UpdatePanel', { toUpdate: 'yes' }, function (rdata) {
             load.close();
             if (callback) callback(rdata);
         })
     },
-    reload_panel: function(callback) {
-        bt.send('ReWeb', 'system/ReWeb', {}, function(rdata) {
+    reload_panel: function (callback) {
+        bt.send('ReWeb', 'system/ReWeb', {}, function (rdata) {
             if (callback) callback(rdata);
         })
     },
-    rep_panel: function(callback) {
+    rep_panel: function (callback) {
         var loading = bt.load(lan.index.rep_panel_the)
-        bt.send('RepPanel', 'system/RepPanel', {}, function(rdata) {
+        bt.send('RepPanel', 'system/RepPanel', {}, function (rdata) {
             loading.close();
             if (rdata) {
                 if (callback) callback({ status: rdata, msg: lan.index.rep_panel_ok });
@@ -2970,44 +2969,44 @@ bt.system = {
 
         })
     },
-    get_warning: function(callback) {
-        bt.send('GetWarning', 'ajax/GetWarning', {}, function(rdata) {
+    get_warning: function (callback) {
+        bt.send('GetWarning', 'ajax/GetWarning', {}, function (rdata) {
             if (callback) callback(rdata);
         })
     },
-    root_reload: function(callback) {
-        bt.send('RestartServer', 'system/RestartServer', {}, function(rdata) {
+    root_reload: function (callback) {
+        bt.send('RestartServer', 'system/RestartServer', {}, function (rdata) {
             if (callback) callback(rdata);
         })
     }
 }
 
 bt.control = {
-    get_status: function(callback) {
+    get_status: function (callback) {
         loading = bt.load(lan.public.read);
-        bt.send('GetControl', 'control/SetControl', { type: 1 }, function(rdata) {
+        bt.send('GetControl', 'control/SetControl', { type: 1 }, function (rdata) {
             if (callback) callback(rdata);
         })
     },
-    set_control: function(type, day, callback) {
+    set_control: function (type, day, callback) {
         loadT = bt.load(lan.public.the);
-        bt.send('SetControl', 'config/SetControl', { type: type, day: day }, function(rdata) {
+        bt.send('SetControl', 'config/SetControl', { type: type, day: day }, function (rdata) {
             loadT.close();
             bt.msg(rdata);
             if (callback) callback(rdata);
         })
     },
-    clear_control: function(callback) {
-        bt.confirm({ msg: lan.control.close_log_msg, title: lan.control.close_log }, function() {
+    clear_control: function (callback) {
+        bt.confirm({ msg: lan.control.close_log_msg, title: lan.control.close_log }, function () {
             loadT = bt.load(lan.public.the);
-            bt.send('SetControl', 'config/SetControl', { type: 'del' }, function(rdata) {
+            bt.send('SetControl', 'config/SetControl', { type: 'del' }, function (rdata) {
                 loadT.close();
                 bt.msg(rdata);
                 if (callback) callback(rdata);
             })
         })
     },
-    get_data: function(type, start, end, callback) {
+    get_data: function (type, start, end, callback) {
         action = '';
         switch (type) {
             case 'cpu': //cpu和内存一起获取
@@ -3024,11 +3023,11 @@ bt.control = {
                 break;
         }
         if (!action) bt.msg(lan.get('lack_param', 'type'));
-        bt.send(action, 'ajax/' + action, { start: start, end: end }, function(rdata) {
+        bt.send(action, 'ajax/' + action, { start: start, end: end }, function (rdata) {
             if (callback) callback(rdata, type);
         })
     },
-    format_option: function(obj, type) {
+    format_option: function (obj, type) {
         option = {
             tooltip: {
                 trigger: 'axis',
@@ -3109,85 +3108,85 @@ bt.control = {
 
 
 bt.firewall = {
-    get_log_list: function(page, search, callback) {
+    get_log_list: function (page, search, callback) {
         if (page == undefined) page = 1
         search = search == undefined ? '' : search;
         var order = bt.get_cookie('order') ? '&order=' + bt.get_cookie('order') : '';
 
         var data = 'tojs=firewall.get_log_list&table=logs&limit=10&p=' + page + '&search=' + search + order;
-        bt.pub.get_data(data, function(rdata) {
+        bt.pub.get_data(data, function (rdata) {
             if (callback) callback(rdata);
         })
     },
-    get_list: function(page, search, callback) {
+    get_list: function (page, search, callback) {
         if (page == undefined) page = 1
         search = search == undefined ? '' : search;
         var order = bt.get_cookie('order') ? '&order=' + bt.get_cookie('order') : '';
 
         var data = 'tojs=firewall.get_list&table=firewall&limit=10&p=' + page + '&search=' + search + order;
-        bt.pub.get_data(data, function(rdata) {
+        bt.pub.get_data(data, function (rdata) {
             if (callback) callback(rdata);
         })
     },
-    get_logs_size: function(callback) {
+    get_logs_size: function (callback) {
         if (bt.os == 'Linux') {
-            bt.files.get_dir_size('/www/wwwlogs', function(rdata) {
+            bt.files.get_dir_size('/www/wwwlogs', function (rdata) {
                 if (callback) callback(rdata);
             })
         }
     },
-    get_ssh_info: function(callback) {
-        bt.send('GetSshInfo', 'firewall/GetSshInfo', {}, function(rdata) {
+    get_ssh_info: function (callback) {
+        bt.send('GetSshInfo', 'firewall/GetSshInfo', {}, function (rdata) {
             if (callback) callback(rdata);
         })
     },
-    set_mstsc: function(port, callback) {
-        bt.confirm({ msg: lan.firewall.ssh_port_msg, title: lan.firewall.ssh_port_title }, function() {
+    set_mstsc: function (port, callback) {
+        bt.confirm({ msg: lan.firewall.ssh_port_msg, title: lan.firewall.ssh_port_title }, function () {
             loading = bt.load(lan.public.the);
-            bt.send('SetSshPort', 'firewall/SetSshPort', { port: port }, function(rdata) {
+            bt.send('SetSshPort', 'firewall/SetSshPort', { port: port }, function (rdata) {
                 loading.close();
                 bt.msg(rdata);
                 if (callback) callback(rdata);
             })
         })
     },
-    ping: function(status, callback) {
+    ping: function (status, callback) {
         var msg = status == 0 ? lan.firewall.ping_msg : lan.firewall.ping_un_msg;
         layer.confirm(msg, {
             closeBtn: 2,
             title: lan.firewall.ping_title,
-            cancel: function() {
+            cancel: function () {
                 if (callback) callback(-1); //取消
             }
-        }, function() {
+        }, function () {
             loading = bt.load(lan.public.the);
-            bt.send('SetPing', 'firewall/SetPing', { status: status }, function(rdata) {
+            bt.send('SetPing', 'firewall/SetPing', { status: status }, function (rdata) {
                 loading.close();
                 if (callback) callback(rdata);
             })
-        }, function() {
+        }, function () {
             if (callback) callback(-1); //关闭
         })
     },
-    set_mstsc_status: function(status, callback) {
+    set_mstsc_status: function (status, callback) {
         var msg = status == 1 ? lan.firewall.ssh_off_msg : lan.firewall.ssh_on_msg;
         layer.confirm(msg, {
             closeBtn: 2,
             title: lan.public.warning,
-            cancel: function() {
+            cancel: function () {
                 if (callback) callback(-1); //取消
             }
-        }, function() {
+        }, function () {
             loading = bt.load(lan.public.the);
-            bt.send('SetSshStatus', 'firewall/SetSshStatus', { status: status }, function(rdata) {
+            bt.send('SetSshStatus', 'firewall/SetSshStatus', { status: status }, function (rdata) {
                 loading.close();
                 if (callback) callback(rdata);
             })
-        }, function() {
+        }, function () {
             if (callback) callback(-1); //关闭
         })
     },
-    add_accept_port: function(type, port, ps, callback) {
+    add_accept_port: function (type, port, ps, callback) {
         var action = "AddDropAddress";
         if (type == 'port') {
             ports = port.split(':');
@@ -3206,34 +3205,34 @@ bt.firewall = {
             return -1;
         }
         loading = bt.load();
-        bt.send(action, 'firewall/' + action, { port: port, type: type, ps: ps }, function(rdata) {
+        bt.send(action, 'firewall/' + action, { port: port, type: type, ps: ps }, function (rdata) {
             loading.close();
             if (callback) callback(rdata);
         })
     },
-    del_accept_port: function(id, port, callback) {
+    del_accept_port: function (id, port, callback) {
         var action = "DelDropAddress";
         if (port.indexOf('.') == -1) {
             action = "DelAcceptPort";
         }
-        bt.confirm({ msg: lan.get('confirm_del', [port]), title: lan.firewall.del_title }, function(index) {
+        bt.confirm({ msg: lan.get('confirm_del', [port]), title: lan.firewall.del_title }, function (index) {
             var loadT = bt.load(lan.public.the_del);
-            bt.send(action, 'firewall/' + action, { id: id, port: port }, function(rdata) {
+            bt.send(action, 'firewall/' + action, { id: id, port: port }, function (rdata) {
                 loadT.close();
                 if (callback) callback(rdata);
             })
         });
     },
-    clear_logs_files: function(callback) {
+    clear_logs_files: function (callback) {
         var loadT = bt.load(lan.firewall.close_the);
-        bt.send('CloseLogs', 'files/CloseLogs', {}, function(rdata) {
+        bt.send('CloseLogs', 'files/CloseLogs', {}, function (rdata) {
             if (callback) callback(rdata);
         })
     },
-    clear_logs: function(callback) {
-        bt.confirm({ msg: lan.firewall.close_log_msg, title: lan.firewall.close_log }, function() {
+    clear_logs: function (callback) {
+        bt.confirm({ msg: lan.firewall.close_log_msg, title: lan.firewall.close_log }, function () {
             var loadT = bt.load(lan.firewall.close_the);
-            bt.send('delClose', 'ajax/delClose', {}, function(rdata) {
+            bt.send('delClose', 'ajax/delClose', {}, function (rdata) {
                 loadT.close();
                 if (callback) {
                     callback(rdata);
@@ -3250,32 +3249,32 @@ bt.soft = {
         wxpayTimeId: 0
     },
     php: {
-        get_config: function(version, callback) { //获取禁用函数,扩展列表
+        get_config: function (version, callback) { //获取禁用函数,扩展列表
             var loading = bt.load();
-            bt.send('GetPHPConfig', 'ajax/GetPHPConfig', { version: version }, function(rdata) {
+            bt.send('GetPHPConfig', 'ajax/GetPHPConfig', { version: version }, function (rdata) {
                 loading.close();
                 if (callback) callback(rdata);
             })
         },
-        get_limit_config: function(version, callback) { //获取超时限制,上传限制
+        get_limit_config: function (version, callback) { //获取超时限制,上传限制
             var loading = bt.load();
-            bt.send('get_php_config', 'config/get_php_config', { version: version }, function(rdata) {
+            bt.send('get_php_config', 'config/get_php_config', { version: version }, function (rdata) {
                 loading.close();
                 if (callback) callback(rdata);
             })
         },
-        get_php_config: function(version, callback) {
+        get_php_config: function (version, callback) {
             var loading = bt.load();
-            bt.send('GetPHPConf', 'config/GetPHPConf', { version: version }, function(rdata) {
+            bt.send('GetPHPConf', 'config/GetPHPConf', { version: version }, function (rdata) {
                 loading.close();
                 if (callback) callback(rdata);
             })
         },
-        install_php_lib: function(version, name, title, callback) {
-            bt.confirm({ msg: lan.soft.php_ext_install_confirm.replace('{1}', name), title: lan.public_backup.install + '【' + name + '】' }, function() {
+        install_php_lib: function (version, name, title, callback) {
+            bt.confirm({ msg: lan.soft.php_ext_install_confirm.replace('{1}', name), title: lan.public_backup.install + '【' + name + '】' }, function () {
                 name = name.toLowerCase();
                 var loadT = bt.load(lan.soft.add_install);
-                bt.send('InstallSoft', 'files/InstallSoft', { name: name, version: version, type: "1" }, function(rdata) {
+                bt.send('InstallSoft', 'files/InstallSoft', { name: name, version: version, type: "1" }, function (rdata) {
                     loadT.close();
                     if (callback) callback(rdata);
                     bt.msg(rdata);
@@ -3283,98 +3282,98 @@ bt.soft = {
                 fly("bi-btn");
             });
         },
-        un_install_php_lib: function(version, name, title, callback) {
-            bt.confirm({ msg: lan.soft.php_ext_uninstall_confirm.replace('{1}', name), title: lan.public_backup.uninstall + '【' + name + '】' }, function() {
+        un_install_php_lib: function (version, name, title, callback) {
+            bt.confirm({ msg: lan.soft.php_ext_uninstall_confirm.replace('{1}', name), title: lan.public_backup.uninstall + '【' + name + '】' }, function () {
                 name = name.toLowerCase();
                 var data = 'name=' + name + '&version=' + version;
                 var loadT = bt.load();
-                bt.send('UninstallSoft', 'files/UninstallSoft', { name: name, version: version }, function(rdata) {
+                bt.send('UninstallSoft', 'files/UninstallSoft', { name: name, version: version }, function (rdata) {
                     loadT.close();
                     if (callback) callback(rdata);
                     bt.msg(rdata);
                 });
             });
         },
-        set_upload_max: function(version, max, callback) {
+        set_upload_max: function (version, max, callback) {
             var loadT = bt.load(lan.soft.the_save);
-            bt.send('setPHPMaxSize', 'config/setPHPMaxSize', { version: version, max: max }, function(rdata) {
+            bt.send('setPHPMaxSize', 'config/setPHPMaxSize', { version: version, max: max }, function (rdata) {
                 loadT.close();
                 if (callback) callback(rdata);
             })
         },
-        set_php_timeout: function(version, time, callback) {
+        set_php_timeout: function (version, time, callback) {
             var loadT = bt.load(lan.soft.the_save);
-            bt.send('setPHPMaxTime', 'config/setPHPMaxTime', { version: version, time: time }, function(rdata) {
+            bt.send('setPHPMaxTime', 'config/setPHPMaxTime', { version: version, time: time }, function (rdata) {
                 loadT.close();
                 if (callback) callback(rdata);
             });
         },
-        disable_functions: function(version, fs, callback) {
+        disable_functions: function (version, fs, callback) {
             var loadT = bt.load();
-            bt.send('setPHPDisable', 'config/setPHPDisable', { version: version, disable_functions: fs }, function(rdata) {
+            bt.send('setPHPDisable', 'config/setPHPDisable', { version: version, disable_functions: fs }, function (rdata) {
                 loadT.close();
                 if (callback) callback(rdata);
             });
         },
-        get_fpm_config: function(version, callback) {
+        get_fpm_config: function (version, callback) {
             var loadT = bt.load();
-            bt.send('getFpmConfig', 'config/getFpmConfig', { version: version }, function(rdata) {
+            bt.send('getFpmConfig', 'config/getFpmConfig', { version: version }, function (rdata) {
                 loadT.close();
                 if (callback) callback(rdata);
             })
         },
-        set_fpm_config: function(version, data, callback) {
+        set_fpm_config: function (version, data, callback) {
             var loadT = bt.load();
             data.version = version;
-            bt.send('setFpmConfig', 'config/setFpmConfig', data, function(rdata) {
+            bt.send('setFpmConfig', 'config/setFpmConfig', data, function (rdata) {
                 loadT.close();
                 if (callback) callback(rdata);
             })
         },
-        get_php_status: function(version, callback) {
+        get_php_status: function (version, callback) {
             var loadT = bt.load();
-            bt.send('GetPHPStatus', 'ajax/GetPHPStatus', { version: version }, function(rdata) {
+            bt.send('GetPHPStatus', 'ajax/GetPHPStatus', { version: version }, function (rdata) {
                 loadT.close();
                 if (callback) callback(rdata);
             })
         },
         // 获取PHP_session
-        get_php_session: function(version, callback) {
+        get_php_session: function (version, callback) {
             var loadT = bt.load();
-            bt.send('GetSessionConf', 'config/GetSessionConf', { version: version }, function(res) {
+            bt.send('GetSessionConf', 'config/GetSessionConf', { version: version }, function (res) {
                 loadT.close();
                 if (callback) callback(res);
             });
         },
         // 设置PHP_session文件
-        set_php_session: function(obj, callback) {
+        set_php_session: function (obj, callback) {
             var loadT = bt.load();
-            bt.send('SetSessionConf', 'config/SetSessionConf', obj, function(res) {
+            bt.send('SetSessionConf', 'config/SetSessionConf', obj, function (res) {
                 loadT.close();
                 if (callback) callback(res);
             });
         },
         // 获取PHP_session清理信息
-        get_session_count: function(callback) {
+        get_session_count: function (callback) {
             var loadT = bt.load();
-            bt.send('GetSessionCount', 'config/GetSessionCount', {}, function(res) {
+            bt.send('GetSessionCount', 'config/GetSessionCount', {}, function (res) {
                 loadT.close();
                 if (callback) callback(res);
             });
         },
         // 清理php_session
-        clear_session_count: function(obj, callback) {
-            bt.confirm({ msg: obj.msg, title: obj.title }, function() {
+        clear_session_count: function (obj, callback) {
+            bt.confirm({ msg: obj.msg, title: obj.title }, function () {
                 var loadT = bt.load();
-                bt.send('DelOldSession', 'config/DelOldSession', {}, function(res) {
+                bt.send('DelOldSession', 'config/DelOldSession', {}, function (res) {
                     loadT.close();
                     if (callback) callback(res);
                 })
             });
         },
-        get_fpm_logs: function(version, callback) {
+        get_fpm_logs: function (version, callback) {
             var loadT = bt.load();
-            bt.send('GetFpmLogs', 'ajax/GetFpmLogs', { version: version }, function(logs) {
+            bt.send('GetFpmLogs', 'ajax/GetFpmLogs', { version: version }, function (logs) {
                 loadT.close();
                 if (logs.status !== true) {
                     logs.msg = '';
@@ -3383,9 +3382,9 @@ bt.soft = {
                 if (callback) callback(logs);
             })
         },
-        get_slow_logs: function(version, callback) {
+        get_slow_logs: function (version, callback) {
             var loadT = bt.load();
-            bt.send('GetFpmSlowLogs', 'ajax/GetFpmSlowLogs', { version: version }, function(logs) {
+            bt.send('GetFpmSlowLogs', 'ajax/GetFpmSlowLogs', { version: version }, function (logs) {
                 loadT.close();
                 if (logs.status !== true) {
                     logs.msg = '';
@@ -3396,16 +3395,16 @@ bt.soft = {
         }
     },
     redis: {
-        get_redis_status: function(callback) {
+        get_redis_status: function (callback) {
             var loadT = bt.load();
-            bt.send('GetRedisStatus', 'ajax/GetRedisStatus', {}, function(rdata) {
+            bt.send('GetRedisStatus', 'ajax/GetRedisStatus', {}, function (rdata) {
                 loadT.close();
                 if (callback) callback(rdata);
             });
         }
     },
     pro: {
-        conver_unit: function(name) {
+        conver_unit: function (name) {
             var unit = '';
             switch (name) {
                 case "year":
@@ -3441,49 +3440,49 @@ bt.soft = {
             }
             return unit;
         },
-        get_product_discount_by: function(pluginName, callback) {
+        get_product_discount_by: function (pluginName, callback) {
             if (pluginName) {
-                bt.send('get_plugin_price', 'auth/get_plugin_price', { pluginName: pluginName }, function(rdata) {
+                bt.send('get_plugin_price', 'auth/get_plugin_price', { pluginName: pluginName }, function (rdata) {
                     if (callback) callback(rdata)
                 })
             } else {
-                bt.send('get_product_discount_by', 'auth/get_product_discount_by', {}, function(rdata) {
+                bt.send('get_product_discount_by', 'auth/get_product_discount_by', {}, function (rdata) {
                     if (callback) callback(rdata)
                 })
             }
 
         },
-        get_plugin_coupon: function(pid, callback) {
-            bt.send('check_pay_status', 'auth/check_pay_status', { id: pid }, function(rdata) {
+        get_plugin_coupon: function (pid, callback) {
+            bt.send('check_pay_status', 'auth/check_pay_status', { id: pid }, function (rdata) {
                 if (callback) callback(rdata);
             })
         },
-        get_re_order_status: function(callback) {
-            bt.send('get_re_order_status', 'auth/get_re_order_status', {}, function(rdata) {
+        get_re_order_status: function (callback) {
+            bt.send('get_re_order_status', 'auth/get_re_order_status', {}, function (rdata) {
                 if (callback) callback(rdata);
             })
         },
-        get_voucher: function(pid, callback) {
+        get_voucher: function (pid, callback) {
             if (pid) {
-                bt.send('get_voucher_plugin', 'auth/get_voucher_plugin', { pid: pid }, function(rdata) {
+                bt.send('get_voucher_plugin', 'auth/get_voucher_plugin', { pid: pid }, function (rdata) {
                     if (callback) callback(rdata);
                 })
             } else {
-                bt.send('get_voucher', 'auth/get_voucher', {}, function(rdata) {
+                bt.send('get_voucher', 'auth/get_voucher', {}, function (rdata) {
                     if (callback) callback(rdata);
                 })
             }
         },
-        create_order_voucher: function(pid, code, callback) {
+        create_order_voucher: function (pid, code, callback) {
             var loading = bt.load();
             if (pid) {
-                bt.send('create_order_voucher_plugin', 'auth/create_order_voucher_plugin', { pid: pid, code: code }, function(rdata) {
+                bt.send('create_order_voucher_plugin', 'auth/create_order_voucher_plugin', { pid: pid, code: code }, function (rdata) {
                     loading.close();
                     if (callback) callback(rdata);
                     bt.msg(rdata);
                 })
             } else {
-                bt.send('create_order_voucher', 'auth/create_order_voucher', { code: code }, function(rdata) {
+                bt.send('create_order_voucher', 'auth/create_order_voucher', { code: code }, function (rdata) {
                     loading.close();
                     if (callback) {
                         callback(rdata);
@@ -3493,22 +3492,22 @@ bt.soft = {
                 })
             }
         },
-        create_order: function(pid, cycle, callback) {
+        create_order: function (pid, cycle, callback) {
             if (pid) {
-                bt.send('get_buy_code', 'auth/get_buy_code', { pid: pid, cycle: cycle }, function(rdata) {
+                bt.send('get_buy_code', 'auth/get_buy_code', { pid: pid, cycle: cycle }, function (rdata) {
                     if (callback) callback(rdata);
                 })
             } else {
-                bt.send('create_order', 'auth/create_order', { cycle: cycle }, function(rdata) {
+                bt.send('create_order', 'auth/create_order', { cycle: cycle }, function (rdata) {
                     if (callback) callback(rdata);
                 })
             }
         }
     },
-    updata_pro: function() {
-        bt.pub.get_user_info(function(rdata) {
+    updata_pro: function () {
+        bt.pub.get_user_info(function (rdata) {
             if (!rdata.status) {
-                bt.pub.bind_btname(0, function(rdata) {
+                bt.pub.bind_btname(0, function (rdata) {
                     if (rdata.status) bt.soft.updata_pro();
                 })
                 return;
@@ -3516,7 +3515,7 @@ bt.soft = {
             var payhtml = '<div class="libPay" style="padding:15px 30px 30px 30px">\
 					<div class="libpay-con">\
 					</div>\
-					<p style="position:absolute;bottom:17px;left:0;width:100%;text-align:center;color:red">' + lan.public_backup.buy_multiplev_bt_pro + '<a class="btlink" href="https://www.bt.cn/download/linuxpro.html#price" target="_blank">' + lan.public_backup.goto_bt + '</a></p>\
+					<p style="position:absolute;bottom:17px;left:0;width:100%;text-align:center;color:red">' + lan.public_backup.buy_multiplev_bt_pro + '<a class="btlink" href="https://www.aaimaa.in" target="_blank">' + lan.public_backup.goto_bt + '</a></p>\
 				</div>';
 
             bt.open({
@@ -3527,18 +3526,18 @@ bt.soft = {
                 shadeClose: false,
                 content: payhtml
             });
-            setTimeout(function() {
+            setTimeout(function () {
                 bt.soft.get_product_discount('', 0);
-                $(".pay-btn-group > li").click(function() {
+                $(".pay-btn-group > li").click(function () {
                     $(this).addClass("active").siblings().removeClass("active");
                 });
             }, 100)
         })
     },
-    re_plugin_pay: function(pluginName, pid, type) {
-        bt.pub.get_user_info(function(rdata) {
+    re_plugin_pay: function (pluginName, pid, type) {
+        bt.pub.get_user_info(function (rdata) {
             if (!rdata.status) {
-                bt.pub.bind_btname(0, function(rdata) {
+                bt.pub.bind_btname(0, function (rdata) {
                     if (rdata.status) bt.soft.re_plugin_pay(pluginName, pid, type);
                 })
                 return;
@@ -3567,9 +3566,9 @@ bt.soft = {
                 shadeClose: false,
                 content: payhtml
             });
-            setTimeout(function() {
+            setTimeout(function () {
                 bt.soft.get_product_discount(pluginName, pid);
-                $(".li-c-item li").click(function() {
+                $(".li-c-item li").click(function () {
                     var i = $(this).index();
                     $(this).addClass("active").siblings().removeClass("active");
                     if (i == 0) {
@@ -3580,17 +3579,17 @@ bt.soft = {
                         $(".pro-info").show();
                     }
                 });
-                $(".pay-btn-group > li").click(function() {
+                $(".pay-btn-group > li").click(function () {
                     $(this).addClass("active").siblings().removeClass("active");
                 });
             }, 100)
         })
     },
 
-    re_plugin_pay_other: function(pluginName, pid, type, price) {
-        bt.pub.get_user_info(function(rdata) {
+    re_plugin_pay_other: function (pluginName, pid, type, price) {
+        bt.pub.get_user_info(function (rdata) {
             if (!rdata.status) {
-                bt.pub.bind_btname(0, function(rdata) {
+                bt.pub.bind_btname(0, function (rdata) {
 
                 })
                 return;
@@ -3629,16 +3628,16 @@ bt.soft = {
                 content: payhtml
             });
             bt.soft.get_rscode_other(pid, price, 1, type)
-            setTimeout(function() {
-                $(".pay-btn-group > li").click(function() {
+            setTimeout(function () {
+                $(".pay-btn-group > li").click(function () {
                     $(this).addClass("active").siblings().removeClass("active");
                 });
             }, 100);
         })
     },
-    get_rscode_other: function(pid, price, cycle, type) {
+    get_rscode_other: function (pid, price, cycle, type) {
         var loadT = layer.msg(lan.public_backup.get_payment_info, { icon: 16, time: 0, shade: 0.3 });
-        $.post('/auth?action=create_plugin_other_order', { pid: pid, cycle: cycle, type: type }, function(rdata) {
+        $.post('/auth?action=create_plugin_other_order', { pid: pid, cycle: cycle, type: type }, function (rdata) {
             layer.close(loadT);
             if (!rdata.status) {
                 layer.closeAll();
@@ -3660,10 +3659,10 @@ bt.soft = {
             bt.soft.get_order_stat(rdata.msg.oid, type);
         });
     },
-    get_order_stat: function(order_id, type) {
+    get_order_stat: function (order_id, type) {
         if (bt.get_cookie('other_oid') != order_id) return;
-        setTimeout(function() {
-            $.post('/auth?action=get_order_stat', { oid: order_id, type: type }, function(stat) {
+        setTimeout(function () {
+            $.post('/auth?action=get_order_stat', { oid: order_id, type: type }, function (stat) {
                 if (stat == 1) {
                     layer.closeAll();
                     soft.flush_cache();
@@ -3677,9 +3676,9 @@ bt.soft = {
 
         }, 1000)
     },
-    get_voucher_list: function(pid) {
+    get_voucher_list: function (pid) {
         $("#couponlist").html("<div class='cloading'>" + lan.public_backup.loading + "</div>");
-        bt.soft.pro.get_voucher(pid, function(rdata) {
+        bt.soft.pro.get_voucher(pid, function (rdata) {
 
             if (rdata != null && rdata.length > 0) {
                 var con = '';
@@ -3694,16 +3693,16 @@ bt.soft = {
                     }
                 }
                 $("#couponlist").html('<ul class="pay-btn-group">' + con + '</ul>');
-                $(".pay-btn-group > li").click(function() {
+                $(".pay-btn-group > li").click(function () {
                     $(this).addClass("active").siblings().removeClass("active");
                     $(".paymethod-submit button").css({ "background-color": "#20a53a", "border-color": "#20a53a" });
                 });
-                $(".paymethod-submit button").click(function() {
+                $(".paymethod-submit button").click(function () {
                     var code = $("#couponlist .pay-btn-group .active").attr("data-code");
                     if (code == undefined) {
                         layer.msg(lan.public_backup.choose_cash_coupon);
                     } else {
-                        bt.soft.pro.create_order_voucher(pid, code, function(rdata) {
+                        bt.soft.pro.create_order_voucher(pid, code, function (rdata) {
                             layer.closeAll();
                             bt.set_cookie('force', 1);
                             if (soft) soft.flush_cache();
@@ -3716,7 +3715,7 @@ bt.soft = {
             }
         })
     },
-    get_rscode: function(pid, price, sprice, cycle) {
+    get_rscode: function (pid, price, sprice, cycle) {
         $(".sale-price").text(price);
         if (price == sprice) {
             $(".cost-price").text(sprice + lan.public_backup.rmb).hide();
@@ -3725,7 +3724,7 @@ bt.soft = {
         }
         $(".pay-wx").html('<span class="loading">' + lan.public_backup.loading + '</span>');
         $(".libPay").append('<div class="payloadingmask" style="height:100%;width:100%;position:absolute;top:0;left:0;z-index:1"></div>');
-        bt.soft.pro.create_order(pid, cycle, function(rdata) {
+        bt.soft.pro.create_order(pid, cycle, function (rdata) {
             $(".payloadingmask").remove();
             if (rdata.status === false) {
                 bt.set_cookie('force', 1);
@@ -3737,8 +3736,8 @@ bt.soft = {
             $(".pay-wx").qrcode(rdata.msg);
             clearInterval(bt.soft.pub.wxpayTimeId);
             if (pid) {
-                bt.soft.pub.wxpayTimeId = setInterval(function() {
-                    bt.soft.pro.get_plugin_coupon(pid, function(rdata) {
+                bt.soft.pub.wxpayTimeId = setInterval(function () {
+                    bt.soft.pro.get_plugin_coupon(pid, function (rdata) {
                         if (rdata.status) {
                             layer.closeAll();
                             clearInterval(bt.soft.pub.wxpayTimeId);
@@ -3750,8 +3749,8 @@ bt.soft = {
                     })
                 }, 3000);
             } else {
-                bt.soft.pub.wxpayTimeId = setInterval(function() {
-                    bt.soft.pro.get_re_order_status(function(rdata) {
+                bt.soft.pub.wxpayTimeId = setInterval(function () {
+                    bt.soft.pro.get_re_order_status(function (rdata) {
                         if (rdata.status) {
                             layer.closeAll();
                             clearInterval(bt.soft.pub.wxpayTimeId);
@@ -3767,7 +3766,7 @@ bt.soft = {
 
         });
     },
-    get_product_discount: function(pluginName, pid) {
+    get_product_discount: function (pluginName, pid) {
         if (pluginName == undefined) pluginName = '';
         if (pid == undefined) pid = 0;
         var con = '<div class="libPay-item f14 plr15">\
@@ -3798,7 +3797,7 @@ bt.soft = {
 						</div>'
         $(".libpay-con").html("<div class='cloading'>" + lan.public_backup.loading + "</div>");
 
-        bt.soft.pro.get_product_discount_by(pluginName, function(rdata) {
+        bt.soft.pro.get_product_discount_by(pluginName, function (rdata) {
             if (rdata != null) {
                 var coucon = '';
                 var qarr = Object.keys(rdata);
@@ -3814,10 +3813,10 @@ bt.soft = {
                 }
                 $(".libpay-con").html(con);
                 $("#PayCycle").html('<ul class="pay-btn-group">' + coucon + '</ul>');
-                $(".pay-btn-group li").click(function() {
+                $(".pay-btn-group li").click(function () {
                     $(this).addClass("active").siblings().removeClass("active");
                 });
-                $(".pay-cycle li").click(function() {
+                $(".pay-cycle li").click(function () {
                     var i = $(this).index();
                     $(this).addClass("active").siblings().removeClass("active");
                     $(".payment-con > div").eq(i).show().siblings().hide();
@@ -3826,19 +3825,19 @@ bt.soft = {
             }
         })
     },
-    get_index_list: function(callback) {
-        bt.send('get_index_list', 'plugin/get_index_list', {}, function(rdata) {
+    get_index_list: function (callback) {
+        bt.send('get_index_list', 'plugin/get_index_list', {}, function (rdata) {
             if (callback) callback(rdata);
         })
     },
-    set_sort_index: function(data, callback) {
+    set_sort_index: function (data, callback) {
         var loading = bt.load();
-        bt.send('sort_index', 'plugin/sort_index', { ssort: data }, function(rdata) {
+        bt.send('sort_index', 'plugin/sort_index', { ssort: data }, function (rdata) {
             loading.close();
             if (callback) callback(rdata);
         })
     },
-    get_soft_list: function(p, type, search, callback) {
+    get_soft_list: function (p, type, search, callback) {
         if (p == undefined) p = 1;
         if (type == undefined) type = 0;
         if (search == undefined) search = '';
@@ -3852,26 +3851,26 @@ bt.soft = {
             p = p.split("not_load")[0];
         }
 
-        bt.send('get_soft_list', 'plugin/get_soft_list', { p: p, type: type, tojs: 'soft.get_list', force: force, query: search }, function(rdata) {
+        bt.send('get_soft_list', 'plugin/get_soft_list', { p: p, type: type, tojs: 'soft.get_list', force: force, query: search }, function (rdata) {
             if (loading) loading.close();
             bt.set_cookie('force', 0);
             if (callback) callback(rdata);
         })
     },
-    to_index: function(name, callback) {
+    to_index: function (name, callback) {
         var status = $("#index_" + name).prop("checked") ? "0" : "1";
         if (name.indexOf('php-') >= 0) {
             var verinfo = name.replace(/\./, "");
             status = $("#index_" + verinfo).prop("checked") ? "0" : "1";
         }
         if (status == 1) {
-            bt.send('add_index', 'plugin/add_index', { sName: name }, function(rdata) {
+            bt.send('add_index', 'plugin/add_index', { sName: name }, function (rdata) {
                 rdata.time = 1000;
                 if (!rdata.status) bt.msg(rdata);
                 if (callback) callback(rdata);
             })
         } else {
-            bt.send('remove_index', 'plugin/remove_index', { sName: name }, function(rdata) {
+            bt.send('remove_index', 'plugin/remove_index', { sName: name }, function (rdata) {
                 rdata.time = 1000;
                 if (!rdata.status) bt.msg(rdata);
                 if (callback) callback(rdata);
@@ -4029,21 +4028,21 @@ bt.soft = {
         })
     },
     //遍历数组和对象
-	each:function(obj, fn){
-		var key,that = this;
-		if(typeof fn !== 'function') return that;
-		obj = obj || [];
-		if(obj.constructor === Object){
-			for(key in obj){
-			if(fn.call(obj[key], key, obj[key])) break;
-			}
-		} else {
-			for(key = 0; key < obj.length; key++){
-			if(fn.call(obj[key], key, obj[key])) break;
-			}
-		}
-		return that;
-	},
+    each: function (obj, fn) {
+        var key, that = this;
+        if (typeof fn !== 'function') return that;
+        obj = obj || [];
+        if (obj.constructor === Object) {
+            for (key in obj) {
+                if (fn.call(obj[key], key, obj[key])) break;
+            }
+        } else {
+            for (key = 0; key < obj.length; key++) {
+                if (fn.call(obj[key], key, obj[key])) break;
+            }
+        }
+        return that;
+    },
     del_make_args: function (name, args_name) {
         name = bt.soft.get_name(name);
         bt.confirm({ msg: 'Confirm delete[' + name + ':' + args_name + ']module？', title: 'Delete[' + name + ':' + args_name + ']module!' }, function () {
@@ -4095,9 +4094,9 @@ bt.soft = {
         }
         return name
     },
-    install: function(name) {
+    install: function (name) {
         _this = this;
-        _this.get_soft_find(name, function(rdata) {
+        _this.get_soft_find(name, function (rdata) {
             var arrs = ['apache', 'nginx', 'mysql'];
             if ($.inArray(name, arrs) >= 0 || name.indexOf('php-') >= 0) {
                 var SelectVersion = '',
@@ -4141,7 +4140,7 @@ bt.soft = {
 				    </div>"
                 });
 
-                $('.fangshi input').click(function() {
+                $('.fangshi input').click(function () {
                     $(this).attr('checked', 'checked').parent().siblings().find("input").removeAttr('checked');
                     var type = $('.fangshi input:eq(0)').prop("checked") ? '0' : '1';
                     if (type === '1') {
@@ -4155,7 +4154,7 @@ bt.soft = {
                     }
                 });
 
-                $("#bi-btn").click(function() {
+                $("#bi-btn").click(function () {
                     loadOpen.close();
                     var info = $("#SelectVersion").val().toLowerCase();
                     name = info.split(" ")[0];
@@ -4186,7 +4185,7 @@ bt.soft = {
 				        </div>\
 				    </div>"
                 })
-                $("#bi-btn").click(function() {
+                $("#bi-btn").click(function () {
                     loadOpen.close();
                     var info = $("#SelectVersion").val().toLowerCase();
                     name = info.split(" ")[0];
@@ -4199,23 +4198,23 @@ bt.soft = {
         })
     },
     //显示进度
-    show_speed: function() {
+    show_speed: function () {
         bt.send('get_lines', 'ajax/get_lines', {
             num: 10,
             filename: "/tmp/panelShell.pl"
-        }, function(rdata) {
+        }, function (rdata) {
             if ($("#install_show").length < 1) return;
             if (rdata.status === true) {
                 $("#install_show").text(rdata.msg);
                 $("#install_show").scrollTop(1000000000);
             }
-            setTimeout(function() { bt.soft.show_speed(); }, 1000);
+            setTimeout(function () { bt.soft.show_speed(); }, 1000);
         });
     },
     loadT: null,
     speed_msg: "<pre style='margin-bottom: 0px;height:250px;text-align: left;background-color: #000;color: #fff;white-space: pre-wrap;' id='install_show'>[MSG]</pre>",
     //显示进度窗口
-    show_speed_window: function(msg, callback) {
+    show_speed_window: function (msg, callback) {
         bt.soft.loadT = layer.open({
             title: false,
             type: 1,
@@ -4224,22 +4223,22 @@ bt.soft = {
             area: "500px",
             offset: "30%",
             content: bt.soft.speed_msg.replace('[MSG]', msg),
-            success: function(layers, index) {
-                setTimeout(function() {
+            success: function (layers, index) {
+                setTimeout(function () {
                     bt.soft.show_speed();
                 }, 1000);
                 if (callback) callback();
             }
         });
     },
-    install_soft: function(item, version, type) { //安装单版本	
+    install_soft: function (item, version, type) { //安装单版本	
         if (type == undefined) type = 0;
         item.title = bt.replace_all(item.title, '-' + version, '');
         var msg = item.type != 5 ? lan.soft.lib_insatll_confirm.replace('{1}', item.title) : lan.get('install_confirm', [item.title, version]);
 
-        bt.confirm({ msg: msg, title: item.type != 5 ? lan.soft.lib_install : lan.soft.install_title }, function() {
-            bt.soft.show_speed_window(lan.soft.lib_install_the, function() {
-                bt.send('install_plugin', 'plugin/install_plugin', { sName: item.name, version: version, type: type }, function(rdata) {
+        bt.confirm({ msg: msg, title: item.type != 5 ? lan.soft.lib_install : lan.soft.install_title }, function () {
+            bt.soft.show_speed_window(lan.soft.lib_install_the, function () {
+                bt.send('install_plugin', 'plugin/install_plugin', { sName: item.name, version: version, type: type }, function (rdata) {
 
                     if (rdata.size) {
                         layer.close(bt.soft.loadT);
@@ -4254,7 +4253,7 @@ bt.soft = {
             })
         })
     },
-    install_other: function(data) {
+    install_other: function (data) {
         layer.closeAll();
         var loadT = layer.open({
             type: 1,
@@ -4285,14 +4284,14 @@ bt.soft = {
                     </div>'
         });
     },
-    update_soft: function(name, title, version, min_version, update_msg) {
+    update_soft: function (name, title, version, min_version, update_msg) {
         var _this = this;
         var msg = "<li>" + lan.public_backup.update_tips + "</li>";
         if (name == 'mysql') msg = "<ul style='color:red;'><li>" + lan.public_backup.db_update_tips + "</li><li>" + lan.public_backup.update_tips1 + "</li><li>" + lan.public_backup.update_tips + "</li></ul>";
         if (update_msg) msg += '<div style="    margin-top: 10px;"><span style="font-size: 14px;font-weight: 900;">Update description: </span><hr style="margin-top: 5px; margin-bottom: 5px;" /><pre>' + update_msg.replace(/(_bt_)/g, "\n") + '</pre><hr style="margin-top: -5px; margin-bottom: -5px;" /></div>';
-        bt.show_confirm(lan.public_backup.update + '[' + title + ']', lan.public_backup.update_tips2.replace('{1}', title).replace('{2}', version).replace('{3}', min_version), function() {
-            bt.soft.show_speed_window('Updating to [' + title + '-' + version + '.' + min_version + '],Please wait...', function() {
-                bt.send('install_plugin', 'plugin/install_plugin', { sName: name, version: version, upgrade: version }, function(rdata) {
+        bt.show_confirm(lan.public_backup.update + '[' + title + ']', lan.public_backup.update_tips2.replace('{1}', title).replace('{2}', version).replace('{3}', min_version), function () {
+            bt.soft.show_speed_window('Updating to [' + title + '-' + version + '.' + min_version + '],Please wait...', function () {
+                bt.send('install_plugin', 'plugin/install_plugin', { sName: name, version: version, upgrade: version }, function (rdata) {
                     if (rdata.size) {
                         _this.install_other(rdata)
                         return;
@@ -4306,9 +4305,9 @@ bt.soft = {
             })
         }, msg);
     },
-    un_install: function(name) {
+    un_install: function (name) {
         var _this = this;
-        _this.get_soft_find(name, function(item) {
+        _this.get_soft_find(name, function (item) {
             var version = '';
             for (var i = 0; i < item.versions.length; i++) {
                 if (item.versions[i].setup && bt.contains(item.version, item.versions[i].m_version)) {
@@ -4318,9 +4317,9 @@ bt.soft = {
                 }
             }
             var title = bt.replace_all(item.title, '-' + version, '');
-            bt.confirm({ msg: lan.soft.uninstall_confirm.replace('{1}', title).replace('{2}', version), title: lan.soft.uninstall, icon: 3, closeBtn: 2 }, function() {
+            bt.confirm({ msg: lan.soft.uninstall_confirm.replace('{1}', title).replace('{2}', version), title: lan.soft.uninstall, icon: 3, closeBtn: 2 }, function () {
                 var loadT = bt.load(lan.soft.lib_uninstall_the);
-                bt.send('uninstall_plugin', 'plugin/uninstall_plugin', { sName: name, version: version }, function(rdata) {
+                bt.send('uninstall_plugin', 'plugin/uninstall_plugin', { sName: name, version: version }, function (rdata) {
                     loadT.close();
                     bt.pub.get_task_count();
                     if (soft) soft.get_list();
@@ -4330,14 +4329,14 @@ bt.soft = {
         })
 
     },
-    get_soft_find: function(name, callback) {
+    get_soft_find: function (name, callback) {
         var loadT = bt.load();
-        bt.send('get_soft_find', 'plugin/get_soft_find', { sName: name }, function(rdata) {
+        bt.send('get_soft_find', 'plugin/get_soft_find', { sName: name }, function (rdata) {
             loadT.close();
             if (callback) callback(rdata);
         })
     },
-    get_config_path: function(name) {
+    get_config_path: function (name) {
         var fileName = '';
         if (bt.os == 'Linux') {
             switch (name) {
@@ -4373,9 +4372,9 @@ bt.soft = {
         }
         return fileName
     },
-    set_lib_config: function(name, title) {
+    set_lib_config: function (name, title) {
         var loadT = bt.load(lan.soft.menu_temp);
-        bt.send('getConfigHtml', 'plugin/getConfigHtml', { name: name }, function(rhtml) {
+        bt.send('getConfigHtml', 'plugin/getConfigHtml', { name: name }, function (rhtml) {
             loadT.close();
             if (rhtml.status === false) {
                 if (name == "phpguard") {
@@ -4399,19 +4398,19 @@ bt.soft = {
                 rtmp = rhtml.split('<script type="text/javascript">')
             }
             rcode = rtmp[1].replace('</script>','');
-			setTimeout(function(){
-				if(!!(window.attachEvent && !window.opera)){ 
+            setTimeout(function(){
+                if(!!(window.attachEvent && !window.opera)){ 
                     execScript(rcode); 
-				}else{
+                }else{
                     window.eval(rcode);
-				}
-			},200)*/
+                }
+            },200)*/
         });
     },
-    save_config: function(fileName, data) {
+    save_config: function (fileName, data) {
         var encoding = 'utf-8';
         var loadT = bt.load(lan.soft.the_save);
-        bt.send('SaveFileBody', 'files/SaveFileBody', { data: data, path: fileName, encoding: encoding }, function(rdata) {
+        bt.send('SaveFileBody', 'files/SaveFileBody', { data: data, path: fileName, encoding: encoding }, function (rdata) {
             loadT.close();
             bt.msg(rdata);
         })
@@ -4421,41 +4420,41 @@ bt.soft = {
 
 
 bt.database = {
-    get_list: function(page, search, callback) {
+    get_list: function (page, search, callback) {
         if (page == undefined) page = 1
         search = search == undefined ? '' : search;
         var order = bt.get_cookie('order') ? '&order=' + bt.get_cookie('order') : '';
 
         var data = 'tojs=database.get_list&table=databases&limit=15&p=' + page + '&search=' + search + order;
-        bt.pub.get_data(data, function(rdata) {
+        bt.pub.get_data(data, function (rdata) {
             if (callback) callback(rdata);
         })
     },
-    get_root_pass: function(callback) {
-        bt.send('getKey', 'data/getKey', { table: 'config', key: 'mysql_root', id: 1 }, function(rdata) {
+    get_root_pass: function (callback) {
+        bt.send('getKey', 'data/getKey', { table: 'config', key: 'mysql_root', id: 1 }, function (rdata) {
             if (callback) callback(rdata);
         })
     },
-    set_root: function() {
-        bt.database.get_root_pass(function(rdata) {
+    set_root: function () {
+        bt.database.get_root_pass(function (rdata) {
             var bs = bt.render_form(bt.data.database.root);
             $('.password' + bs).val(rdata);
         })
     },
-    set_data_pass: function(callback) {
-        var bs = bt.render_form(bt.data.database.data_pass, function(rdata) {
+    set_data_pass: function (callback) {
+        var bs = bt.render_form(bt.data.database.data_pass, function (rdata) {
             if (callback) callback(rdata);
         });
         return bs;
     },
-    set_data_access: function(name) {
+    set_data_access: function (name) {
         var loading = bt.load();
-        bt.send('GetDatabaseAccess', 'database/GetDatabaseAccess', { name: name }, function(rdata) {
+        bt.send('GetDatabaseAccess', 'database/GetDatabaseAccess', { name: name }, function (rdata) {
             loading.close();
             var bs = bt.render_form(bt.data.database.data_access);
             $('.name' + bs).val(name);
-            $('.bt-form .line .tname').css('width','125px');
-            setTimeout(function() {
+            $('.bt-form .line .tname').css('width', '125px');
+            setTimeout(function () {
                 if (rdata.msg.permission == '127.0.0.1' || rdata.msg.permission == '%') {
                     $('.dataAccess' + bs).val(rdata.msg.permission)
                 } else {
@@ -4463,7 +4462,7 @@ bt.database = {
                     $('#dataAccess_subid').val(rdata.msg.permission);
                 }
                 $("#force_ssl").prop('checked', rdata.msg.ssl ? true : false);
-                $("#force_ssl").change(function() {
+                $("#force_ssl").change(function () {
                     var open_type = $("#force_ssl").prop('checked');
                     if (open_type) {
                         var t = '<div>\
@@ -4478,11 +4477,11 @@ bt.database = {
                             area: '561px',
                             closeBtn: 2,
                             title: 'Confirm Open?'
-                        }, function() {
-                            $("#force_ssl").prop('checked',true);
+                        }, function () {
+                            $("#force_ssl").prop('checked', true);
                             layer.close(loadP);
-                        }, function() {
-                            $("#force_ssl").prop('checked',false);
+                        }, function () {
+                            $("#force_ssl").prop('checked', false);
                             layer.close(loadP);
                         });
                     }
@@ -4490,92 +4489,92 @@ bt.database = {
             }, 100)
         })
     },
-    add_database: function(callback) {
+    add_database: function (callback) {
         bt.data.database.data_add.list[2].items[0].value = bt.get_random(16);
-        bt.render_form(bt.data.database.data_add, function(rdata) {
+        bt.render_form(bt.data.database.data_add, function (rdata) {
             if (callback) callback(rdata);
         });
     },
-    del_database: function(data, callback) {
+    del_database: function (data, callback) {
         var loadT = bt.load(lan.get('del_all_task_the', [data.name]));
-        bt.send('DeleteDatabase', 'database/DeleteDatabase', data, function(rdata) {
+        bt.send('DeleteDatabase', 'database/DeleteDatabase', data, function (rdata) {
             loadT.close();
             bt.msg(rdata);
             if (callback) callback(rdata);
         })
     },
-    sync_database: function(callback) {
+    sync_database: function (callback) {
         var loadT = bt.load(lan.database.sync_the);
-        bt.send('SyncGetDatabases', 'database/SyncGetDatabases', {}, function(rdata) {
+        bt.send('SyncGetDatabases', 'database/SyncGetDatabases', {}, function (rdata) {
             loadT.close();
             if (callback) callback(rdata);
             bt.msg(rdata);
         });
     },
-    sync_to_database: function(data, callback) {
+    sync_to_database: function (data, callback) {
         var loadT = bt.load(lan.database.sync_the);
-        bt.send('SyncToDatabases', 'database/SyncToDatabases', data, function(rdata) {
+        bt.send('SyncToDatabases', 'database/SyncToDatabases', data, function (rdata) {
             loadT.close();
             if (callback) callback(rdata);
             bt.msg(rdata);
         })
     },
-    open_phpmyadmin:function(name,username,password){
+    open_phpmyadmin: function (name, username, password) {
 
-		if($("#toPHPMyAdmin").attr('action').indexOf('phpmyadmin') == -1){
-		layer.msg(lan.database.phpmyadmin_err,{icon:2,shade: [0.3, '#000']})
-		setTimeout(function(){ window.location.href = '/soft'; },3000);
-			return;
-		}
-		$("#toPHPMyAdmin").attr('action',$("#toPHPMyAdmin").attr('public-data'))
-		var murl = $("#toPHPMyAdmin").attr('action');
-		$("#pma_username").val(username);
-		$("#pma_password").val(password);
-		$("#db").val(name);
-		layer.msg(lan.database.phpmyadmin,{icon:16,shade: [0.3, '#000'],time:1000});
-		setTimeout(function(){
-			$("#toPHPMyAdmin").submit();
-			layer.closeAll();
-		},200);
-	},
-	submit_phpmyadmin: function(name,username,password,pub){
-		if(pub === true){
-			$("#toPHPMyAdmin").attr('action',$("#toPHPMyAdmin").attr('public-data'))
-		}else{
-			$("#toPHPMyAdmin").attr('action','/phpmyadmin/index.php')
-		}
-		var murl = $("#toPHPMyAdmin").attr('action');
-		$("#pma_username").val(username);
-		$("#pma_password").val(password);
-		$("#db").val(name);
-		layer.msg(lan.database.phpmyadmin,{icon:16,shade: [0.3, '#000'],time:1000});
-		setTimeout(function(){
-			$("#toPHPMyAdmin").submit();
-			layer.closeAll();
-		},200);
-	},
-    input_sql: function(fileName, dataName) {
-        bt.confirm({ msg: lan.database.input_confirm, title: lan.database.input_title }, function(index) {
+        if ($("#toPHPMyAdmin").attr('action').indexOf('phpmyadmin') == -1) {
+            layer.msg(lan.database.phpmyadmin_err, { icon: 2, shade: [0.3, '#000'] })
+            setTimeout(function () { window.location.href = '/soft'; }, 3000);
+            return;
+        }
+        $("#toPHPMyAdmin").attr('action', $("#toPHPMyAdmin").attr('public-data'))
+        var murl = $("#toPHPMyAdmin").attr('action');
+        $("#pma_username").val(username);
+        $("#pma_password").val(password);
+        $("#db").val(name);
+        layer.msg(lan.database.phpmyadmin, { icon: 16, shade: [0.3, '#000'], time: 1000 });
+        setTimeout(function () {
+            $("#toPHPMyAdmin").submit();
+            layer.closeAll();
+        }, 200);
+    },
+    submit_phpmyadmin: function (name, username, password, pub) {
+        if (pub === true) {
+            $("#toPHPMyAdmin").attr('action', $("#toPHPMyAdmin").attr('public-data'))
+        } else {
+            $("#toPHPMyAdmin").attr('action', '/phpmyadmin/index.php')
+        }
+        var murl = $("#toPHPMyAdmin").attr('action');
+        $("#pma_username").val(username);
+        $("#pma_password").val(password);
+        $("#db").val(name);
+        layer.msg(lan.database.phpmyadmin, { icon: 16, shade: [0.3, '#000'], time: 1000 });
+        setTimeout(function () {
+            $("#toPHPMyAdmin").submit();
+            layer.closeAll();
+        }, 200);
+    },
+    input_sql: function (fileName, dataName) {
+        bt.confirm({ msg: lan.database.input_confirm, title: lan.database.input_title }, function (index) {
             var loading = bt.load(lan.database.input_the);
-            bt.send('InputSql', 'database/InputSql', { file: fileName, name: dataName }, function(rdata) {
+            bt.send('InputSql', 'database/InputSql', { file: fileName, name: dataName }, function (rdata) {
                 loading.close();
                 bt.msg(rdata);
             })
         });
     },
-    backup_data: function(id, dataname, callback) {
+    backup_data: function (id, dataname, callback) {
         var loadT = bt.load(lan.database.backup_the);
-        bt.send('ToBackup', 'database/ToBackup', { id: id }, function(rdata) {
+        bt.send('ToBackup', 'database/ToBackup', { id: id }, function (rdata) {
             loadT.close();
             bt.msg(rdata);
             if (callback) callback(rdata);
         });
 
     },
-    del_backup: function(id, dataid, dataname) {
-        bt.confirm({ msg: lan.database.backup_del_confirm, title: lan.database.backup_del_title }, function(index) {
+    del_backup: function (id, dataid, dataname) {
+        bt.confirm({ msg: lan.database.backup_del_confirm, title: lan.database.backup_del_title }, function (index) {
             var loadT = bt.load();
-            bt.send('DelBackup', 'database/DelBackup', { id: id }, function(frdata) {
+            bt.send('DelBackup', 'database/DelBackup', { id: id }, function (frdata) {
                 loadT.close();
                 if (frdata.status) {
                     if (database) database.database_detail(dataid, dataname);
@@ -4586,411 +4585,411 @@ bt.database = {
     }
 }
 
-bt.send('get_config', 'config/get_config', {}, function(rdata) {
+bt.send('get_config', 'config/get_config', {}, function (rdata) {
     bt.config = rdata;
 })
 
 bt.plugin = {
-    get_plugin_byhtml: function(name, callback) {
-        bt.send('getConfigHtml', 'plugin/getConfigHtml', { name: name }, function(rdata) {
+    get_plugin_byhtml: function (name, callback) {
+        bt.send('getConfigHtml', 'plugin/getConfigHtml', { name: name }, function (rdata) {
             if (callback) callback(rdata);
         });
     },
-    get_firewall_state: function(callback) {
+    get_firewall_state: function (callback) {
         var typename = getCookie('serverType');
         var name = 'btwaf_httpd';
         if (typename == "nginx") name = 'btwaf'
-        bt.send('a', 'plugin/a', { name: name, s: 'get_total_all' }, function(rdata) {
+        bt.send('a', 'plugin/a', { name: name, s: 'get_total_all' }, function (rdata) {
             if (callback) callback(rdata);
         })
     }
 }
 
 bt.site = {
-    get_list: function(page, search, type, callback) {
+    get_list: function (page, search, type, callback) {
         if (page == undefined) page = 1
         type = type == undefined ? '&type=-1' : ('&type=' + type);
         search = search == undefined ? '' : search;
         var order = bt.get_cookie('order') ? '&order=' + bt.get_cookie('order') : '';
         var data = 'tojs=site.get_list&table=sites&limit=15&p=' + page + '&search=' + search + order + type;
-        bt.pub.get_data(data, function(rdata) {
+        bt.pub.get_data(data, function (rdata) {
             if (callback) callback(rdata);
         })
     },
-    get_domains: function(id, callback) {
+    get_domains: function (id, callback) {
         var data = 'table=domain&list=True&search=' + id;
-        bt.pub.get_data(data, function(rdata) {
+        bt.pub.get_data(data, function (rdata) {
             if (callback) callback(rdata);
         }, 1)
     },
-    get_type: function(callback) {
-        bt.send('get_site_types', 'site/get_site_types', '', function(rdata) {
+    get_type: function (callback) {
+        bt.send('get_site_types', 'site/get_site_types', '', function (rdata) {
             if (callback) callback(rdata);
         });
     },
-    add_type: function(name, callback) {
-        bt.send('add_site_type', 'site/add_site_type', { name: name }, function(rdata) {
+    add_type: function (name, callback) {
+        bt.send('add_site_type', 'site/add_site_type', { name: name }, function (rdata) {
             if (callback) callback(rdata);
         });
     },
-    edit_type: function(data, callback) {
-        bt.send('modify_site_type_name', 'site/modify_site_type_name', { id: data.id, name: data.name }, function(rdata) {
+    edit_type: function (data, callback) {
+        bt.send('modify_site_type_name', 'site/modify_site_type_name', { id: data.id, name: data.name }, function (rdata) {
             if (callback) callback(rdata);
         });
     },
-    del_type: function(id, callback) {
-        bt.send('remove_site_type', 'site/remove_site_type', { id: id }, function(rdata) {
+    del_type: function (id, callback) {
+        bt.send('remove_site_type', 'site/remove_site_type', { id: id }, function (rdata) {
             if (callback) callback(rdata);
         });
     },
-    set_site_type: function(data, callback) {
-        bt.send('set_site_type', 'site/set_site_type', { id: data.id, site_ids: data.site_array }, function(rdata) {
+    set_site_type: function (data, callback) {
+        bt.send('set_site_type', 'site/set_site_type', { id: data.id, site_ids: data.site_array }, function (rdata) {
             if (callback) callback(rdata);
         });
     },
-    get_site_domains: function(id, callback) {
+    get_site_domains: function (id, callback) {
         var loading = bt.load();
-        bt.send('GetSiteDomains', 'site/GetSiteDomains', { id: id }, function(rdata) {
+        bt.send('GetSiteDomains', 'site/GetSiteDomains', { id: id }, function (rdata) {
             loading.close();
             if (callback) callback(rdata);
         })
     },
-    add_domains: function(id, webname, domains, callback) {
+    add_domains: function (id, webname, domains, callback) {
         var loading = bt.load();
-        bt.send('AddDomain', 'site/AddDomain', { domain: domains, webname: webname, id: id }, function(rdata) {
+        bt.send('AddDomain', 'site/AddDomain', { domain: domains, webname: webname, id: id }, function (rdata) {
             loading.close();
             if (callback) callback(rdata);
             bt.msg(rdata);
         })
     },
-    del_domain: function(siteId, siteName, domain, port, callback) {
+    del_domain: function (siteId, siteName, domain, port, callback) {
         var loading = bt.load();
-        bt.send('DelDomain', 'site/DelDomain', { id: siteId, webname: siteName, domain: domain, port: port }, function(rdata) {
+        bt.send('DelDomain', 'site/DelDomain', { id: siteId, webname: siteName, domain: domain, port: port }, function (rdata) {
             loading.close();
             if (callback) callback(rdata);
             bt.msg(rdata);
         })
     },
-    get_dirbind: function(id, callback) {
+    get_dirbind: function (id, callback) {
         var loading = bt.load();
-        bt.send('GetDirBinding', 'site/GetDirBinding', { id: id }, function(rdata) {
+        bt.send('GetDirBinding', 'site/GetDirBinding', { id: id }, function (rdata) {
             loading.close();
             if (callback) callback(rdata);
         })
     },
-    add_dirbind: function(id, domain, dirName, callback) {
+    add_dirbind: function (id, domain, dirName, callback) {
         var loading = bt.load();
-        bt.send('AddDirBinding', 'site/AddDirBinding', { id: id, domain: domain, dirName: dirName }, function(rdata) {
+        bt.send('AddDirBinding', 'site/AddDirBinding', { id: id, domain: domain, dirName: dirName }, function (rdata) {
             loading.close();
             if (callback) callback(rdata);
         })
     },
-    del_dirbind: function(id, webname, callback) {
+    del_dirbind: function (id, webname, callback) {
         var loading = bt.load();
-        bt.send('DelDirBinding', 'site/DelDirBinding', { id: id , webname: webname}, function(rdata) {
+        bt.send('DelDirBinding', 'site/DelDirBinding', { id: id, webname: webname }, function (rdata) {
             loading.close();
             if (callback) callback(rdata);
         })
     },
-    get_dir_rewrite: function(data, callback) {
+    get_dir_rewrite: function (data, callback) {
         var loading = bt.load();
-        bt.send('GetDirRewrite', 'site/GetDirRewrite', data, function(rdata) {
+        bt.send('GetDirRewrite', 'site/GetDirRewrite', data, function (rdata) {
             loading.close();
             if (callback) callback(rdata);
         })
     },
-    get_site_path: function(id, callback) {
-        bt.send('getKey', 'data/getKey', { table: 'sites', key: 'path', id: id }, function(rdata) {
+    get_site_path: function (id, callback) {
+        bt.send('getKey', 'data/getKey', { table: 'sites', key: 'path', id: id }, function (rdata) {
             if (callback) callback(rdata);
         })
     },
-    get_dir_userini: function(id, path, callback) {
-        bt.send('GetDirUserINI', 'site/GetDirUserINI', { id: id, path: path }, function(rdata) {
+    get_dir_userini: function (id, path, callback) {
+        bt.send('GetDirUserINI', 'site/GetDirUserINI', { id: id, path: path }, function (rdata) {
             if (callback) callback(rdata);
         })
     },
-    set_dir_userini: function(path, id, callback) {
+    set_dir_userini: function (path, id, callback) {
         var loading = bt.load();
-        bt.send('SetDirUserINI', 'site/SetDirUserINI', { path: path, id: id }, function(rdata) {
+        bt.send('SetDirUserINI', 'site/SetDirUserINI', { path: path, id: id }, function (rdata) {
             loading.close();
             if (callback) callback(rdata);
         })
     },
-    set_logs_status: function(id, callback) {
+    set_logs_status: function (id, callback) {
         var loading = bt.load();
-        bt.send('logsOpen', 'site/logsOpen', { id: id }, function(rdata) {
+        bt.send('logsOpen', 'site/logsOpen', { id: id }, function (rdata) {
             loading.close();
             if (callback) callback(rdata);
         })
     },
-    set_site_runpath: function(id, path, callback) {
+    set_site_runpath: function (id, path, callback) {
         var loading = bt.load();
-        bt.send('SetSiteRunPath', 'site/SetSiteRunPath', { id: id, runPath: path }, function(rdata) {
+        bt.send('SetSiteRunPath', 'site/SetSiteRunPath', { id: id, runPath: path }, function (rdata) {
             loading.close();
             if (callback) callback(rdata);
         })
     },
-    set_site_path: function(id, path, callback) {
+    set_site_path: function (id, path, callback) {
         var loading = bt.load();
-        bt.send('SetPath', 'site/SetPath', { id: id, path: path }, function(rdata) {
+        bt.send('SetPath', 'site/SetPath', { id: id, path: path }, function (rdata) {
             loading.close();
             if (callback) callback(rdata);
         })
     },
-    set_site_path_new: function(id, path, name, callback) {
+    set_site_path_new: function (id, path, name, callback) {
         var loading = bt.load();
-        bt.send('SetPath', 'site/SetPath', { id: id, path: path , name:name }, function(rdata) {
+        bt.send('SetPath', 'site/SetPath', { id: id, path: path, name: name }, function (rdata) {
             loading.close();
             if (callback) callback(rdata);
         })
     },
-    set_site_pwd: function(id, username, password, callback) {
+    set_site_pwd: function (id, username, password, callback) {
         var loading = bt.load();
-        bt.send('SetHasPwd', 'site/SetHasPwd', { id: id, username: username, password: password }, function(rdata) {
+        bt.send('SetHasPwd', 'site/SetHasPwd', { id: id, username: username, password: password }, function (rdata) {
             loading.close();
             if (callback) callback(rdata);
         })
     },
-    close_site_pwd: function(id, callback) {
+    close_site_pwd: function (id, callback) {
         var loading = bt.load();
-        bt.send('SetHasPwd', 'site/CloseHasPwd', { id: id }, function(rdata) {
+        bt.send('SetHasPwd', 'site/CloseHasPwd', { id: id }, function (rdata) {
             loading.close();
             if (callback) callback(rdata);
         })
     },
-    get_limitnet: function(id, callback) {
-        bt.send('GetLimitNet', 'site/GetLimitNet', { id: id }, function(rdata) {
+    get_limitnet: function (id, callback) {
+        bt.send('GetLimitNet', 'site/GetLimitNet', { id: id }, function (rdata) {
             if (callback) callback(rdata);
         })
     },
-    set_limitnet: function(id, perserver, perip, limit_rate, callback) {
+    set_limitnet: function (id, perserver, perip, limit_rate, callback) {
         var loading = bt.load();
-        bt.send('SetLimitNet', 'site/SetLimitNet', { id: id, perserver: perserver, perip: perip, limit_rate: limit_rate }, function(rdata) {
+        bt.send('SetLimitNet', 'site/SetLimitNet', { id: id, perserver: perserver, perip: perip, limit_rate: limit_rate }, function (rdata) {
             loading.close();
             if (callback) callback(rdata);
         })
     },
-    close_limitnet: function(id, callback) {
+    close_limitnet: function (id, callback) {
         var loading = bt.load();
-        bt.send('CloseLimitNet', 'site/CloseLimitNet', { id: id }, function(rdata) {
+        bt.send('CloseLimitNet', 'site/CloseLimitNet', { id: id }, function (rdata) {
             loading.close();
             if (callback) callback(rdata);
         })
     },
-    get_rewrite_list: function(siteName, callback) {
-        bt.send('GetRewriteList', 'site/GetRewriteList', { siteName: siteName }, function(rdata) {
+    get_rewrite_list: function (siteName, callback) {
+        bt.send('GetRewriteList', 'site/GetRewriteList', { siteName: siteName }, function (rdata) {
             if (callback) callback(rdata);
         })
     },
-    set_rewrite_tel: function(name, data, callback) {
+    set_rewrite_tel: function (name, data, callback) {
         var loading = bt.load(lan.site.saving_txt);
-        bt.send('SetRewriteTel', 'site/SetRewriteTel', { name: name, data: data }, function(rdata) {
+        bt.send('SetRewriteTel', 'site/SetRewriteTel', { name: name, data: data }, function (rdata) {
             loading.close();
             if (callback) callback(rdata);
         })
     },
-    get_index: function(id, callback) {
-        bt.send('GetIndex', 'site/GetIndex', { id: id }, function(rdata) {
+    get_index: function (id, callback) {
+        bt.send('GetIndex', 'site/GetIndex', { id: id }, function (rdata) {
             if (callback) callback(rdata);
         })
     },
-    set_index: function(id, index, callback) {
+    set_index: function (id, index, callback) {
         var loading = bt.load();
-        bt.send('SetIndex', 'site/SetIndex', { id: id, Index: index }, function(rdata) {
+        bt.send('SetIndex', 'site/SetIndex', { id: id, Index: index }, function (rdata) {
             loading.close();
             if (callback) callback(rdata);
         })
     },
-    get_site_config: function(siteName, callback) {
+    get_site_config: function (siteName, callback) {
         if (bt.os == 'Linux') {
             var sPath = '/www/server/panel/vhost/' + bt.get_cookie('serverType') + '/' + siteName + '.conf';
-            bt.files.get_file_body(sPath, function(rdata) {
+            bt.files.get_file_body(sPath, function (rdata) {
                 if (callback) callback(rdata);
             })
         }
     },
-    set_site_config: function(siteName, data, encoding, callback) {
+    set_site_config: function (siteName, data, encoding, callback) {
         var loading = bt.load(lan.site.saving_txt);
         if (bt.os == 'Linux') {
             var sPath = '/www/server/panel/vhost/' + bt.get_cookie('serverType') + '/' + siteName + '.conf';
-            bt.files.set_file_body(sPath, data, 'utf-8', function(rdata) {
+            bt.files.set_file_body(sPath, data, 'utf-8', function (rdata) {
                 loading.close();
                 if (callback) callback(rdata);
             })
         }
     },
-    set_phpversion: function(siteName, version, callback) {
+    set_phpversion: function (siteName, version, callback) {
         var loading = bt.load();
-        bt.send('SetPHPVersion', 'site/SetPHPVersion', { siteName: siteName, version: version }, function(rdata) {
+        bt.send('SetPHPVersion', 'site/SetPHPVersion', { siteName: siteName, version: version }, function (rdata) {
             loading.close();
             if (callback) callback(rdata);
         })
     },
     // 重定向列表
-    get_redirect_list: function(name, callback) {
+    get_redirect_list: function (name, callback) {
         var loadT = bt.load(lan.site.the_msg);
-        bt.send('GetRedirectList', 'site/GetRedirectList', { sitename: name }, function(rdata) {
+        bt.send('GetRedirectList', 'site/GetRedirectList', { sitename: name }, function (rdata) {
             loadT.close();
             if (callback) callback(rdata);
         });
     },
     // 重定向列表
-    get_redirect_list: function(name, callback) {
+    get_redirect_list: function (name, callback) {
         var loadT = layer.load();
-        bt.send('GetRedirectList', 'site/GetRedirectList', { sitename: name }, function(rdata) {
+        bt.send('GetRedirectList', 'site/GetRedirectList', { sitename: name }, function (rdata) {
             layer.close(loadT);
             if (callback) callback(rdata);
         });
     },
-    create_redirect: function(obj, callback) {
+    create_redirect: function (obj, callback) {
         var loadT = bt.load(lan.site.the_msg);
-        bt.send('CreateRedirect', 'site/CreateRedirect', obj, function(rdata) {
+        bt.send('CreateRedirect', 'site/CreateRedirect', obj, function (rdata) {
             loadT.close();
             if (callback) callback(rdata);
         });
     },
-    modify_redirect: function(obj, callback) {
+    modify_redirect: function (obj, callback) {
         var loadT = bt.load(lan.site.the_msg);
-        bt.send('ModifyRedirect', 'site/ModifyRedirect', obj, function(rdata) {
+        bt.send('ModifyRedirect', 'site/ModifyRedirect', obj, function (rdata) {
             loadT.close();
             if (callback) callback(rdata);
         });
     },
-    remove_redirect: function(sitename, redirectname, callback) {
-        bt.show_confirm(lan.public_backup.del_rep + '[' + redirectname + ']', lan.public_backup.sure_del_rep, function() {
+    remove_redirect: function (sitename, redirectname, callback) {
+        bt.show_confirm(lan.public_backup.del_rep + '[' + redirectname + ']', lan.public_backup.sure_del_rep, function () {
             var loadT = bt.load(lan.site.the_msg);
-            bt.send('DeleteRedirect', 'site/DeleteRedirect', { sitename: sitename, redirectname: redirectname }, function(rdata) {
+            bt.send('DeleteRedirect', 'site/DeleteRedirect', { sitename: sitename, redirectname: redirectname }, function (rdata) {
                 loadT.close();
                 if (callback) callback(rdata);
             });
         });
     },
-    get_redirect_config: function(obj, callback) {
+    get_redirect_config: function (obj, callback) {
         var loadT = bt.load(lan.site.the_msg);
-        bt.send('GetRedirectFile', 'site/GetRedirectFile', obj, function(rdata) {
+        bt.send('GetRedirectFile', 'site/GetRedirectFile', obj, function (rdata) {
             loadT.close();
             if (callback) callback(rdata);
         });
     },
-    save_redirect_config: function(obj, callback) {
+    save_redirect_config: function (obj, callback) {
         var loadT = bt.load(lan.site.the_msg);
-        bt.send('SaveProxyFile', 'site/SaveRedirectFile', obj, function(rdata) {
+        bt.send('SaveProxyFile', 'site/SaveRedirectFile', obj, function (rdata) {
             loadT.close();
             if (callback) callback(rdata);
         });
     },
-    get_site_proxy: function(siteName, callback) {
-        bt.send('GetProxy', 'site/GetProxy', { name: siteName }, function(rdata) {
+    get_site_proxy: function (siteName, callback) {
+        bt.send('GetProxy', 'site/GetProxy', { name: siteName }, function (rdata) {
             if (callback) callback(rdata);
         })
     },
-    set_site_proxy: function(siteName, type, proxyUrl, toDomain, sub1, sub2, callback) {
+    set_site_proxy: function (siteName, type, proxyUrl, toDomain, sub1, sub2, callback) {
         var loading = bt.load();
-        bt.send('SetProxy', 'site/SetProxy', { name: siteName, type: type, proxyUrl: proxyUrl, toDomain: toDomain, sub1: sub1, sub2: sub2 }, function(rdata) {
+        bt.send('SetProxy', 'site/SetProxy', { name: siteName, type: type, proxyUrl: proxyUrl, toDomain: toDomain, sub1: sub1, sub2: sub2 }, function (rdata) {
             loading.close();
             if (callback) callback(rdata);
         })
     },
-    set_open_proxy_cache: function(siteName, callback) {
+    set_open_proxy_cache: function (siteName, callback) {
         var loading = bt.load();
-        bt.send('ProxyCache', 'site/ProxyCache', { siteName: siteName }, function(rdata) {
+        bt.send('ProxyCache', 'site/ProxyCache', { siteName: siteName }, function (rdata) {
             loading.close();
             if (callback) callback(rdata);
         })
     },
-    get_proxy_list: function(name, callback) {
+    get_proxy_list: function (name, callback) {
         var loadT = bt.load(lan.site.the_msg);
-        bt.send('GetProxyList', 'site/GetProxyList', { sitename: name }, function(rdata) {
+        bt.send('GetProxyList', 'site/GetProxyList', { sitename: name }, function (rdata) {
             loadT.close();
             if (callback) callback(rdata);
         })
     },
-    create_proxy: function(obj, callback) {
+    create_proxy: function (obj, callback) {
         var loadT = bt.load(lan.site.the_msg);
-        bt.send('CreateProxy', 'site/CreateProxy', obj, function(rdata) {
+        bt.send('CreateProxy', 'site/CreateProxy', obj, function (rdata) {
             loadT.close();
             if (callback) callback(rdata);
         });
     },
-    remove_proxy: function(sitename, proxyname, callback) {
-        bt.show_confirm(lan.public_backup.del_proxy + '[' + proxyname + ']', lan.public_backup.sure_del_proxy, function() {
+    remove_proxy: function (sitename, proxyname, callback) {
+        bt.show_confirm(lan.public_backup.del_proxy + '[' + proxyname + ']', lan.public_backup.sure_del_proxy, function () {
             var loadT = bt.load(lan.site.the_msg);
-            bt.send('RemoveProxy', 'site/RemoveProxy', { sitename: sitename, proxyname: proxyname }, function(rdata) {
+            bt.send('RemoveProxy', 'site/RemoveProxy', { sitename: sitename, proxyname: proxyname }, function (rdata) {
                 loadT.close();
                 if (callback) callback(rdata);
                 bt.msg(rdata);
             })
         })
     },
-    modify_proxy: function(obj, callback) {
+    modify_proxy: function (obj, callback) {
         var loadT = bt.load(lan.site.the_msg);
-        bt.send('ModifyProxy', '	site/ModifyProxy', obj, function(rdata) {
+        bt.send('ModifyProxy', '	site/ModifyProxy', obj, function (rdata) {
             loadT.close();
             if (callback) callback(rdata);
         });
     },
-    get_proxy_config: function(obj, callback) {
+    get_proxy_config: function (obj, callback) {
         var loadT = bt.load(lan.site.the_msg);
-        bt.send('GetProxyFile', 'site/GetProxyFile', obj, function(rdata) {
+        bt.send('GetProxyFile', 'site/GetProxyFile', obj, function (rdata) {
             loadT.close();
             if (callback) callback(rdata);
         });
     },
-    save_proxy_config: function(obj, callback) {
+    save_proxy_config: function (obj, callback) {
         var loadT = bt.load(lan.site.the_msg);
-        bt.send('SaveProxyFile', 'site/SaveProxyFile', obj, function(rdata) {
+        bt.send('SaveProxyFile', 'site/SaveProxyFile', obj, function (rdata) {
             loadT.close();
             if (callback) callback(rdata);
         });
     },
-    get_site_security: function(id, name, callback) {
-        bt.send('GetSecurity', 'site/GetSecurity', { id: id, name: name }, function(rdata) {
+    get_site_security: function (id, name, callback) {
+        bt.send('GetSecurity', 'site/GetSecurity', { id: id, name: name }, function (rdata) {
             if (callback) callback(rdata);
         })
     },
-    set_site_security: function(id, name, fix, domains, status, callback) {
+    set_site_security: function (id, name, fix, domains, status, callback) {
         var loading = bt.load(lan.site.the_msg);
-        bt.send('SetSecurity', 'site/SetSecurity', { id: id, name: name, fix: fix, domains: domains, status: status }, function(rdata) {
+        bt.send('SetSecurity', 'site/SetSecurity', { id: id, name: name, fix: fix, domains: domains, status: status }, function (rdata) {
             loading.close();
             if (callback) callback(rdata);
         })
     },
-    get_site_301: function(siteName, callback) {
-        bt.send('Get301Status', 'site/Get301Status', { siteName: siteName }, function(rdata) {
+    get_site_301: function (siteName, callback) {
+        bt.send('Get301Status', 'site/Get301Status', { siteName: siteName }, function (rdata) {
             if (callback) callback(rdata);
         })
     },
-    set_site_301: function(siteName, srcDomain, toUrl, type, callback) {
+    set_site_301: function (siteName, srcDomain, toUrl, type, callback) {
         var loading = bt.load();
-        bt.send('Set301Status', 'site/Set301Status', { siteName: siteName, toDomain: toUrl, srcDomain: srcDomain, type: type }, function(rdata) {
+        bt.send('Set301Status', 'site/Set301Status', { siteName: siteName, toDomain: toUrl, srcDomain: srcDomain, type: type }, function (rdata) {
             loading.close();
             if (callback) callback(rdata);
         })
     },
-    set_tomcat: function(siteName, callback) {
+    set_tomcat: function (siteName, callback) {
         var loading = bt.load(lan.public.config);
-        bt.send('SetTomcat', 'site/SetTomcat', { siteName: siteName }, function(rdata) {
+        bt.send('SetTomcat', 'site/SetTomcat', { siteName: siteName }, function (rdata) {
             loading.close();
             if (callback) callback(rdata);
         })
     },
-    get_site_logs: function(siteName, callback) {
+    get_site_logs: function (siteName, callback) {
         var loading = bt.load();
-        bt.send('GetSiteLogs', 'site/GetSiteLogs', { siteName: siteName }, function(rdata) {
+        bt.send('GetSiteLogs', 'site/GetSiteLogs', { siteName: siteName }, function (rdata) {
             loading.close();
             if (rdata.status !== true) rdata.msg = '';
             if (rdata.msg == '') rdata.msg = lan.public_backup.no_log;
             if (callback) callback(rdata);
         })
     },
-    get_site_ssl: function(siteName, callback) {
+    get_site_ssl: function (siteName, callback) {
         var loadT = bt.load(lan.site.the_msg);
-        bt.send('GetSSL', 'site/GetSSL', { siteName: siteName }, function(rdata) {
+        bt.send('GetSSL', 'site/GetSSL', { siteName: siteName }, function (rdata) {
             loadT.close();
             if (callback) callback(rdata);
         });
     },
-    create_let: function(data, callback) {
+    create_let: function (data, callback) {
         var loadT = layer.open({
             title: false,
             type: 1,
@@ -4999,139 +4998,139 @@ bt.site = {
             area: "500px",
             offset: "30%",
             content: "<pre style='margin-bottom: 0px;height:250px;text-align: left;background-color: #000;color: #fff;white-space: pre-wrap;' id='create_lst'>" + lan.public_backup.preparing_for_cert + "...</pre>",
-            success: function(layers, index) {
+            success: function (layers, index) {
                 bt.site.get_let_logs();
-                bt.send('CreateLet', 'site/CreateLet', data, function(rdata) {
+                bt.send('CreateLet', 'site/CreateLet', data, function (rdata) {
                     layer.close(loadT);
                     if (callback) callback(rdata);
                 });
             }
         });
     },
-    get_let_logs: function() {
+    get_let_logs: function () {
         bt.send('get_lines', 'ajax/get_lines', {
             num: 10,
             filename: "/www/server/panel/logs/letsencrypt.log"
-        }, function(rdata) {
+        }, function (rdata) {
             if ($("#create_lst").text() === "") return;
             if (rdata.status === true) {
                 $("#create_lst").text(rdata.msg);
                 $("#create_lst").scrollTop($("#create_lst")[0].scrollHeight);
             }
-            setTimeout(function() { bt.site.get_let_logs(); }, 1000);
+            setTimeout(function () { bt.site.get_let_logs(); }, 1000);
         });
     },
-    get_dns_api: function(callback) {
+    get_dns_api: function (callback) {
         var loadT = bt.load();
-        bt.send('GetDnsApi', 'site/GetDnsApi', {}, function(rdata) {
+        bt.send('GetDnsApi', 'site/GetDnsApi', {}, function (rdata) {
             loadT.close();
             if (callback) callback(rdata);
         })
     },
-    set_dns_api: function(data, callback) {
+    set_dns_api: function (data, callback) {
         var loadT = bt.load();
-        bt.send('SetDnsApi', 'site/SetDnsApi', data, function(rdata) {
+        bt.send('SetDnsApi', 'site/SetDnsApi', data, function (rdata) {
             loadT.close();
             if (callback) callback(rdata);
         })
     },
-    verify_domain: function(partnerOrderId, siteName, callback) {
+    verify_domain: function (partnerOrderId, siteName, callback) {
         var loadT = bt.load(lan.site.ssl_apply_2);
-        bt.send('Completed', 'ssl/Completed', { partnerOrderId: partnerOrderId, siteName: siteName }, function(rdata) {
+        bt.send('Completed', 'ssl/Completed', { partnerOrderId: partnerOrderId, siteName: siteName }, function (rdata) {
             loadT.close();
             if (callback) callback(rdata);
         })
     },
-    get_dv_ssl: function(domain, path, callback) {
+    get_dv_ssl: function (domain, path, callback) {
         var loadT = bt.load(lan.site.ssl_apply_1);
-        bt.send('GetDVSSL', 'ssl/GetDVSSL', { domain: domain, path: path }, function(rdata) {
+        bt.send('GetDVSSL', 'ssl/GetDVSSL', { domain: domain, path: path }, function (rdata) {
             loadT.close();
             if (callback) callback(rdata);
         })
     },
-    get_ssl_info: function(partnerOrderId, siteName, callback) {
+    get_ssl_info: function (partnerOrderId, siteName, callback) {
         var loadT = bt.load(lan.site.ssl_apply_3);
-        bt.send('GetSSLInfo', 'ssl/GetSSLInfo', { partnerOrderId: partnerOrderId, siteName: siteName }, function(rdata) {
+        bt.send('GetSSLInfo', 'ssl/GetSSLInfo', { partnerOrderId: partnerOrderId, siteName: siteName }, function (rdata) {
             loadT.close();
             if (callback) callback(rdata);
         })
     },
-    set_cert_ssl: function(certName, siteName, callback) {
+    set_cert_ssl: function (certName, siteName, callback) {
         var loadT = bt.load(lan.public_backup.deploy_cert);
-        bt.send('SetCertToSite', 'ssl/SetCertToSite', { certName: certName, siteName: siteName }, function(rdata) {
+        bt.send('SetCertToSite', 'ssl/SetCertToSite', { certName: certName, siteName: siteName }, function (rdata) {
             loadT.close();
             site.reload();
             if (callback) callback(rdata);
             bt.msg(rdata);
         })
     },
-    remove_cert_ssl: function(certName, callback) {
-        bt.show_confirm(lan.public_backup.del_cert, lan.public_backup.sure_del_cert, function() {
+    remove_cert_ssl: function (certName, callback) {
+        bt.show_confirm(lan.public_backup.del_cert, lan.public_backup.sure_del_cert, function () {
             var loadT = bt.load(lan.site.the_msg);
-            bt.send('RemoveCert', 'ssl/RemoveCert', { certName: certName }, function(rdata) {
+            bt.send('RemoveCert', 'ssl/RemoveCert', { certName: certName }, function (rdata) {
                 loadT.close();
                 if (callback) callback(rdata);
                 bt.msg(rdata);
             })
         })
     },
-    set_http_to_https: function(siteName, callback) {
+    set_http_to_https: function (siteName, callback) {
         var loading = bt.load();
-        bt.send('HttpToHttps', 'site/HttpToHttps', { siteName: siteName }, function(rdata) {
+        bt.send('HttpToHttps', 'site/HttpToHttps', { siteName: siteName }, function (rdata) {
             loading.close();
             if (callback) callback(rdata);
             bt.msg(rdata);
         })
     },
-    close_http_to_https: function(siteName, callback) {
+    close_http_to_https: function (siteName, callback) {
         var loading = bt.load();
-        bt.send('CloseToHttps', 'site/CloseToHttps', { siteName: siteName }, function(rdata) {
+        bt.send('CloseToHttps', 'site/CloseToHttps', { siteName: siteName }, function (rdata) {
             loading.close();
             if (callback) callback(rdata);
             bt.msg(rdata);
         })
     },
-    set_ssl: function(siteName, data, callback) {
+    set_ssl: function (siteName, data, callback) {
         if (data.path) {
             //iis导入证书
         } else {
             var loadT = bt.load(lan.site.saving_txt);
-            bt.send('SetSSL', 'site/SetSSL', { type: 1, siteName: siteName, key: data.key, csr: data.csr }, function(rdata) {
+            bt.send('SetSSL', 'site/SetSSL', { type: 1, siteName: siteName, key: data.key, csr: data.csr }, function (rdata) {
                 loadT.close();
                 if (callback) callback(rdata);
             })
         }
     },
-    set_ssl_status: function(action, siteName, callback) {
+    set_ssl_status: function (action, siteName, callback) {
         var loadT = bt.load(lan.site.get_ssl_list);
-        bt.send(action, 'site/' + action, { updateOf: 1, siteName: siteName }, function(rdata) {
+        bt.send(action, 'site/' + action, { updateOf: 1, siteName: siteName }, function (rdata) {
             loadT.close();
             if (callback) callback(rdata);
         })
     },
-    get_cer_list: function(callback) {
+    get_cer_list: function (callback) {
         var loadT = bt.load(lan.site.the_msg);
-        bt.send('GetCertList', 'ssl/GetCertList', {}, function(rdata) {
+        bt.send('GetCertList', 'ssl/GetCertList', {}, function (rdata) {
             loadT.close();
             if (callback) callback(rdata);
         })
     },
-    get_order_list: function(siteName, callback) {
-        bt.send('GetOrderList', 'ssl/GetOrderList', { siteName: siteName }, function(rdata) {
+    get_order_list: function (siteName, callback) {
+        bt.send('GetOrderList', 'ssl/GetOrderList', { siteName: siteName }, function (rdata) {
             if (callback) callback(rdata);
         })
     },
-    del_site: function(data, callback) {
+    del_site: function (data, callback) {
         var loadT = bt.load(lan.get('del_all_task_the', [data.webname]));
-        bt.send('DeleteSite', 'site/DeleteSite', data, function(rdata) {
+        bt.send('DeleteSite', 'site/DeleteSite', data, function (rdata) {
             loadT.close();
             if (callback) callback(rdata);
         })
     },
-    add_site: function(callback) {
+    add_site: function (callback) {
         var _form = $.extend(true, {}, bt.data.site.add);
-        bt.site.get_all_phpversion(function(rdata) {
-            bt.site.get_type(function(tdata) {
+        bt.site.get_all_phpversion(function (rdata) {
+            bt.site.get_type(function (tdata) {
                 for (var i = 0; i < _form.list.length; i++) {
                     if (_form.list[i].name == 'version') {
                         var items = [];
@@ -5146,25 +5145,25 @@ bt.site = {
                         for (var x = 0; x < tdata.length; x++) _form.list[i].items.push({ value: tdata[x].id, title: tdata[x].name });
                     }
                 }
-                var bs = bt.render_form(_form, function(rdata) {
+                var bs = bt.render_form(_form, function (rdata) {
                     if (callback) callback(rdata);
                 });
-                $(".placeholder").click(function() {
+                $(".placeholder").click(function () {
                     $(this).hide();
                     $('.webname' + bs).focus();
                 })
                 $('.path' + bs).val($("#defaultPath").text());
-                $('.webname' + bs).focus(function() {
+                $('.webname' + bs).focus(function () {
                     $(".placeholder").hide();
                 });
-                $('.webname' + bs).blur(function() {
+                $('.webname' + bs).blur(function () {
                     if ($(this).val().length == 0) {
                         $(".placeholder").show();
                     }
                 });
-                $('.webname' + bs).focus(function(){
-                    var _this = $(this), 
-                    tips = 'www will not add by default, if you need to access,please add it like:\
+                $('.webname' + bs).focus(function () {
+                    var _this = $(this),
+                        tips = 'www will not add by default, if you need to access,please add it like:\
                     <br>hostname.com\
                     <br>www.hostname.com';
                     _this.attr('placeholder', '');
@@ -5180,21 +5179,21 @@ bt.site = {
             })
         })
     },
-    get_all_phpversion: function(callback) {
-        bt.send('GetPHPVersion', 'site/GetPHPVersion', {}, function(rdata) {
+    get_all_phpversion: function (callback) {
+        bt.send('GetPHPVersion', 'site/GetPHPVersion', {}, function (rdata) {
             if (callback) callback(rdata);
         })
     },
-    get_site_phpversion: function(siteName, callback) {
-        bt.send('GetSitePHPVersion', 'site/GetSitePHPVersion', { siteName: siteName }, function(rdata) {
+    get_site_phpversion: function (siteName, callback) {
+        bt.send('GetSitePHPVersion', 'site/GetSitePHPVersion', { siteName: siteName }, function (rdata) {
             if (callback) callback(rdata);
         })
     },
-    stop: function(id, name) {
-        bt.confirm({ title: lan.public_backup.stop_site + ' 【' + name + '】', msg: lan.site.site_stop_txt }, function(index) {
+    stop: function (id, name) {
+        bt.confirm({ title: lan.public_backup.stop_site + ' 【' + name + '】', msg: lan.site.site_stop_txt }, function (index) {
             if (index > 0) {
                 var loadT = bt.load();
-                bt.send('SiteStop', 'site/SiteStop', { id: id, name: name }, function(ret) {
+                bt.send('SiteStop', 'site/SiteStop', { id: id, name: name }, function (ret) {
                     loadT.close();
                     if (site) site.get_list();
                     bt.msg(ret);
@@ -5202,11 +5201,11 @@ bt.site = {
             }
         });
     },
-    start: function(id, name) {
-        bt.confirm({ title: lan.public_backup.start_site + ' 【' + name + '】', msg: lan.site.site_start_txt }, function(index) {
+    start: function (id, name) {
+        bt.confirm({ title: lan.public_backup.start_site + ' 【' + name + '】', msg: lan.site.site_start_txt }, function (index) {
             if (index > 0) {
                 var loadT = bt.load();
-                bt.send('SiteStart', 'site/SiteStart', { id: id, name: name }, function(ret) {
+                bt.send('SiteStart', 'site/SiteStart', { id: id, name: name }, function (ret) {
                     loadT.close();
                     if (site) site.get_list();
                     bt.msg(ret);
@@ -5214,18 +5213,18 @@ bt.site = {
             }
         });
     },
-    backup_data: function(id, callback) {
+    backup_data: function (id, callback) {
         var loadT = bt.load(lan.database.backup_the);
-        bt.send('ToBackup', 'site/ToBackup', { id: id }, function(rdata) {
+        bt.send('ToBackup', 'site/ToBackup', { id: id }, function (rdata) {
             loadT.close();
             bt.msg(rdata);
             if (callback) callback(rdata);
         });
     },
-    del_backup: function(id, siteId, siteName) {
-        bt.confirm({ msg: lan.site.webback_del_confirm, title: lan.site.del_bak_file }, function(index) {
+    del_backup: function (id, siteId, siteName) {
+        bt.confirm({ msg: lan.site.webback_del_confirm, title: lan.site.del_bak_file }, function (index) {
             var loadT = bt.load();
-            bt.send('DelBackup', 'site/DelBackup', { id: id }, function(frdata) {
+            bt.send('DelBackup', 'site/DelBackup', { id: id }, function (frdata) {
                 loadT.close();
                 if (frdata.status) {
                     if (site) site.site_detail(siteId, siteName);
@@ -5234,13 +5233,13 @@ bt.site = {
             });
         });
     },
-    set_endtime: function(id, dates) {
+    set_endtime: function (id, dates) {
         var loadT = bt.load(lan.site.saving_txt);
-        bt.send('SetEdate', 'site/SetEdate', { id: id, edate: dates }, function(rdata) {
+        bt.send('SetEdate', 'site/SetEdate', { id: id, edate: dates }, function (rdata) {
             loadT.close();
         });
     },
-    get_default_path: function(type, callback) {
+    get_default_path: function (type, callback) {
         var vhref = '';
         if (bt.os == 'Linux') {
             switch (type) {
@@ -5262,45 +5261,45 @@ bt.site = {
         }
         if (callback) callback(vhref);
     },
-    get_default_site: function(callback) {
+    get_default_site: function (callback) {
         var loading = bt.load();
-        bt.send('GetDefaultSite', 'site/GetDefaultSite', {}, function(rdata) {
+        bt.send('GetDefaultSite', 'site/GetDefaultSite', {}, function (rdata) {
             loading.close();
             if (callback) callback(rdata);
         })
     },
-    set_default_site: function(name, callback) {
+    set_default_site: function (name, callback) {
         var loading = bt.load();
-        bt.send('SetDefaultSite', 'site/SetDefaultSite', { name: name }, function(rdata) {
+        bt.send('SetDefaultSite', 'site/SetDefaultSite', { name: name }, function (rdata) {
             loading.close();
             if (callback) callback(rdata);
         })
     },
-    get_dir_auth: function(id, callback) {
+    get_dir_auth: function (id, callback) {
         var loading = bt.load();
-        bt.send('get_dir_auth', 'site/get_dir_auth', { id: id }, function(rdata) {
+        bt.send('get_dir_auth', 'site/get_dir_auth', { id: id }, function (rdata) {
             loading.close();
             if (callback) callback(rdata);
         })
     },
-    create_dir_guard: function(data, callback) {
+    create_dir_guard: function (data, callback) {
         var loading = bt.load();
-        bt.send('set_dir_auth', 'site/set_dir_auth', { id: data.id, name: data.name, site_dir: data.site_dir, username: data.username, password: data.password }, function(rdata) {
+        bt.send('set_dir_auth', 'site/set_dir_auth', { id: data.id, name: data.name, site_dir: data.site_dir, username: data.username, password: data.password }, function (rdata) {
             loading.close();
             if (callback) callback(rdata);
         })
     },
-    edit_dir_account: function(data, callback) {
+    edit_dir_account: function (data, callback) {
         var loading = bt.load();
-        bt.send('modify_dir_auth_pass', 'site/modify_dir_auth_pass', { id: data.id, name: data.name, username: data.username, password: data.password }, function(rdata) {
+        bt.send('modify_dir_auth_pass', 'site/modify_dir_auth_pass', { id: data.id, name: data.name, username: data.username, password: data.password }, function (rdata) {
             loading.close();
             if (callback) callback(rdata);
         })
     },
-    delete_dir_guard: function(id, data, callback) {
+    delete_dir_guard: function (id, data, callback) {
         var loading = bt.load();
-        bt.show_confirm(lan.public_backup.del + '[' + data + ']', lan.public_backup.del_dir, function() {
-            bt.send('delete_dir_auth', 'site/delete_dir_auth', { id: id, name: data }, function(rdata) {
+        bt.show_confirm(lan.public_backup.del + '[' + data + ']', lan.public_backup.del_dir, function () {
+            bt.send('delete_dir_auth', 'site/delete_dir_auth', { id: id, name: data }, function (rdata) {
                 loading.close();
                 if (callback) callback(rdata);
             })
@@ -5312,13 +5311,13 @@ bt.site = {
 
 bt.form = {
     btn: {
-        close: function(title, callback) {
+        close: function (title, callback) {
             var obj = { title: lan.public_backup.turn_off, name: 'btn-danger' };
             if (title) obj.title = title;
             if (callback) obj['callback'] = callback;
             return obj;
         },
-        submit: function(title, callback) {
+        submit: function (title, callback) {
             var obj = { title: lan.public_backup.submit, name: 'submit', css: 'btn-success' };
             if (title) obj.title = title;
             if (callback) obj['callback'] = callback;
@@ -5337,7 +5336,7 @@ bt.form = {
                     { title: lan.public_backup.every_one, value: '%' },
                     { title: lan.public_backup.specify_ip, value: 'ip' }
                 ],
-                callback: function(obj) {
+                callback: function (obj) {
                     var subid = obj.attr('name') + '_subid';
                     $('#' + subid).remove();
                     if (obj.val() == 'ip') {
@@ -5350,7 +5349,7 @@ bt.form = {
             title: lan.public_backup.pass,
             name: 'password',
             items: [
-                { type: 'text', width: '311px', value: bt.get_random(16), event: { css: 'glyphicon-repeat', callback: function(obj) { bt.refresh_pwd(16, obj); } } }
+                { type: 'text', width: '311px', value: bt.get_random(16), event: { css: 'glyphicon-repeat', callback: function (obj) { bt.refresh_pwd(16, obj); } } }
             ]
         },
     }
@@ -5365,14 +5364,14 @@ bt.data = {
                 title: lan.public_backup.rootpass,
                 name: 'password',
                 items: [
-                    { type: 'text', width: '311px', event: { css: 'glyphicon-repeat', callback: function(obj) { bt.refresh_pwd(16, obj); } } }
+                    { type: 'text', width: '311px', event: { css: 'glyphicon-repeat', callback: function (obj) { bt.refresh_pwd(16, obj); } } }
                 ]
-            }, ],
+            },],
             btns: [
                 bt.form.btn.close(),
-                bt.form.btn.submit(lan.public_backup.submit, function(rdata, load) {
+                bt.form.btn.submit(lan.public_backup.submit, function (rdata, load) {
                     var loading = bt.load();
-                    bt.send('SetupPassword', 'database/SetupPassword', rdata, function(rRet) {
+                    bt.send('SetupPassword', 'database/SetupPassword', rdata, function (rRet) {
                         loading.close();
                         bt.msg(rRet);
                         load.close();
@@ -5384,43 +5383,44 @@ bt.data = {
             title: lan.database.add_title,
             area: '530px',
             list: [{
-                    title: 'DBName',
-                    items: [{
-                            name: 'name',
-                            placeholder: lan.public_backup.new_db_name,
-                            type: 'text',
-                            width: '65%',
-                            callback: function(obj) {
-                                $('input[name="db_user"]').val(obj.val());
-                            }
-                        },
-                        {
-                            name: 'codeing',
-                            type: 'select',
-                            width: '27%',
-                            items: [
-                                { title: 'utf-8', value: 'utf8' },
-                                { title: 'utf8mb4', value: 'utf8mb4' },
-                                { title: 'gbk', value: 'gbk' },
-                                { title: 'big5', value: 'big5' },
-                            ]
-                        }
-                    ]
+                title: 'DBName',
+                items: [{
+                    name: 'name',
+                    placeholder: lan.public_backup.new_db_name,
+                    type: 'text',
+                    width: '65%',
+                    callback: function (obj) {
+                        $('input[name="db_user"]').val(obj.val());
+                    }
                 },
-                { title: lan.public_backup.user_name, name: 'db_user', placeholder: lan.public_backup.db_user, width: '65%' },
-                bt.form.item.password,
-                bt.form.item.data_access,
                 {
-                    title: lan.public_backup.type,
-                    name: 'dtype',
+                    name: 'codeing',
                     type: 'select',
-                    disabled: (bt.contains(bt.get_cookie('serverType'), 'nginx') || bt.contains(bt.get_cookie('serverType'), 'apache') ? true : false),
+                    width: '27%',
                     items: [
-                        { title: 'MySQL', value: 'MySQL' },
-                        { title: 'SQLServer', value: 'SQLServer' }
+                        { title: 'utf-8', value: 'utf8' },
+                        { title: 'utf8mb4', value: 'utf8mb4' },
+                        { title: 'gbk', value: 'gbk' },
+                        { title: 'big5', value: 'big5' },
                     ]
-                },
-                { html: '<div class="line" style="padding:0;">\
+                }
+                ]
+            },
+            { title: lan.public_backup.user_name, name: 'db_user', placeholder: lan.public_backup.db_user, width: '65%' },
+            bt.form.item.password,
+            bt.form.item.data_access,
+            {
+                title: lan.public_backup.type,
+                name: 'dtype',
+                type: 'select',
+                disabled: (bt.contains(bt.get_cookie('serverType'), 'nginx') || bt.contains(bt.get_cookie('serverType'), 'apache') ? true : false),
+                items: [
+                    { title: 'MySQL', value: 'MySQL' },
+                    { title: 'SQLServer', value: 'SQLServer' }
+                ]
+            },
+            {
+                html: '<div class="line" style="padding:0;">\
                     <span class="tname checkType">Force SSL</span>\
                     <div style="display: inline-block;">\
                         <input type="checkbox" name="active" id="check_ssl" class="btswitch btswitch-ios">\
@@ -5430,12 +5430,12 @@ bt.data = {
             ],
             btns: [
                 bt.form.btn.close(),
-                bt.form.btn.submit(lan.public_backup.submit, function(rdata, load, callback) {
+                bt.form.btn.submit(lan.public_backup.submit, function (rdata, load, callback) {
                     if (!rdata.address) rdata.address = rdata.dataAccess;
                     if (!rdata.ps) rdata.ps = rdata.name;
-                    if (!rdata.ssl) rdata.ssl = $('#check_ssl').prop('checked')?'REQUIRE SSL':'';
+                    if (!rdata.ssl) rdata.ssl = $('#check_ssl').prop('checked') ? 'REQUIRE SSL' : '';
                     var loading = bt.load();
-                    bt.send('AddDatabase', 'database/AddDatabase', rdata, function(rRet) {
+                    bt.send('AddDatabase', 'database/AddDatabase', rdata, function (rRet) {
                         loading.close();
                         if (rRet.status) load.close();
                         if (callback) callback(rRet);
@@ -5465,12 +5465,12 @@ bt.data = {
                     title: lan.public_backup.submit,
                     name: 'submit',
                     css: 'btn-success',
-                    callback: function(rdata, load) {
+                    callback: function (rdata, load) {
                         var loading = bt.load();
                         rdata.access = rdata.dataAccess;
                         if (rdata.access == 'ip') rdata.access = rdata.address;
                         rdata.ssl = $("#force_ssl").prop('checked') ? 'REQUIRE SSL' : '';
-                        bt.send('SetDatabaseAccess', 'database/SetDatabaseAccess', rdata, function(rRet) {
+                        bt.send('SetDatabaseAccess', 'database/SetDatabaseAccess', rdata, function (rRet) {
                             loading.close();
                             bt.msg(rRet);
                             if (rRet.status) load.close();
@@ -5489,7 +5489,7 @@ bt.data = {
                     title: lan.public_backup.pass,
                     name: 'password',
                     items: [
-                        { type: 'text', event: { css: 'glyphicon-repeat', callback: function(obj) { bt.refresh_pwd(16, obj); } } }
+                        { type: 'text', event: { css: 'glyphicon-repeat', callback: function (obj) { bt.refresh_pwd(16, obj); } } }
                     ]
                 },
             ],
@@ -5499,9 +5499,9 @@ bt.data = {
                     title: lan.public_backup.submit,
                     name: 'submit',
                     css: 'btn-success',
-                    callback: function(rdata, load, callback) {
+                    callback: function (rdata, load, callback) {
                         var loading = bt.load();
-                        bt.send('ResDatabasePassword', 'database/ResDatabasePassword', rdata, function(rRet) {
+                        bt.send('ResDatabasePassword', 'database/ResDatabasePassword', rdata, function (rRet) {
                             loading.close();
                             bt.msg(rRet);
                             if (rRet.status) load.close();
@@ -5517,157 +5517,157 @@ bt.data = {
             title: lan.site.site_add,
             area: '680px',
             list: [{
-                    title: lan.public_backup.domain,
-                    name: 'webname',
-                    items: [{
-                        type: 'textarea',
-                        width: '420px',
-                        callback: function(obj) {
-                            var array = obj.val().split("\n");
-                            var ress = array[0].split(":")[0];
-                            var res = bt.strim(ress.replace(new RegExp(/([-.])/g), '_'));
-                            var ftp_user = res;
-                            var data_user = res;
-                            if (!isNaN(res.substr(0, 1))) {
-                                ftp_user = 'ftp_' + ftp_user;
-                                data_user = 'sql_' + data_user;
-                            }
-                            if (data_user.length > 16) data_user = data_user.substr(0, 16)
-                            obj.data('ftp', ftp_user);
-                            obj.data('database', data_user);
-
-                            $('.ftp_username').val(ftp_user);
-                            $('.datauser').val(data_user);
-
-                            var _form = obj.parents('div.bt-form');
-                            var _path_obj = _form.find('input[name="path"]');
-                            var path = _path_obj.val();
-                            var defaultPath = $('#defaultPath').text();
-                            var dPath = bt.rtrim(defaultPath, '/');
-                            if (path.substr(0, dPath.length) == dPath) _path_obj.val(dPath + '/' + ress);
-                            _form.find('input[name="ps"]').val(ress);
-                        },
-                        placeholder: lan.public_backup.domian_tips
-                    }]
-                },
-                { title: lan.public_backup.ps, name: 'ps', placeholder: lan.public_backup.site_ps },
-                {
-                    title: lan.public_backup.root_dir,
-                    name: 'path',
-                    items: [
-                        { type: 'text', width: '330px', event: { css: 'glyphicon-folder-open', callback: function(obj) { bt.select_path(obj); } } }
-                    ]
-                },
-                {
-                    title: 'FTP',
-                    items: [{
-                        name: 'ftp',
-                        type: 'select',
-                        items: [
-                            { value: 'false', title: lan.public_backup.dont_create },
-                            { value: 'true', title: lan.public_backup.create }
-                        ],
-                        callback: function(obj) {
-                            var subid = obj.attr('name') + '_subid';
-                            $('#' + subid).remove();
-                            if (obj.val() == 'true') {
-                                var _bs = obj.parents('div.bt-form').attr('data-id');
-                                var ftp_user = $('textarea[name="webname"]').data('ftp');
-                                var item = {
-                                    title: lan.public_backup.set_ftp,
-                                    items: [
-                                        { name: 'ftp_username', title: lan.public_backup.user_name, width: '173px', value: ftp_user },
-                                        { name: 'ftp_password', title: lan.public_backup.pass, width: '173px', value: bt.get_random(16) }
-                                    ],
-                                    ps: lan.public_backup.ftp_tips
-                                }
-                                var _tr = bt.render_form_line(item)
-
-                                obj.parents('div.line').append('<div class="line" id=' + subid + '>' + _tr.html + '</div>');
-                            }
+                title: lan.public_backup.domain,
+                name: 'webname',
+                items: [{
+                    type: 'textarea',
+                    width: '420px',
+                    callback: function (obj) {
+                        var array = obj.val().split("\n");
+                        var ress = array[0].split(":")[0];
+                        var res = bt.strim(ress.replace(new RegExp(/([-.])/g), '_'));
+                        var ftp_user = res;
+                        var data_user = res;
+                        if (!isNaN(res.substr(0, 1))) {
+                            ftp_user = 'ftp_' + ftp_user;
+                            data_user = 'sql_' + data_user;
                         }
-                    }]
-                },
-                {
-                    title: lan.public_backup.db,
-                    items: [{
-                            name: 'sql',
-                            type: 'select',
-                            items: [
-                                { value: 'false', title: lan.public_backup.dont_create },
-                                { value: 'MySQL', title: 'MySQL' },
-                                { value: 'SQLServer', title: 'SQLServer' }
-                            ],
-                            callback: function(obj) {
-                                var subid = obj.attr('name') + '_subid';
-                                $('#' + subid).remove();
-                                if (obj.val() != 'false') {
-                                    if (bt.os == 'Linux' && obj.val() == 'SQLServer') {
-                                        obj.val('false');
-                                        bt.msg({ msg: lan.public_backup.unsupport_sqlserver, icon: 2 });
-                                        return;
-                                    }
-                                    var _bs = obj.parents('div.bt-form').attr('data-id');
-                                    var data_user = $('textarea[name="webname"]').data('database');
-                                    var item = {
-                                        title: lan.public_backup.db_set,
-                                        items: [
-                                            { name: 'datauser', title: lan.public_backup.user_name, width: '173px', value: data_user },
-                                            { name: 'datapassword', title: lan.public_backup.pass, width: '173px', value: bt.get_random(16) }
-                                        ],
-                                        ps: lan.public_backup.create_site_tips
-                                    }
-                                    var _tr = bt.render_form_line(item)
-                                    obj.parents('div.line').append('<div class="line" id=' + subid + '>' + _tr.html + '</div>');
-                                }
-                            }
-                        },
-                        {
-                            name: 'codeing',
-                            type: 'select',
-                            items: [
-                                { value: 'utf8', title: 'utf-8' },
-                                { value: 'utf8mb4', title: 'utf8mb4' },
-                                { value: 'gbk', title: 'gbk' },
-                                { value: 'big5', title: 'big5' }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    title: 'Program type',
+                        if (data_user.length > 16) data_user = data_user.substr(0, 16)
+                        obj.data('ftp', ftp_user);
+                        obj.data('database', data_user);
+
+                        $('.ftp_username').val(ftp_user);
+                        $('.datauser').val(data_user);
+
+                        var _form = obj.parents('div.bt-form');
+                        var _path_obj = _form.find('input[name="path"]');
+                        var path = _path_obj.val();
+                        var defaultPath = $('#defaultPath').text();
+                        var dPath = bt.rtrim(defaultPath, '/');
+                        if (path.substr(0, dPath.length) == dPath) _path_obj.val(dPath + '/' + ress);
+                        _form.find('input[name="ps"]').val(ress);
+                    },
+                    placeholder: lan.public_backup.domian_tips
+                }]
+            },
+            { title: lan.public_backup.ps, name: 'ps', placeholder: lan.public_backup.site_ps },
+            {
+                title: lan.public_backup.root_dir,
+                name: 'path',
+                items: [
+                    { type: 'text', width: '330px', event: { css: 'glyphicon-folder-open', callback: function (obj) { bt.select_path(obj); } } }
+                ]
+            },
+            {
+                title: 'FTP',
+                items: [{
+                    name: 'ftp',
                     type: 'select',
-                    name: 'type',
-                    disabled: (bt.contains(bt.get_cookie('serverType'), 'IIS') ? false : true),
                     items: [
-                        { value: 'PHP', title: 'PHP' },
-                        { value: 'Asp', title: 'Asp' },
-                        { value: 'Aspx', title: 'Aspx' },
+                        { value: 'false', title: lan.public_backup.dont_create },
+                        { value: 'true', title: lan.public_backup.create }
                     ],
-                    callback: function(obj) {
-                        if (obj.val() == 'Asp' || obj.val() == 'Aspx') {
-                            obj.parents('div.line').next().hide();
-                        } else {
-                            obj.parents('div.line').next().show();
+                    callback: function (obj) {
+                        var subid = obj.attr('name') + '_subid';
+                        $('#' + subid).remove();
+                        if (obj.val() == 'true') {
+                            var _bs = obj.parents('div.bt-form').attr('data-id');
+                            var ftp_user = $('textarea[name="webname"]').data('ftp');
+                            var item = {
+                                title: lan.public_backup.set_ftp,
+                                items: [
+                                    { name: 'ftp_username', title: lan.public_backup.user_name, width: '173px', value: ftp_user },
+                                    { name: 'ftp_password', title: lan.public_backup.pass, width: '173px', value: bt.get_random(16) }
+                                ],
+                                ps: lan.public_backup.ftp_tips
+                            }
+                            var _tr = bt.render_form_line(item)
+
+                            obj.parents('div.line').append('<div class="line" id=' + subid + '>' + _tr.html + '</div>');
+                        }
+                    }
+                }]
+            },
+            {
+                title: lan.public_backup.db,
+                items: [{
+                    name: 'sql',
+                    type: 'select',
+                    items: [
+                        { value: 'false', title: lan.public_backup.dont_create },
+                        { value: 'MySQL', title: 'MySQL' },
+                        { value: 'SQLServer', title: 'SQLServer' }
+                    ],
+                    callback: function (obj) {
+                        var subid = obj.attr('name') + '_subid';
+                        $('#' + subid).remove();
+                        if (obj.val() != 'false') {
+                            if (bt.os == 'Linux' && obj.val() == 'SQLServer') {
+                                obj.val('false');
+                                bt.msg({ msg: lan.public_backup.unsupport_sqlserver, icon: 2 });
+                                return;
+                            }
+                            var _bs = obj.parents('div.bt-form').attr('data-id');
+                            var data_user = $('textarea[name="webname"]').data('database');
+                            var item = {
+                                title: lan.public_backup.db_set,
+                                items: [
+                                    { name: 'datauser', title: lan.public_backup.user_name, width: '173px', value: data_user },
+                                    { name: 'datapassword', title: lan.public_backup.pass, width: '173px', value: bt.get_random(16) }
+                                ],
+                                ps: lan.public_backup.create_site_tips
+                            }
+                            var _tr = bt.render_form_line(item)
+                            obj.parents('div.line').append('<div class="line" id=' + subid + '>' + _tr.html + '</div>');
                         }
                     }
                 },
                 {
-                    title: lan.public_backup.php_v,
-                    name: 'version',
+                    name: 'codeing',
                     type: 'select',
                     items: [
-                        { value: '00', title: lan.public_backup.sitic }
-                    ]
-                }, {
-                    title: lan.public_backup.site_classification,
-                    name: 'type_id',
-                    type: 'select',
-                    width: 'auto',
-                    items: [
-
+                        { value: 'utf8', title: 'utf-8' },
+                        { value: 'utf8mb4', title: 'utf8mb4' },
+                        { value: 'gbk', title: 'gbk' },
+                        { value: 'big5', title: 'big5' }
                     ]
                 }
+                ]
+            },
+            {
+                title: 'Program type',
+                type: 'select',
+                name: 'type',
+                disabled: (bt.contains(bt.get_cookie('serverType'), 'IIS') ? false : true),
+                items: [
+                    { value: 'PHP', title: 'PHP' },
+                    { value: 'Asp', title: 'Asp' },
+                    { value: 'Aspx', title: 'Aspx' },
+                ],
+                callback: function (obj) {
+                    if (obj.val() == 'Asp' || obj.val() == 'Aspx') {
+                        obj.parents('div.line').next().hide();
+                    } else {
+                        obj.parents('div.line').next().show();
+                    }
+                }
+            },
+            {
+                title: lan.public_backup.php_v,
+                name: 'version',
+                type: 'select',
+                items: [
+                    { value: '00', title: lan.public_backup.sitic }
+                ]
+            }, {
+                title: lan.public_backup.site_classification,
+                name: 'type_id',
+                type: 'select',
+                width: 'auto',
+                items: [
+
+                ]
+            }
             ],
             btns: [
                 { title: lan.public_backup.turn_off, name: 'close' },
@@ -5675,7 +5675,7 @@ bt.data = {
                     title: lan.public_backup.submit,
                     name: 'submit',
                     css: 'btn-success',
-                    callback: function(rdata, load, callback) {
+                    callback: function (rdata, load, callback) {
                         var loading = bt.load();
                         if (!rdata.webname) {
                             bt.msg({ msg: lan.public_backup.domain_format_not_right, icon: 2 });
@@ -5710,7 +5710,7 @@ bt.data = {
                         domain['count'] = list.length;
                         rdata.webname = JSON.stringify(domain);
                         rdata.port = port;
-                        bt.send('AddSite', 'site/AddSite', rdata, function(rRet) {
+                        bt.send('AddSite', 'site/AddSite', rdata, function (rRet) {
                             loading.close();
                             if (rRet.siteStatus) load.close();
                             if (callback) callback(rRet);
@@ -5725,30 +5725,30 @@ bt.data = {
             title: lan.ftp.add_title,
             area: '530px',
             list: [{
-                    title: lan.public_backup.user_name,
-                    name: 'ftp_username',
-                    callback: function(obj) {
-                        var defaultPath = $('#defaultPath').text();
-                        var wootPath = bt.rtrim(defaultPath, '/');
-                        if (bt.contains($('input[name="path"]').val(), wootPath)) {
-                            $('input[name="path"]').val(wootPath + '/' + obj.val())
-                        }
+                title: lan.public_backup.user_name,
+                name: 'ftp_username',
+                callback: function (obj) {
+                    var defaultPath = $('#defaultPath').text();
+                    var wootPath = bt.rtrim(defaultPath, '/');
+                    if (bt.contains($('input[name="path"]').val(), wootPath)) {
+                        $('input[name="path"]').val(wootPath + '/' + obj.val())
                     }
-                },
-                {
-                    title: lan.public_backup.pass,
-                    name: 'ftp_password',
-                    items: [
-                        { type: 'text', width: '330px', value: bt.get_random(16), event: { css: 'glyphicon-repeat', callback: function(obj) { bt.refresh_pwd(16, obj); } } }
-                    ]
-                },
-                {
-                    title: lan.public_backup.root_dir,
-                    name: 'path',
-                    items: [
-                        { type: 'text', event: { css: 'glyphicon-folder-open', callback: function(obj) { bt.select_path(obj); } } }
-                    ]
                 }
+            },
+            {
+                title: lan.public_backup.pass,
+                name: 'ftp_password',
+                items: [
+                    { type: 'text', width: '330px', value: bt.get_random(16), event: { css: 'glyphicon-repeat', callback: function (obj) { bt.refresh_pwd(16, obj); } } }
+                ]
+            },
+            {
+                title: lan.public_backup.root_dir,
+                name: 'path',
+                items: [
+                    { type: 'text', event: { css: 'glyphicon-folder-open', callback: function (obj) { bt.select_path(obj); } } }
+                ]
+            }
             ],
             btns: [
                 { title: lan.public_backup.turn_off, name: 'close' },
@@ -5756,10 +5756,10 @@ bt.data = {
                     title: lan.public_backup.submit,
                     name: 'submit',
                     css: 'btn-success',
-                    callback: function(rdata, load, callback) {
+                    callback: function (rdata, load, callback) {
                         var loading = bt.load();
                         if (!rdata.ps) rdata.ps = rdata.ftp_username;
-                        bt.send('AddUser', 'ftp/AddUser', rdata, function(rRet) {
+                        bt.send('AddUser', 'ftp/AddUser', rdata, function (rRet) {
                             loading.close();
                             if (rRet.status) load.close();
                             if (callback) callback(rRet);
@@ -5782,9 +5782,9 @@ bt.data = {
                     title: lan.public_backup.submit,
                     name: 'submit',
                     css: 'btn-success',
-                    callback: function(rdata, load, callback) {
+                    callback: function (rdata, load, callback) {
                         var loading = bt.load();
-                        bt.send('setPort', 'ftp/setPort', rdata, function(rRet) {
+                        bt.send('setPort', 'ftp/setPort', rdata, function (rRet) {
                             loading.close();
                             if (rRet.status) load.close();
                             //if(callback) callback(rRet);
@@ -5804,7 +5804,7 @@ bt.data = {
                     title: lan.public_backup.pass,
                     name: 'new_password',
                     items: [
-                        { type: 'text', event: { css: 'glyphicon-repeat', callback: function(obj) { bt.refresh_pwd(16, obj); } } }
+                        { type: 'text', event: { css: 'glyphicon-repeat', callback: function (obj) { bt.refresh_pwd(16, obj); } } }
                     ]
                 },
             ],
@@ -5814,10 +5814,10 @@ bt.data = {
                     title: lan.public_backup.submit,
                     name: 'submit',
                     css: 'btn-success',
-                    callback: function(rdata, load, callback) {
-                        bt.confirm({ msg: lan.ftp.pass_confirm, title: lan.ftp.stop_title }, function() {
+                    callback: function (rdata, load, callback) {
+                        bt.confirm({ msg: lan.ftp.pass_confirm, title: lan.ftp.stop_title }, function () {
                             var loading = bt.load();
-                            bt.send('SetUserPassword', 'ftp/SetUserPassword', rdata, function(rRet) {
+                            bt.send('SetUserPassword', 'ftp/SetUserPassword', rdata, function (rRet) {
                                 loading.close();
                                 if (rRet.status) load.close();
                                 if (callback) callback(rRet);
