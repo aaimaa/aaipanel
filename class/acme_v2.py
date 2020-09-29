@@ -697,7 +697,7 @@ root_cert.csr   Root certificate
 cert.csr        Domain name certificate
 fullchain.pfx   Certificate format for IIS
 
-How to use in the aaPanel:
+How to use in the aaipanel:
 privkey.pem         Paste into the key entry box
 fullchain.pem       Paste into certificate input box
 '''

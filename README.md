@@ -92,15 +92,15 @@ _convenient and efficient file manager integration , Support uploading, download
 
 **Share files with your friends**
 
-![blockchain](https://forum.aapanel.com/assets/files/2020-05-29/1590749878-802908-tmp.png?v=1 "Onlineeditor")
+![blockchain](https://www.aaimaa.in/assets/files/2020-05-29/1590749878-802908-tmp.png?v=1 "Onlineeditor")
 
 **Send link password or QR code to your friends**
 
-![blockchain](https://forum.aapanel.com/assets/files/2020-05-29/1590750125-428227-tmp.png?v=1 "Onlineeditor")
+![blockchain](https://www.aaimaa.in/assets/files/2020-05-29/1590750125-428227-tmp.png?v=1 "Onlineeditor")
 
 **Your friend opens the link effect you shared**
 
-![blockchain](https://forum.aapanel.com/assets/files/2020-05-29/1590750281-633474-tmp.png?v=1 "Onlineeditor")
+![blockchain](https://www.aaimaa.in/assets/files/2020-05-29/1590750281-633474-tmp.png?v=1 "Onlineeditor")
 
 
 [User Manual](https://doc.aapanel.com/web/#/3?page_id=117 "User Manual")
@@ -108,7 +108,7 @@ _convenient and efficient file manager integration , Support uploading, download
 
 ##### Home Page：https://www.aapanel.com/
 ##### Forum Page：https://forum.aapanel.com/
-##### Feedback： https://forum.aapanel.com/
+##### Feedback： https://www.aaimaa.in/
 ##### Bug submission：https://forum.aapanel.com/
 
 #### Installation command：
