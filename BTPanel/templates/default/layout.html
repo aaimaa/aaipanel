@@ -88,10 +88,10 @@
             </div>
             <button style="display: none;" id="bt_copys" class="bt_copy" data-clipboard-text=""></button>
             <a style="display: none;" id="defaultPath">{{session['config']['sites_path']}}</a> {% block content %}{% endblock %}
-            <div class="footer bgw">{{session['brand']}}{{session['product']}} &copy;2014-{{session['yaer']}} {{session['brand']}} (Aaimaa)
+            {% comment %} <div class="footer bgw">{{session['brand']}}{{session['product']}} {{session['yaer']}} {{session['brand']}} (Aaimaa)
             	<!--<a style="margin-left:20px;color:#20a53a;" href="http://www.bt.cn/bbs" target="_blank">求助|建议请上宝塔论坛</a>-->
             	<!--<a style="margin-left:20px;color:#20a53a;" href="https://www.google.com" target="_blank">{{session['bt_help']}}</a>-->
-            </div>
+            </div> {% endcomment %}
         </div>
         <script src="{{g.cdn_url}}/js/aes.js?version={{g['version']}}"></script>
         <script src="{{g.cdn_url}}/js/jquery-1.10.2.min.js"></script>
